@@ -28,7 +28,7 @@ services:
     image: dpage/pgadmin4:8
     container_name: vet_inference_pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@vet.local
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
       PGADMIN_DEFAULT_PASSWORD: Admin12345
     ports:
       - "5050:80"

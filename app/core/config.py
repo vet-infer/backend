@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60
     cors_origins: list[str] = ["http://localhost:3000", "http://localhost:5173"]
-    bootstrap_admin_email: str | None = "admin@vet.local"
+    bootstrap_admin_email: str | None = "admin@example.com"
     bootstrap_admin_password: str | None = "Admin12345"
 
     model_config = SettingsConfigDict(

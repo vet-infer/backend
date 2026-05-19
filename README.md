@@ -14,7 +14,7 @@ La API queda disponible en `http://localhost:8000` y la documentacion Swagger en
 Credenciales iniciales de desarrollo:
 
 ```text
-email: admin@vet.local
+email: admin@example.com
 password: Admin12345
 ```
 
