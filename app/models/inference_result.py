@@ -16,6 +16,8 @@ class InferenceResult(Base):
     suggested_diagnosis: Mapped[str] = mapped_column(String(255))
     risk_level: Mapped[str] = mapped_column(String(20))
     score: Mapped[float] = mapped_column(Float)
+    probability: Mapped[float | None] = mapped_column(Float, nullable=True)
+    inference_method: Mapped[str | None] = mapped_column(String(50), nullable=True)
     explanation: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 

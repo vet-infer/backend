@@ -28,6 +28,8 @@ class InferenceResultOut(BaseModel):
     suggested_diagnosis: str
     risk_level: str
     score: float
+    probability: float | None = None
+    inference_method: str | None = None
     explanation: str
     activated_rules: list[ActivatedRuleOut]
 
@@ -48,10 +50,27 @@ class PersistedInferenceResultOut(BaseModel):
     suggested_diagnosis: str
     risk_level: str
     score: float
+    probability: float | None = None
+    inference_method: str | None = None
     explanation: str | None = None
     activated_rules: list[PersistedActivatedRuleOut] = []
 
     model_config = {"from_attributes": True}
+
+
+class SpanishInferenceResult(BaseModel):
+    enfermedad: str
+    probabilidad: float | None = None
+    nivel_riesgo: str
+    resultado_sugerido: str
+    reglas_activadas: list[str]
+    explicacion: str | None = None
+
+
+class SpanishInferenceResponse(BaseModel):
+    evaluacion_id: int
+    metodo_inferencia: str | None = None
+    resultados: list[SpanishInferenceResult]
 
 
 class ClinicalHistoryOut(BaseModel):

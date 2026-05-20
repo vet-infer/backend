@@ -1,5 +1,6 @@
 from app.models.clinical_history import ClinicalHistory
 from app.models.clinical_variable import ClinicalVariable
+from app.models.clinical_probability import ClinicalProbability
 from app.models.disease import Disease
 from app.models.evaluation import EvaluationClinicalFact, EvaluationClinical
 from app.models.inference_result import ActivatedRule, InferenceResult
@@ -17,6 +18,7 @@ __all__ = [
     "Breed",
     "ClinicalHistory",
     "ClinicalVariable",
+    "ClinicalProbability",
     "Disease",
     "EvaluationClinical",
     "EvaluationClinicalFact",

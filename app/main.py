@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.routers import (
     auth,
     clinical_variables,
+    clinical_probabilities,
     diseases,
     evaluations,
     history,
@@ -67,6 +68,7 @@ app.include_router(evaluations.router, prefix=settings.api_v1_prefix)
 app.include_router(diseases.router, prefix=settings.api_v1_prefix)
 app.include_router(symptoms.router, prefix=settings.api_v1_prefix)
 app.include_router(clinical_variables.router, prefix=settings.api_v1_prefix)
+app.include_router(clinical_probabilities.router, prefix=settings.api_v1_prefix)
 app.include_router(rules.router, prefix=settings.api_v1_prefix)
 app.include_router(inference.router, prefix=settings.api_v1_prefix)
 app.include_router(results.router, prefix=settings.api_v1_prefix)
