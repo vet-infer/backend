@@ -16,6 +16,8 @@ from app.api.v1.routers import (
     rules,
     symptoms,
     users,
+    species,
+    breeds,
 )
 from app.core.config import settings
 from app.core.database import Base, SessionLocal, engine
@@ -59,6 +61,8 @@ app.include_router(auth.router, prefix=settings.api_v1_prefix)
 app.include_router(users.router, prefix=settings.api_v1_prefix)
 app.include_router(owners.router, prefix=settings.api_v1_prefix)
 app.include_router(patients.router, prefix=settings.api_v1_prefix)
+app.include_router(species.router, prefix=settings.api_v1_prefix)
+app.include_router(breeds.router, prefix=settings.api_v1_prefix)
 app.include_router(evaluations.router, prefix=settings.api_v1_prefix)
 app.include_router(diseases.router, prefix=settings.api_v1_prefix)
 app.include_router(symptoms.router, prefix=settings.api_v1_prefix)
@@ -67,6 +71,7 @@ app.include_router(rules.router, prefix=settings.api_v1_prefix)
 app.include_router(inference.router, prefix=settings.api_v1_prefix)
 app.include_router(results.router, prefix=settings.api_v1_prefix)
 app.include_router(history.router, prefix=settings.api_v1_prefix)
+
 
 
 @app.get("/health", tags=["Sistema"])

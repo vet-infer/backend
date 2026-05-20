@@ -2,7 +2,8 @@ from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.core.security import get_password_hash
-from app.models.patient import Species
+from app.models.species import Species
+from app.models.breed import Breed
 from app.models.role import Role
 from app.models.user import User
 
@@ -22,6 +23,19 @@ def bootstrap_reference_data(db: Session) -> None:
             db.add(Species(name=species_name))
 
     db.commit()
+
+    for species_name, breed_names in [
+        ("Perro", ["Mestizo", "Poodle", "Schnauzer", "Yorkshire Terrier", "Chihuahua"]),
+        ("Gato", ["Mestizo", "Siamés", "Persa", "Maine Coon"])
+    ]:
+        species = db.query(Species).filter(Species.name == species_name).first()
+        if species:
+            for breed_name in breed_names:
+                if db.query(Breed).filter(Breed.species_id == species.id, Breed.name == breed_name).first() is None:
+                    db.add(Breed(species_id=species.id, name=breed_name))
+
+    db.commit()
+
 
     admin_role = db.query(Role).filter(Role.name == "admin").first()
     if settings.bootstrap_admin_email and settings.bootstrap_admin_password and admin_role:

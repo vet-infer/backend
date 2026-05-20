@@ -1,4 +1,4 @@
-from app.core.exceptions import NotFoundError
+from app.core.exceptions import NotFoundError, AppException
 from app.models.patient import Patient
 from app.repositories.patient_repository import PatientRepository
 from app.schemas.patient import PatientCreate, PatientUpdate
@@ -22,6 +22,15 @@ class PatientService:
             raise NotFoundError("Especie no encontrada")
         if not self.repository.owner_exists(payload.owner_id):
             raise NotFoundError("Dueño no encontrado")
+        
+        if payload.breed_id:
+            from app.repositories.breed_repository import BreedRepository
+            breed = BreedRepository(self.repository.db).get(payload.breed_id)
+            if not breed:
+                raise NotFoundError("Raza no encontrada")
+            if breed.species_id != payload.species_id:
+                raise AppException("La raza no pertenece a la especie seleccionada")
+
         patient = Patient(**payload.model_dump(), created_by=created_by)
         return self.repository.add(patient)
 
@@ -32,8 +41,20 @@ class PatientService:
             raise NotFoundError("Especie no encontrada")
         if "owner_id" in data and not self.repository.owner_exists(data["owner_id"]):
             raise NotFoundError("Dueño no encontrado")
+        
+        breed_id = data.get("breed_id", patient.breed_id)
+        species_id = data.get("species_id", patient.species_id)
+        if breed_id:
+            from app.repositories.breed_repository import BreedRepository
+            breed = BreedRepository(self.repository.db).get(breed_id)
+            if not breed:
+                raise NotFoundError("Raza no encontrada")
+            if breed.species_id != species_id:
+                raise AppException("La raza no pertenece a la especie seleccionada")
+
         for field, value in data.items():
             setattr(patient, field, value)
         self.repository.db.commit()
         self.repository.db.refresh(patient)
         return patient
+
