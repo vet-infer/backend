@@ -3,6 +3,7 @@ from app.models.clinical_variable import ClinicalVariable
 from app.models.disease import Disease
 from app.models.evaluation import EvaluationClinicalFact, EvaluationClinical
 from app.models.inference_result import ActivatedRule, InferenceResult
+from app.models.owner import Owner
 from app.models.patient import Patient, Species
 from app.models.role import Role
 from app.models.rule import InferenceRule, RuleCondition
@@ -18,6 +19,7 @@ __all__ = [
     "EvaluationClinicalFact",
     "InferenceResult",
     "InferenceRule",
+    "Owner",
     "Patient",
     "Role",
     "RuleCondition",

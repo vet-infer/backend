@@ -2,6 +2,8 @@ from datetime import date, datetime
 
 from pydantic import BaseModel, Field
 
+from app.schemas.owner import OwnerOut
+
 
 class SpeciesOut(BaseModel):
     id: int
@@ -11,7 +13,7 @@ class SpeciesOut(BaseModel):
 
 
 class PatientCreate(BaseModel):
-    tutor_name: str = Field(min_length=3, max_length=120)
+    owner_id: int
     name: str = Field(min_length=1, max_length=80)
     species_id: int
     breed: str | None = None
@@ -21,7 +23,7 @@ class PatientCreate(BaseModel):
 
 
 class PatientUpdate(BaseModel):
-    tutor_name: str | None = Field(default=None, min_length=3, max_length=120)
+    owner_id: int | None = None
     name: str | None = Field(default=None, min_length=1, max_length=80)
     species_id: int | None = None
     breed: str | None = None
@@ -32,7 +34,7 @@ class PatientUpdate(BaseModel):
 
 class PatientOut(BaseModel):
     id: int
-    tutor_name: str
+    owner: OwnerOut
     name: str
     species: SpeciesOut
     breed: str | None = None

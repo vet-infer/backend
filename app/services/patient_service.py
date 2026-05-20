@@ -20,6 +20,8 @@ class PatientService:
     def create_patient(self, payload: PatientCreate, created_by: int) -> Patient:
         if not self.repository.species_exists(payload.species_id):
             raise NotFoundError("Especie no encontrada")
+        if not self.repository.owner_exists(payload.owner_id):
+            raise NotFoundError("Dueño no encontrado")
         patient = Patient(**payload.model_dump(), created_by=created_by)
         return self.repository.add(patient)
 
@@ -28,6 +30,8 @@ class PatientService:
         data = payload.model_dump(exclude_unset=True)
         if "species_id" in data and not self.repository.species_exists(data["species_id"]):
             raise NotFoundError("Especie no encontrada")
+        if "owner_id" in data and not self.repository.owner_exists(data["owner_id"]):
+            raise NotFoundError("Dueño no encontrado")
         for field, value in data.items():
             setattr(patient, field, value)
         self.repository.db.commit()

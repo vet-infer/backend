@@ -10,6 +10,7 @@ from app.api.v1.routers import (
     evaluations,
     history,
     inference,
+    owners,
     patients,
     results,
     rules,
@@ -56,6 +57,7 @@ register_exception_handlers(app)
 
 app.include_router(auth.router, prefix=settings.api_v1_prefix)
 app.include_router(users.router, prefix=settings.api_v1_prefix)
+app.include_router(owners.router, prefix=settings.api_v1_prefix)
 app.include_router(patients.router, prefix=settings.api_v1_prefix)
 app.include_router(evaluations.router, prefix=settings.api_v1_prefix)
 app.include_router(diseases.router, prefix=settings.api_v1_prefix)
