@@ -22,6 +22,7 @@ class RuleCreate(BaseModel):
     code: str = Field(min_length=2, max_length=50)
     name: str = Field(min_length=3, max_length=150)
     disease_id: int
+    risk_level_id: int | None = None
     risk_level: str = "moderado"
     weight: float = Field(default=1.0, gt=0)
     priority: int = Field(default=1, ge=1)
@@ -32,6 +33,7 @@ class RuleCreate(BaseModel):
 
 class RuleUpdate(BaseModel):
     name: str | None = Field(default=None, min_length=3, max_length=150)
+    risk_level_id: int | None = None
     risk_level: str | None = None
     weight: float | None = Field(default=None, gt=0)
     priority: int | None = Field(default=None, ge=1)
@@ -45,6 +47,7 @@ class RuleOut(BaseModel):
     code: str
     name: str
     disease_id: int
+    risk_level_id: int
     risk_level: str
     weight: float
     priority: int

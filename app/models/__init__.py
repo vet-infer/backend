@@ -7,6 +7,7 @@ from app.models.inference_result import ActivatedRule, InferenceResult
 from app.models.breed import Breed
 from app.models.owner import Owner
 from app.models.patient import Patient
+from app.models.risk_level import RiskLevel
 from app.models.species import Species
 from app.models.role import Role
 from app.models.rule import InferenceRule, RuleCondition
@@ -28,6 +29,7 @@ __all__ = [
     "Patient",
     "Role",
     "RuleCondition",
+    "RiskLevel",
     "Species",
     "Symptom",
     "User",

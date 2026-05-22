@@ -47,6 +47,7 @@ class PersistedInferenceResultOut(BaseModel):
     id: int
     evaluation_id: int
     disease_id: int
+    risk_level_id: int
     suggested_diagnosis: str
     risk_level: str
     score: float

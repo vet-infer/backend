@@ -1,6 +1,7 @@
 from sqlalchemy.orm import joinedload
 
 from app.models.disease import Disease
+from app.models.risk_level import RiskLevel
 from app.models.rule import InferenceRule, RuleCondition
 from app.repositories.base import BaseRepository
 
@@ -39,6 +40,9 @@ class RuleRepository(BaseRepository[InferenceRule]):
 
     def get_by_code(self, code: str) -> InferenceRule | None:
         return self.db.query(InferenceRule).filter(InferenceRule.code == code).first()
+
+    def get_risk_level(self, risk_level_id: int) -> RiskLevel | None:
+        return self.db.get(RiskLevel, risk_level_id)
 
     def create_rule(self, data: dict, conditions: list[dict]) -> InferenceRule:
         rule = InferenceRule(**data)

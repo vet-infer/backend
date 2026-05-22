@@ -13,6 +13,7 @@ class InferenceResult(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     evaluation_id: Mapped[int] = mapped_column(ForeignKey("evaluations.id"))
     disease_id: Mapped[int] = mapped_column(ForeignKey("diseases.id"))
+    risk_level_id: Mapped[int] = mapped_column(ForeignKey("risk_levels.id"))
     suggested_diagnosis: Mapped[str] = mapped_column(String(255))
     risk_level: Mapped[str] = mapped_column(String(20))
     score: Mapped[float] = mapped_column(Float)
@@ -23,6 +24,7 @@ class InferenceResult(Base):
 
     evaluation = relationship("EvaluationClinical", back_populates="results")
     disease = relationship("Disease", back_populates="results")
+    risk_level_ref = relationship("RiskLevel", back_populates="results")
     activated_rules = relationship(
         "ActivatedRule",
         back_populates="result",

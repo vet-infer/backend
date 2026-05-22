@@ -11,6 +11,69 @@ from app.models.symptom import Symptom
 from app.models.clinical_variable import ClinicalVariable
 from app.models.rule import InferenceRule, RuleCondition
 from app.models.clinical_probability import ClinicalProbability
+from app.models.risk_level import RiskLevel
+
+
+RISK_LEVELS = [
+    {
+        "code": "bajo",
+        "name": "Bajo",
+        "description": "Riesgo clinico bajo o evidencia insuficiente para sospecha relevante.",
+        "min_probability": 0.0,
+        "max_probability": 0.3999,
+        "sort_order": 1,
+    },
+    {
+        "code": "moderado",
+        "name": "Moderado",
+        "description": "Riesgo clinico intermedio que requiere seguimiento o pruebas complementarias.",
+        "min_probability": 0.40,
+        "max_probability": 0.6999,
+        "sort_order": 2,
+    },
+    {
+        "code": "alto",
+        "name": "Alto",
+        "description": "Riesgo clinico alto compatible con alerta temprana prioritaria.",
+        "min_probability": 0.70,
+        "max_probability": 1.0,
+        "sort_order": 3,
+    },
+]
+
+
+def normalize_risk_level(value: str | None) -> str:
+    normalized = (value or "moderado").strip().lower()
+    aliases = {
+        "low": "bajo",
+        "medium": "moderado",
+        "moderate": "moderado",
+        "high": "alto",
+    }
+    return aliases.get(normalized, normalized)
+
+
+def get_or_create_risk_level(db: Session, code: str) -> RiskLevel:
+    normalized_code = normalize_risk_level(code)
+    risk_level = db.query(RiskLevel).filter(RiskLevel.code == normalized_code).first()
+    if risk_level is not None:
+        return risk_level
+
+    seed = next((item for item in RISK_LEVELS if item["code"] == normalized_code), None)
+    if seed is None:
+        seed = {
+            "code": normalized_code,
+            "name": normalized_code.capitalize(),
+            "description": "Nivel de riesgo clinico definido por el sistema.",
+            "min_probability": None,
+            "max_probability": None,
+            "sort_order": 99,
+        }
+    risk_level = RiskLevel(**seed, is_active=True)
+    db.add(risk_level)
+    db.commit()
+    db.refresh(risk_level)
+    return risk_level
 
 
 def bootstrap_reference_data(db: Session) -> None:
@@ -23,6 +86,13 @@ def bootstrap_reference_data(db: Session) -> None:
     for name, description in roles.items():
         if db.query(Role).filter(Role.name == name).first() is None:
             db.add(Role(name=name, description=description))
+    db.commit()
+
+    # 1.b Risk levels
+    for risk_level in RISK_LEVELS:
+        existing = db.query(RiskLevel).filter(RiskLevel.code == risk_level["code"]).first()
+        if existing is None:
+            db.add(RiskLevel(**risk_level, is_active=True))
     db.commit()
 
     # 2. Species
@@ -147,12 +217,21 @@ def bootstrap_reference_data(db: Session) -> None:
     mmvd_dog = db.query(Disease).filter(Disease.name == "Enfermedad cardiaca degenerativa / MMVD", Disease.species_id == perro.id).first()
     perio_dog = db.query(Disease).filter(Disease.name == "Enfermedad periodontal", Disease.species_id == perro.id).first()
     felv_cat = db.query(Disease).filter(Disease.name == "Leucemia viral felina", Disease.species_id == gato.id).first()
+    risk_levels_by_code = {
+        risk.code: risk
+        for risk in db.query(RiskLevel).filter(RiskLevel.code.in_(["bajo", "moderado", "alto"])).all()
+    }
 
     # 8. Rules & Rule Conditions (Dummy / Clinical rules matching actual variables)
     rules_data = [
         # ERC Dog Rules
-        {"code": "ERC-R01", "name": "Creatinina elevada en perro", "disease_id": erc_dog.id, "risk_level": "moderado", "weight": 2.0, "priority": 1, "conditions": [
+        # R01: Azotemia declarada (creatinina > 1.6 mg/dL) -> riesgo ALTO
+        {"code": "ERC-R01", "name": "Azotemia severa en perro", "disease_id": erc_dog.id, "risk_level": "alto", "weight": 3.0, "priority": 2, "conditions": [
             {"variable_key": "creatinina", "operator": "gt", "expected_value": 1.6}
+        ]},
+        # R02: Creatinina borderline (> 1.2 mg/dL) -> sospecha MODERADA
+        {"code": "ERC-R02", "name": "Creatinina borderline en perro", "disease_id": erc_dog.id, "risk_level": "moderado", "weight": 1.5, "priority": 1, "conditions": [
+            {"variable_key": "creatinina", "operator": "gt", "expected_value": 1.2}
         ]},
         # DM Dog Rules
         {"code": "DM-R03", "name": "Hiperglucemia en perro", "disease_id": dm_dog.id, "risk_level": "alto", "weight": 3.0, "priority": 2, "conditions": [
@@ -162,26 +241,39 @@ def bootstrap_reference_data(db: Session) -> None:
             {"variable_key": "glucosuria", "operator": "eq", "expected_value": "presente"}
         ]},
         # MMVD Dog Rules
-        {"code": "MMVD-R01", "name": "Soplo y LA:Ao elevado", "disease_id": mmvd_dog.id, "risk_level": "alto", "weight": 3.5, "priority": 2, "conditions": [
+        # R01: Dilatacion atrial severa (LA:Ao > 1.6) -> riesgo ALTO (estadio C/D)
+        {"code": "MMVD-R01", "name": "Dilatacion atrial severa LA:Ao > 1.6", "disease_id": mmvd_dog.id, "risk_level": "alto", "weight": 3.5, "priority": 2, "conditions": [
             {"variable_key": "la_ao", "operator": "gt", "expected_value": 1.6}
         ]},
+        # R02: Remodelado cardiaco inicial (LA:Ao > 1.35) -> sospecha MODERADA (estadio B1)
+        {"code": "MMVD-R02", "name": "Remodelado cardiaco inicial LA:Ao > 1.35", "disease_id": mmvd_dog.id, "risk_level": "moderado", "weight": 2.0, "priority": 1, "conditions": [
+            {"variable_key": "la_ao", "operator": "gt", "expected_value": 1.35}
+        ]},
         # Periodontal Dog Rules
-        {"code": "PERIO-R01", "name": "Halitosis y placa severa", "disease_id": perio_dog.id, "risk_level": "moderado", "weight": 1.5, "priority": 1, "conditions": [
+        # R01: Placa moderada/severa con inflamacion activa -> riesgo ALTO (periodontitis estadio III/IV)
+        {"code": "PERIO-R01", "name": "Periodontitis activa placa severa", "disease_id": perio_dog.id, "risk_level": "alto", "weight": 2.5, "priority": 2, "conditions": [
             {"variable_key": "placa", "operator": "eq", "expected_value": "moderada/severa"}
         ]},
         # FeLV Cat Rules
         {"code": "FELV-R01", "name": "SNAP FeLV Positivo", "disease_id": felv_cat.id, "risk_level": "alto", "weight": 4.0, "priority": 2, "conditions": [
             {"variable_key": "snap_felv", "operator": "eq", "expected_value": "positivo"}
-        ]}
+        ]},
+        # FELV-R02: Antigeno p27 positivo confirma infeccion activa -> ALTO
+        {"code": "FELV-R02", "name": "Antigeno p27 FeLV Positivo", "disease_id": felv_cat.id, "risk_level": "alto", "weight": 4.5, "priority": 3, "conditions": [
+            {"variable_key": "felv_p27", "operator": "eq", "expected_value": "positivo"}
+        ]},
     ]
 
     for rule in rules_data:
         existing = db.query(InferenceRule).filter(InferenceRule.code == rule["code"]).first()
         if not existing:
+            risk_code = normalize_risk_level(rule["risk_level"])
+            risk_level_ref = risk_levels_by_code.get(risk_code) or get_or_create_risk_level(db, risk_code)
             db_rule = InferenceRule(
                 code=rule["code"],
                 name=rule["name"],
                 disease_id=rule["disease_id"],
+                risk_level_id=risk_level_ref.id,
                 risk_level=rule["risk_level"],
                 weight=rule["weight"],
                 priority=rule["priority"]

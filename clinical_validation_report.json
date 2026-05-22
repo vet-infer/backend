@@ -1,0 +1,390 @@
+{
+  "resumen": {
+    "total_casos": 15,
+    "aprobados": 15,
+    "fallidos": 0,
+    "tasa_exito_porcentaje": 100.0
+  },
+  "detalles": [
+    {
+      "caso_id": 1,
+      "descripcion": "ERC Caso 1: Riesgo Bajo (Compensado, creatinina normal)",
+      "enfermedad": "Enfermedad renal crónica",
+      "hechos_entrada": {
+        "creatinina": 1.0
+      },
+      "esperado": {
+        "nivel_riesgo": "Bajo",
+        "rango_probabilidad": "[0.1 - 0.4]",
+        "reglas": []
+      },
+      "real": {
+        "nivel_riesgo": "Bajo",
+        "probabilidad": 0.2564,
+        "reglas_activadas": [],
+        "explicacion": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 25.64%. Evidencias clinicas consideradas: variables clinicas registradas: creatinina (1.0). No se activaron reglas clinicas de soporte directas, el riesgo es estimado unicamente por perfil bayesiano."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 2,
+      "descripcion": "ERC Caso 2: Riesgo Moderado (Creatinina borderline + PU/PD)",
+      "enfermedad": "Enfermedad renal crónica",
+      "hechos_entrada": {
+        "poliuria": true,
+        "polidipsia": true,
+        "creatinina": 1.4
+      },
+      "esperado": {
+        "nivel_riesgo": "Moderado",
+        "rango_probabilidad": "[0.2 - 0.55]",
+        "reglas": [
+          "ERC-R02"
+        ]
+      },
+      "real": {
+        "nivel_riesgo": "Moderado",
+        "probabilidad": 0.3207,
+        "reglas_activadas": [
+          "ERC-R02"
+        ],
+        "explicacion": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 32.07%. Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia; variables clinicas registradas: creatinina (1.4). Se activaron las reglas clinicas de soporte: ERC-R02."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 3,
+      "descripcion": "ERC Caso 3: Riesgo Alto (Azotemia severa creatinina 2.4 mg/dL)",
+      "enfermedad": "Enfermedad renal crónica",
+      "hechos_entrada": {
+        "poliuria": true,
+        "polidipsia": true,
+        "perdida de peso": true,
+        "creatinina": 2.4,
+        "densidad_urinaria": "baja"
+      },
+      "esperado": {
+        "nivel_riesgo": "Alto",
+        "rango_probabilidad": "[0.4 - 0.8]",
+        "reglas": [
+          "ERC-R01"
+        ]
+      },
+      "real": {
+        "nivel_riesgo": "Alto",
+        "probabilidad": 0.6254,
+        "reglas_activadas": [
+          "ERC-R01",
+          "ERC-R02"
+        ],
+        "explicacion": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 62.54%. Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, perdida de peso; variables clinicas registradas: creatinina (2.4), densidad_urinaria (baja). Se activaron las reglas clinicas de soporte: ERC-R01, ERC-R02."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 4,
+      "descripcion": "DM Caso 1: Riesgo Bajo (Glucosa normal, polifagia leve)",
+      "enfermedad": "Diabetes mellitus",
+      "hechos_entrada": {
+        "polifagia": true,
+        "glucosa": 95.0
+      },
+      "esperado": {
+        "nivel_riesgo": "Bajo",
+        "rango_probabilidad": "[0.1 - 0.45]",
+        "reglas": []
+      },
+      "real": {
+        "nivel_riesgo": "Bajo",
+        "probabilidad": 0.2958,
+        "reglas_activadas": [],
+        "explicacion": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 29.58%. Evidencias clinicas consideradas: sintomas observados: polifagia; variables clinicas registradas: glucosa (95.0). No se activaron reglas clinicas de soporte directas, el riesgo es estimado unicamente por perfil bayesiano."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 5,
+      "descripcion": "DM Caso 2: Riesgo Moderado (PU/PD + polifagia + glucosa 145)",
+      "enfermedad": "Diabetes mellitus",
+      "hechos_entrada": {
+        "poliuria": true,
+        "polidipsia": true,
+        "polifagia": true,
+        "glucosa": 145.0
+      },
+      "esperado": {
+        "nivel_riesgo": "Moderado",
+        "rango_probabilidad": "[0.35 - 0.7]",
+        "reglas": []
+      },
+      "real": {
+        "nivel_riesgo": "Moderado",
+        "probabilidad": 0.4553,
+        "reglas_activadas": [],
+        "explicacion": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 45.53%. Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia; variables clinicas registradas: glucosa (145.0). No se activaron reglas clinicas de soporte directas, el riesgo es estimado unicamente por perfil bayesiano."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 6,
+      "descripcion": "DM Caso 3: Riesgo Alto (Glucosa 280 + glucosuria - Diabetes declarada)",
+      "enfermedad": "Diabetes mellitus",
+      "hechos_entrada": {
+        "poliuria": true,
+        "polidipsia": true,
+        "glucosa": 280.0,
+        "glucosuria": "presente"
+      },
+      "esperado": {
+        "nivel_riesgo": "Alto",
+        "rango_probabilidad": "[0.5 - 0.85]",
+        "reglas": [
+          "DM-R03",
+          "DM-R04"
+        ]
+      },
+      "real": {
+        "nivel_riesgo": "Alto",
+        "probabilidad": 0.6542,
+        "reglas_activadas": [
+          "DM-R03",
+          "DM-R04"
+        ],
+        "explicacion": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 65.42%. Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia; variables clinicas registradas: glucosa (280.0), glucosuria (presente). Se activaron las reglas clinicas de soporte: DM-R03, DM-R04."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 7,
+      "descripcion": "MMVD Caso 1: Riesgo Bajo (LA:Ao 1.2 normal)",
+      "enfermedad": "Enfermedad cardiaca degenerativa / MMVD",
+      "hechos_entrada": {
+        "tos": true,
+        "la_ao": 1.2
+      },
+      "esperado": {
+        "nivel_riesgo": "Bajo",
+        "rango_probabilidad": "[0.05 - 0.4]",
+        "reglas": []
+      },
+      "real": {
+        "nivel_riesgo": "Bajo",
+        "probabilidad": 0.2053,
+        "reglas_activadas": [],
+        "explicacion": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 20.53%. Evidencias clinicas consideradas: sintomas observados: tos; variables clinicas registradas: la_ao (1.2). No se activaron reglas clinicas de soporte directas, el riesgo es estimado unicamente por perfil bayesiano."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 8,
+      "descripcion": "MMVD Caso 2: Riesgo Moderado (LA:Ao 1.4, soplo + intolerancia - Estadio B1)",
+      "enfermedad": "Enfermedad cardiaca degenerativa / MMVD",
+      "hechos_entrada": {
+        "soplo cardiaco": true,
+        "intolerancia ejercicio": true,
+        "la_ao": 1.4
+      },
+      "esperado": {
+        "nivel_riesgo": "Moderado",
+        "rango_probabilidad": "[0.2 - 0.55]",
+        "reglas": [
+          "MMVD-R02"
+        ]
+      },
+      "real": {
+        "nivel_riesgo": "Moderado",
+        "probabilidad": 0.3269,
+        "reglas_activadas": [
+          "MMVD-R02"
+        ],
+        "explicacion": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 32.69%. Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, intolerancia ejercicio; variables clinicas registradas: la_ao (1.4). Se activaron las reglas clinicas de soporte: MMVD-R02."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 9,
+      "descripcion": "MMVD Caso 3: Riesgo Alto (LA:Ao 1.9, soplo + tos - Estadio C falla congestiva)",
+      "enfermedad": "Enfermedad cardiaca degenerativa / MMVD",
+      "hechos_entrada": {
+        "soplo cardiaco": true,
+        "tos": true,
+        "intolerancia ejercicio": true,
+        "la_ao": 1.9
+      },
+      "esperado": {
+        "nivel_riesgo": "Alto",
+        "rango_probabilidad": "[0.3 - 0.7]",
+        "reglas": [
+          "MMVD-R01"
+        ]
+      },
+      "real": {
+        "nivel_riesgo": "Alto",
+        "probabilidad": 0.4574,
+        "reglas_activadas": [
+          "MMVD-R01",
+          "MMVD-R02"
+        ],
+        "explicacion": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 45.74%. Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, intolerancia ejercicio; variables clinicas registradas: la_ao (1.9). Se activaron las reglas clinicas de soporte: MMVD-R01, MMVD-R02."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 10,
+      "descripcion": "FeLV Caso 1: Riesgo Bajo (SNAP negativo - sin evidencia)",
+      "enfermedad": "Leucemia viral felina",
+      "hechos_entrada": {
+        "snap_felv": "negativo"
+      },
+      "esperado": {
+        "nivel_riesgo": "Bajo",
+        "rango_probabilidad": "[0.05 - 0.35]",
+        "reglas": []
+      },
+      "real": {
+        "nivel_riesgo": "Bajo",
+        "probabilidad": 0.16,
+        "reglas_activadas": [],
+        "explicacion": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 16.00%. Evidencias clinicas consideradas: variables clinicas registradas: snap_felv (negativo). No se activaron reglas clinicas de soporte directas, el riesgo es estimado unicamente por perfil bayesiano."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 11,
+      "descripcion": "FeLV Caso 2: Riesgo Bajo/Sospecha (Anemia + infecciones, SNAP negativo)",
+      "enfermedad": "Leucemia viral felina",
+      "hechos_entrada": {
+        "anemia": true,
+        "infecciones recurrentes": true,
+        "snap_felv": "negativo"
+      },
+      "esperado": {
+        "nivel_riesgo": "Bajo",
+        "rango_probabilidad": "[0.1 - 0.45]",
+        "reglas": []
+      },
+      "real": {
+        "nivel_riesgo": "Bajo",
+        "probabilidad": 0.2291,
+        "reglas_activadas": [],
+        "explicacion": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 22.91%. Evidencias clinicas consideradas: sintomas observados: anemia, infecciones recurrentes; variables clinicas registradas: snap_felv (negativo). No se activaron reglas clinicas de soporte directas, el riesgo es estimado unicamente por perfil bayesiano."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 12,
+      "descripcion": "FeLV Caso 3: Riesgo Alto (SNAP positivo + Ag p27 positivo - Infeccion confirmada)",
+      "enfermedad": "Leucemia viral felina",
+      "hechos_entrada": {
+        "anemia": true,
+        "infecciones recurrentes": true,
+        "snap_felv": "positivo",
+        "felv_p27": "positivo"
+      },
+      "esperado": {
+        "nivel_riesgo": "Alto",
+        "rango_probabilidad": "[0.35 - 0.8]",
+        "reglas": [
+          "FELV-R01",
+          "FELV-R02"
+        ]
+      },
+      "real": {
+        "nivel_riesgo": "Alto",
+        "probabilidad": 0.5122,
+        "reglas_activadas": [
+          "FELV-R02",
+          "FELV-R01"
+        ],
+        "explicacion": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 51.22%. Evidencias clinicas consideradas: sintomas observados: anemia, infecciones recurrentes; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo). Se activaron las reglas clinicas de soporte: FELV-R02, FELV-R01."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 13,
+      "descripcion": "PERIO Caso 1: Riesgo Bajo (Halitosis leve, placa leve - Estadio I)",
+      "enfermedad": "Enfermedad periodontal",
+      "hechos_entrada": {
+        "halitosis": true,
+        "placa": "leve"
+      },
+      "esperado": {
+        "nivel_riesgo": "Bajo",
+        "rango_probabilidad": "[0.25 - 0.5]",
+        "reglas": []
+      },
+      "real": {
+        "nivel_riesgo": "Bajo",
+        "probabilidad": 0.3947,
+        "reglas_activadas": [],
+        "explicacion": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 39.47%. Evidencias clinicas consideradas: sintomas observados: halitosis; variables clinicas registradas: placa (leve). No se activaron reglas clinicas de soporte directas, el riesgo es estimado unicamente por perfil bayesiano."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 14,
+      "descripcion": "PERIO Caso 2: Riesgo Moderado (Halitosis + gingivitis + sangrado - Estadio II)",
+      "enfermedad": "Enfermedad periodontal",
+      "hechos_entrada": {
+        "halitosis": true,
+        "gingivitis": true,
+        "sangrado gingival": true,
+        "placa": "leve"
+      },
+      "esperado": {
+        "nivel_riesgo": "Moderado",
+        "rango_probabilidad": "[0.4 - 0.75]",
+        "reglas": []
+      },
+      "real": {
+        "nivel_riesgo": "Moderado",
+        "probabilidad": 0.5756,
+        "reglas_activadas": [],
+        "explicacion": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 57.56%. Evidencias clinicas consideradas: sintomas observados: halitosis, gingivitis, sangrado gingival; variables clinicas registradas: placa (leve). No se activaron reglas clinicas de soporte directas, el riesgo es estimado unicamente por perfil bayesiano."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    },
+    {
+      "caso_id": 15,
+      "descripcion": "PERIO Caso 3: Riesgo Alto (Placa moderada/severa + periodontitis activa - Estadio III/IV)",
+      "enfermedad": "Enfermedad periodontal",
+      "hechos_entrada": {
+        "halitosis": true,
+        "gingivitis": true,
+        "sangrado gingival": true,
+        "placa": "moderada/severa"
+      },
+      "esperado": {
+        "nivel_riesgo": "Alto",
+        "rango_probabilidad": "[0.5 - 0.85]",
+        "reglas": [
+          "PERIO-R01"
+        ]
+      },
+      "real": {
+        "nivel_riesgo": "Alto",
+        "probabilidad": 0.6975,
+        "reglas_activadas": [
+          "PERIO-R01"
+        ],
+        "explicacion": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 69.75%. Evidencias clinicas consideradas: sintomas observados: halitosis, gingivitis, sangrado gingival; variables clinicas registradas: placa (moderada/severa). Se activaron las reglas clinicas de soporte: PERIO-R01."
+      },
+      "estado": "PASSED",
+      "diferencias": []
+    }
+  ]
+}
