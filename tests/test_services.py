@@ -20,6 +20,8 @@ from app.schemas.breed import BreedCreate, BreedUpdate
 from app.schemas.patient import PatientCreate, PatientUpdate
 from app.core.exceptions import NotFoundError, ConflictError, AppException
 
+TEST_ADMIN_EMAIL = "test-admin@example.test"
+
 # Set up SQLite in-memory database
 engine = create_engine("sqlite:///:memory:", connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -34,7 +36,7 @@ def fixture_db():
         admin_role = Role(id=1, name="admin", description="Admin")
         db.add(admin_role)
         # Create a default user
-        user = User(id=1, full_name="Admin", email="admin@example.com", password_hash="hash", role_id=1)
+        user = User(id=1, full_name="Admin", email=TEST_ADMIN_EMAIL, password_hash="hash", role_id=1)
         db.add(user)
         db.commit()
         yield db

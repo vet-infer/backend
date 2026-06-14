@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.database import get_db
-from app.core.permissions import require_roles
+from app.core.permissions import PermissionPolicy, require_policy
 from app.models.user import User
 from app.repositories.breed_repository import BreedRepository
 from app.schemas.breed import BreedCreate, BreedOut, BreedUpdate
@@ -14,10 +15,10 @@ router = APIRouter(prefix="/breeds", tags=["Razas"])
 @router.get("", response_model=list[BreedOut])
 def list_breeds(
     species_id: int | None = None,
-    skip: int = 0,
-    limit: int = 100,
+    skip: int = Query(default=0, ge=0),
+    limit: int = Query(default=settings.default_page_size, ge=1, le=settings.max_page_size),
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     return BreedService(BreedRepository(db)).list_breeds(species_id=species_id, skip=skip, limit=limit)
 
@@ -26,7 +27,7 @@ def list_breeds(
 def get_breed(
     breed_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     return BreedService(BreedRepository(db)).get_breed(breed_id)
 
@@ -35,7 +36,7 @@ def get_breed(
 def create_breed(
     payload: BreedCreate,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     return BreedService(BreedRepository(db)).create_breed(payload)
 
@@ -45,7 +46,7 @@ def update_breed(
     breed_id: int,
     payload: BreedUpdate,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     return BreedService(BreedRepository(db)).update_breed(breed_id, payload)
 
@@ -54,6 +55,9 @@ def update_breed(
 def delete_breed(
     breed_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     BreedService(BreedRepository(db)).delete_breed(breed_id)
+
+
+

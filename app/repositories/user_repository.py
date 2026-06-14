@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session, joinedload
+from app.core.config import settings
 
 from app.models.role import Role
 from app.models.user import User
@@ -16,7 +17,7 @@ class UserRepository(BaseRepository[User]):
             .first()
         )
 
-    def list_with_roles(self, skip: int = 0, limit: int = 100) -> list[User]:
+    def list_with_roles(self, skip: int = 0, limit: int = settings.default_page_size) -> list[User]:
         return self.db.query(User).options(joinedload(User.role)).offset(skip).limit(limit).all()
 
     def role_exists(self, role_id: int) -> bool:
@@ -31,3 +32,4 @@ class UserRepository(BaseRepository[User]):
             if self.db.query(Role).filter(Role.name == name).first() is None:
                 self.db.add(Role(name=name, description=description))
         self.db.commit()
+

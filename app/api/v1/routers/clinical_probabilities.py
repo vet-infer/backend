@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, Query, HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.database import get_db
-from app.core.permissions import require_roles
+from app.core.permissions import PermissionPolicy, require_policy
 from app.models.user import User
 from app.repositories.clinical_probability_repository import ClinicalProbabilityRepository
 from app.schemas.clinical_probability import (
@@ -26,7 +27,7 @@ def _repository(db: Session) -> ClinicalProbabilityRepository:
 def create_clinical_probability(
     payload: ClinicalProbabilityCreate,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     repo = _repository(db)
     return repo.crear_probabilidad(payload.model_dump())
@@ -35,10 +36,10 @@ def create_clinical_probability(
 @router.get("", response_model=list[ClinicalProbabilityOut])
 def list_clinical_probabilities(
     disease_id: int | None = None,
-    skip: int = 0,
-    limit: int = 100,
+    skip: int = Query(default=0, ge=0),
+    limit: int = Query(default=settings.default_page_size, ge=1, le=settings.max_page_size),
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     repo = _repository(db)
     if disease_id is not None:
@@ -50,7 +51,7 @@ def list_clinical_probabilities(
 def get_clinical_probability(
     probability_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     repo = _repository(db)
     prob = repo.obtener_probabilidad_por_id(probability_id)
@@ -67,7 +68,7 @@ def update_clinical_probability(
     probability_id: int,
     payload: ClinicalProbabilityUpdate,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     repo = _repository(db)
     # Filter out unset/None fields to avoid overwriting unless intended
@@ -85,7 +86,7 @@ def update_clinical_probability(
 def delete_clinical_probability(
     probability_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     repo = _repository(db)
     prob = repo.desactivar_probabilidad(probability_id)
@@ -95,3 +96,6 @@ def delete_clinical_probability(
             detail="Probabilidad clinica no encontrada o no se pudo desactivar",
         )
     return prob
+
+
+

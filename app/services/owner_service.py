@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+from app.core.config import settings
 from sqlalchemy.orm import Session
 
 from app.repositories.owner_repository import OwnerRepository
@@ -26,7 +27,7 @@ class OwnerService:
             )
         return owner
 
-    def list_owners(self, skip: int = 0, limit: int = 100):
+    def list_owners(self, skip: int = 0, limit: int = settings.default_page_size):
         return self.repository.list(skip=skip, limit=limit)
 
     def delete_owner(self, owner_id: int):
@@ -47,3 +48,4 @@ class OwnerService:
                     detail="Email already registered",
                 )
         return self.repository.update(owner_id, schema.model_dump(exclude_unset=True))
+

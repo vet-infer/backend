@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.permissions import require_roles
+from app.core.permissions import PermissionPolicy, require_policy
 from app.models.user import User
 from app.repositories.evaluation_repository import EvaluationRepository
 from app.repositories.patient_repository import PatientRepository
@@ -32,7 +32,7 @@ def _service(db: Session) -> InferenceService:
 def run_inference(
     payload: InferenceRequest,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     facts = {fact.key: fact.value for fact in payload.facts}
     return _service(db).run_from_payload(payload.patient_id, facts)
@@ -45,7 +45,7 @@ def run_inference(
 def run_inference_for_evaluation(
     evaluation_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     return _service(db).run_and_persist(evaluation_id)
 
@@ -54,6 +54,7 @@ def run_inference_for_evaluation(
 def list_activated_rules(
     result_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     return _service(db).list_activated_rules(result_id)
+

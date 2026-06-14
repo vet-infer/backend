@@ -1,4 +1,5 @@
 from sqlalchemy.orm import joinedload
+from app.core.config import settings
 
 from app.models.owner import Owner
 from app.models.patient import Patient
@@ -22,7 +23,7 @@ class PatientRepository(BaseRepository[Patient]):
             .first()
         )
 
-    def list_with_species(self, skip: int = 0, limit: int = 100) -> list[Patient]:
+    def list_with_species(self, skip: int = 0, limit: int = settings.default_page_size) -> list[Patient]:
         return (
             self.db.query(Patient)
             .options(
@@ -43,4 +44,5 @@ class PatientRepository(BaseRepository[Patient]):
 
     def owner_exists(self, owner_id: int) -> bool:
         return self.db.get(Owner, owner_id) is not None
+
 

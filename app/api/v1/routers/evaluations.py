@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.permissions import require_roles
+from app.core.permissions import PermissionPolicy, require_policy
 from app.models.user import User
 from app.repositories.evaluation_repository import EvaluationRepository
 from app.repositories.patient_repository import PatientRepository
@@ -28,7 +28,7 @@ def _evaluation_service(db: Session) -> EvaluationService:
 def create_evaluation(
     payload: EvaluationCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("admin", "veterinario")),
+    current_user: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     return _evaluation_service(db).create_evaluation(payload, current_user.id)
 
@@ -37,7 +37,7 @@ def create_evaluation(
 def get_evaluation(
     evaluation_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     return _evaluation_service(db).get_evaluation(evaluation_id)
 
@@ -46,7 +46,7 @@ def get_evaluation(
 def list_patient_evaluations(
     patient_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     return _evaluation_service(db).list_by_patient(patient_id)
 
@@ -55,7 +55,7 @@ def list_patient_evaluations(
 def list_evaluation_results(
     evaluation_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     service = InferenceService(
         RuleRepository(db),
@@ -70,7 +70,7 @@ def list_evaluation_results(
 def procesar_evaluacion_bayes(
     evaluation_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     service = InferenceService(
         RuleRepository(db),
@@ -102,3 +102,4 @@ def procesar_evaluacion_bayes(
         metodo_inferencia="reglas_bayes",
         resultados=resultados_es,
     )
+
