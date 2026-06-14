@@ -25,6 +25,7 @@ class FakeRule:
     weight: float
     priority: int
     conditions: list[FakeCondition]
+    risk_level: str = "moderado"
 
 
 def test_engine_activates_rule_and_returns_trace():

@@ -2,6 +2,8 @@ from sqlalchemy.orm import joinedload
 
 from app.models.clinical_history import ClinicalHistory
 from app.models.inference_result import ActivatedRule, InferenceResult
+from app.models.risk_level import RiskLevel
+from app.services.bootstrap_service import get_or_create_risk_level, normalize_risk_level
 
 
 class ResultRepository:
@@ -17,6 +19,14 @@ class ResultRepository:
         persisted: list[InferenceResult] = []
         for result_data in results:
             activated_payload = result_data.pop("activated_rules")
+            risk_code = normalize_risk_level(result_data.get("risk_level"))
+            risk_level = (
+                self.db.query(RiskLevel)
+                .filter(RiskLevel.code == risk_code)
+                .first()
+            ) or get_or_create_risk_level(self.db, risk_code)
+            result_data["risk_level_id"] = risk_level.id
+            result_data["risk_level"] = risk_level.name
             result = InferenceResult(evaluation_id=evaluation_id, **result_data)
             result.activated_rules = [
                 ActivatedRule(

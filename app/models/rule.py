@@ -13,6 +13,7 @@ class InferenceRule(Base):
     code: Mapped[str] = mapped_column(String(50), unique=True, index=True)
     name: Mapped[str] = mapped_column(String(150))
     disease_id: Mapped[int] = mapped_column(ForeignKey("diseases.id"))
+    risk_level_id: Mapped[int] = mapped_column(ForeignKey("risk_levels.id"))
     risk_level: Mapped[str] = mapped_column(String(20), default="moderado")
     weight: Mapped[float] = mapped_column(Float, default=1.0)
     priority: Mapped[int] = mapped_column(Integer, default=1)
@@ -20,6 +21,7 @@ class InferenceRule(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
     disease = relationship("Disease", back_populates="rules")
+    risk_level_ref = relationship("RiskLevel", back_populates="rules")
     conditions = relationship(
         "RuleCondition",
         back_populates="rule",

@@ -34,6 +34,7 @@ class InferenceEngine:
                     "rule_id": rule.id,
                     "rule_code": rule.code,
                     "rule_name": rule.name,
+                    "risk_level": rule.risk_level,
                     "fulfilled_conditions": [trace.as_text() for trace in traces],
                     "justification": (
                         f"La regla {rule.code} se activo porque todas sus condiciones "
