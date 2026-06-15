@@ -33,7 +33,10 @@ class Settings(BaseSettings):
     )
 
     @model_validator(mode="after")
-    def validate_production_settings(self) -> "Settings":
+    def normalize_and_validate_settings(self) -> "Settings":
+        if self.database_url.startswith("postgresql://"):
+            self.database_url = self.database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+
         if self.environment.lower() in {"production", "prod"}:
             insecure_jwt_values = {"dev-only-change-me", "change-me-in-production", "change-this-secret"}
             if self.jwt_secret in insecure_jwt_values:

@@ -1,0 +1,10 @@
+.git
+.pytest_cache
+.venv
+__pycache__
+*.pyc
+.env
+oe3_runtime.db
+clinical_validation_report.json
+docs
+tests
