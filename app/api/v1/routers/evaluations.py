@@ -33,6 +33,14 @@ def create_evaluation(
     return _evaluation_service(db).create_evaluation(payload, current_user.id)
 
 
+@router.get("/evaluations", response_model=list[EvaluationOut])
+def list_evaluations(
+    db: Session = Depends(get_db),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
+):
+    return _evaluation_service(db).list_recent()
+
+
 @router.get("/evaluations/{evaluation_id}", response_model=EvaluationOut)
 def get_evaluation(
     evaluation_id: int,

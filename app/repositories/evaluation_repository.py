@@ -24,6 +24,15 @@ class EvaluationRepository(BaseRepository[EvaluationClinical]):
             .all()
         )
 
+    def list_recent(self, limit: int = 100) -> list[EvaluationClinical]:
+        return (
+            self.db.query(EvaluationClinical)
+            .options(joinedload(EvaluationClinical.facts), joinedload(EvaluationClinical.patient))
+            .order_by(EvaluationClinical.created_at.desc())
+            .limit(limit)
+            .all()
+        )
+
     def create_with_facts(
         self,
         patient_id: int,
