@@ -123,16 +123,21 @@ def bootstrap_reference_data(db: Session) -> None:
     admin_role = db.query(Role).filter(Role.name == "admin").first()
     if settings.bootstrap_admin_email and settings.bootstrap_admin_password and admin_role:
         existing_admin = db.query(User).filter(User.email == settings.bootstrap_admin_email).first()
+        password_hash = get_password_hash(settings.bootstrap_admin_password)
         if existing_admin is None:
             db.add(
                 User(
                     full_name="Administrador",
                     email=settings.bootstrap_admin_email,
-                    password_hash=get_password_hash(settings.bootstrap_admin_password),
+                    password_hash=password_hash,
                     role_id=admin_role.id,
                 )
             )
-            db.commit()
+        else:
+            existing_admin.password_hash = password_hash
+            existing_admin.role_id = admin_role.id
+            existing_admin.is_active = True
+        db.commit()
 
     for symptom in seed_data["symptoms"]:
         species_id = _species_id(db, symptom["species"])
