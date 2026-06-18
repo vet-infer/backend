@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.database import get_db
-from app.core.permissions import require_roles
+from app.core.permissions import PermissionPolicy, require_policy
 from app.models.user import User
 from app.repositories.species_repository import SpeciesRepository
 from app.schemas.species import SpeciesCreate, SpeciesOut, SpeciesUpdate
@@ -13,10 +14,10 @@ router = APIRouter(prefix="/species", tags=["Especies"])
 
 @router.get("", response_model=list[SpeciesOut])
 def list_species(
-    skip: int = 0,
-    limit: int = 100,
+    skip: int = Query(default=0, ge=0),
+    limit: int = Query(default=settings.default_page_size, ge=1, le=settings.max_page_size),
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     return SpeciesService(SpeciesRepository(db)).list_species(skip=skip, limit=limit)
 
@@ -25,7 +26,7 @@ def list_species(
 def get_species(
     species_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     return SpeciesService(SpeciesRepository(db)).get_species(species_id)
 
@@ -34,7 +35,7 @@ def get_species(
 def create_species(
     payload: SpeciesCreate,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     return SpeciesService(SpeciesRepository(db)).create_species(payload)
 
@@ -44,7 +45,7 @@ def update_species(
     species_id: int,
     payload: SpeciesUpdate,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     return SpeciesService(SpeciesRepository(db)).update_species(species_id, payload)
 
@@ -53,6 +54,9 @@ def update_species(
 def delete_species(
     species_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     SpeciesService(SpeciesRepository(db)).delete_species(species_id)
+
+
+

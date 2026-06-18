@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.permissions import require_roles
+from app.core.permissions import PermissionPolicy, require_policy
 from app.models.user import User
 from app.repositories.patient_repository import PatientRepository
 from app.schemas.patient import PatientCreate, PatientOut, PatientUpdate
@@ -14,7 +14,7 @@ router = APIRouter(prefix="/patients", tags=["Pacientes"])
 @router.get("", response_model=list[PatientOut])
 def list_patients(
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     return PatientService(PatientRepository(db)).list_patients()
 
@@ -23,7 +23,7 @@ def list_patients(
 def create_patient(
     payload: PatientCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles("admin", "veterinario")),
+    current_user: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     return PatientService(PatientRepository(db)).create_patient(payload, current_user.id)
 
@@ -32,7 +32,7 @@ def create_patient(
 def get_patient(
     patient_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     return PatientService(PatientRepository(db)).get_patient(patient_id)
 
@@ -42,6 +42,7 @@ def update_patient(
     patient_id: int,
     payload: PatientUpdate,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
     return PatientService(PatientRepository(db)).update_patient(patient_id, payload)
+

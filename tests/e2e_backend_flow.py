@@ -1,16 +1,19 @@
+import os
 import sys
 from datetime import datetime, timezone
 
 import httpx
 
 
-BASE_URL = "http://127.0.0.1:8000"
-LOGIN_EMAIL = "admin@example.com"
-LOGIN_PASSWORD = "Admin12345"
+BASE_URL = os.getenv("TEST_BASE_URL")
+LOGIN_EMAIL = os.getenv("TEST_LOGIN_EMAIL")
+LOGIN_PASSWORD = os.getenv("TEST_LOGIN_PASSWORD")
 
 
 class E2ERunner:
     def __init__(self) -> None:
+        if not BASE_URL:
+            raise RuntimeError("Configura TEST_BASE_URL para ejecutar el flujo e2e.")
         self.client = httpx.Client(base_url=BASE_URL, timeout=15.0)
         self.token: str | None = None
         self.owner_id: int | None = None
@@ -46,6 +49,8 @@ class E2ERunner:
         return response
 
     def login(self) -> None:
+        if not LOGIN_EMAIL or not LOGIN_PASSWORD:
+            raise RuntimeError("Configura TEST_LOGIN_EMAIL y TEST_LOGIN_PASSWORD para ejecutar el flujo e2e.")
         response = self.request(
             "POST",
             "/api/v1/auth/login",

@@ -1,4 +1,5 @@
 from typing import Generic, TypeVar
+from app.core.config import settings
 
 from sqlalchemy.orm import Session
 
@@ -14,7 +15,7 @@ class BaseRepository(Generic[ModelT]):
     def get(self, entity_id: int) -> ModelT | None:
         return self.db.get(self.model, entity_id)
 
-    def list(self, skip: int = 0, limit: int = 100) -> list[ModelT]:
+    def list(self, skip: int = 0, limit: int = settings.default_page_size) -> list[ModelT]:
         return self.db.query(self.model).offset(skip).limit(limit).all()
 
     def add(self, entity: ModelT) -> ModelT:
@@ -26,3 +27,4 @@ class BaseRepository(Generic[ModelT]):
     def delete(self, entity: ModelT) -> None:
         self.db.delete(entity)
         self.db.commit()
+

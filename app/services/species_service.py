@@ -1,4 +1,5 @@
 from app.core.exceptions import ConflictError, NotFoundError
+from app.core.config import settings
 from app.models.species import Species
 from app.repositories.species_repository import SpeciesRepository
 from app.schemas.species import SpeciesCreate, SpeciesUpdate
@@ -8,7 +9,7 @@ class SpeciesService:
     def __init__(self, repository: SpeciesRepository):
         self.repository = repository
 
-    def list_species(self, skip: int = 0, limit: int = 100) -> list[Species]:
+    def list_species(self, skip: int = 0, limit: int = settings.default_page_size) -> list[Species]:
         return self.repository.list(skip=skip, limit=limit)
 
     def get_species(self, species_id: int) -> Species:
@@ -38,3 +39,4 @@ class SpeciesService:
     def delete_species(self, species_id: int) -> None:
         species = self.get_species(species_id)
         self.repository.delete(species)
+

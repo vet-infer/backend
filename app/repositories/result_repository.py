@@ -56,7 +56,7 @@ class ResultRepository:
     def list_by_evaluation(self, evaluation_id: int) -> list[InferenceResult]:
         return (
             self.db.query(InferenceResult)
-            .options(joinedload(InferenceResult.activated_rules))
+            .options(joinedload(InferenceResult.activated_rules), joinedload(InferenceResult.evaluation))
             .filter(InferenceResult.evaluation_id == evaluation_id)
             .order_by(InferenceResult.score.desc())
             .all()

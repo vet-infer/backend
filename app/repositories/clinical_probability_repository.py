@@ -1,4 +1,5 @@
 from app.models.clinical_probability import ClinicalProbability
+from app.core.config import settings
 from app.repositories.base import BaseRepository
 
 
@@ -13,7 +14,7 @@ class ClinicalProbabilityRepository(BaseRepository[ClinicalProbability]):
     def obtener_probabilidad_por_id(self, entity_id: int) -> ClinicalProbability | None:
         return self.get(entity_id)
 
-    def listar_probabilidades(self, skip: int = 0, limit: int = 100) -> list[ClinicalProbability]:
+    def listar_probabilidades(self, skip: int = 0, limit: int = settings.default_page_size) -> list[ClinicalProbability]:
         return self.db.query(ClinicalProbability).offset(skip).limit(limit).all()
 
     def listar_probabilidades_por_enfermedad(self, disease_id: int) -> list[ClinicalProbability]:
@@ -56,3 +57,4 @@ class ClinicalProbabilityRepository(BaseRepository[ClinicalProbability]):
         self.db.commit()
         self.db.refresh(prob)
         return prob
+

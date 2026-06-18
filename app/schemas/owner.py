@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, Field, field_validator
 
 from app.core.validation import validate_email_format
@@ -39,5 +41,6 @@ class OwnerUpdate(BaseModel):
 
 class OwnerOut(OwnerBase):
     id: int
+    created_at: datetime | None = None
 
     model_config = {"from_attributes": True}

@@ -31,6 +31,10 @@ class InferenceResult(Base):
         cascade="all, delete-orphan",
     )
 
+    @property
+    def patient_id(self) -> int:
+        return self.evaluation.patient_id
+
 
 class ActivatedRule(Base):
     __tablename__ = "activated_rules"

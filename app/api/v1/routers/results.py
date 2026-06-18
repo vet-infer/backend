@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.permissions import require_roles
+from app.core.permissions import PermissionPolicy, require_policy
 from app.models.user import User
 from app.repositories.evaluation_repository import EvaluationRepository
 from app.repositories.patient_repository import PatientRepository
@@ -18,7 +18,7 @@ router = APIRouter(prefix="/results", tags=["Resultados"])
 def list_activated_rules(
     result_id: int,
     db: Session = Depends(get_db),
-    _: User = Depends(require_roles("admin", "veterinario", "evaluador")),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     service = InferenceService(
         RuleRepository(db),
@@ -27,3 +27,4 @@ def list_activated_rules(
         ResultRepository(db),
     )
     return service.list_activated_rules(result_id)
+

@@ -45,6 +45,9 @@ class EvaluationService:
             raise NotFoundError("Evaluacion no encontrada")
         return evaluation
 
+    def list_recent(self):
+        return self.evaluation_repository.list_recent()
+
     def list_by_patient(self, patient_id: int):
         if self.patient_repository.get(patient_id) is None:
             raise NotFoundError("Paciente no encontrado")

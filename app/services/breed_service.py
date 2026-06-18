@@ -1,4 +1,5 @@
 from app.core.exceptions import ConflictError, NotFoundError
+from app.core.config import settings
 from app.models.breed import Breed
 from app.repositories.breed_repository import BreedRepository
 from app.repositories.species_repository import SpeciesRepository
@@ -9,7 +10,7 @@ class BreedService:
     def __init__(self, repository: BreedRepository):
         self.repository = repository
 
-    def list_breeds(self, species_id: int | None = None, skip: int = 0, limit: int = 100) -> list[Breed]:
+    def list_breeds(self, species_id: int | None = None, skip: int = 0, limit: int = settings.default_page_size) -> list[Breed]:
         if species_id is not None:
             return self.repository.list_by_species(species_id, skip=skip, limit=limit)
         return self.repository.list(skip=skip, limit=limit)
@@ -59,3 +60,4 @@ class BreedService:
     def delete_breed(self, breed_id: int) -> None:
         breed = self.get_breed(breed_id)
         self.repository.delete(breed)
+

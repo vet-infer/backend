@@ -1,4 +1,5 @@
 from app.models.breed import Breed
+from app.core.config import settings
 from app.repositories.base import BaseRepository
 
 
@@ -12,7 +13,7 @@ class BreedRepository(BaseRepository[Breed]):
             .first()
         )
 
-    def list_by_species(self, species_id: int, skip: int = 0, limit: int = 100) -> list[Breed]:
+    def list_by_species(self, species_id: int, skip: int = 0, limit: int = settings.default_page_size) -> list[Breed]:
         return (
             self.db.query(Breed)
             .filter(Breed.species_id == species_id)
@@ -20,3 +21,4 @@ class BreedRepository(BaseRepository[Breed]):
             .limit(limit)
             .all()
         )
+

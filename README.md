@@ -1,4 +1,4 @@
-# Backend OE3 - Motor de Inferencia Veterinario
+﻿# Backend OE3 - Motor de Inferencia Veterinario
 
 API REST desarrollada con FastAPI para el OE3 de la tesis: aplicacion web con motor de inferencia basado en reglas y Bayes para apoyo a la evaluacion clinica veterinaria en perros y gatos.
 
@@ -45,13 +45,13 @@ Variables relevantes:
 ```env
 APP_NAME=Motor de Inferencia Veterinario
 ENVIRONMENT=development
-DATABASE_URL=postgresql+psycopg://postgres:postgres@postgres:5432/vet_inference
-JWT_SECRET=change-this-secret
+DATABASE_URL=postgresql+psycopg://vet_app:<POSTGRES_PASSWORD>@postgres:5432/vet_inference
+JWT_SECRET=<JWT_SECRET_SEGURO>
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 CORS_ORIGINS=["http://localhost:3000","http://localhost:5173"]
-BOOTSTRAP_ADMIN_EMAIL=admin@example.com
-BOOTSTRAP_ADMIN_PASSWORD=Admin12345
+BOOTSTRAP_ADMIN_EMAIL=<ADMIN_EMAIL_LOCAL_OPCIONAL>
+BOOTSTRAP_ADMIN_PASSWORD=<ADMIN_PASSWORD_LOCAL_OPCIONAL>
 ```
 
 Para produccion, cambiar obligatoriamente `JWT_SECRET` y las credenciales bootstrap.
@@ -72,8 +72,8 @@ Servicios:
 Credenciales iniciales de desarrollo:
 
 ```text
-email: admin@example.com
-password: Admin12345
+email: <ADMIN_EMAIL_LOCAL>
+password: <ADMIN_PASSWORD_LOCAL>
 ```
 
 ## Ejecucion Local sin Docker
@@ -193,3 +193,4 @@ Pruebas/evidencia disponibles:
 ## Estado Academico
 
 Este backend cubre el flujo end-to-end del OE3: autenticacion, datos maestros clinicos, registro de pacientes, evaluaciones con facts, inferencia hibrida, resultados persistidos, reglas activadas e historial clinico trazable por paciente.
+

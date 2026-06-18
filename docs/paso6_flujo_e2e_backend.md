@@ -1,4 +1,4 @@
-# Paso 6 - Validacion end-to-end del backend API REST
+﻿# Paso 6 - Validacion end-to-end del backend API REST
 
 ## 1. Diagnostico inicial
 
@@ -83,8 +83,8 @@ Login:
 
 ```json
 {
-  "email": "admin@example.com",
-  "password": "Admin12345"
+  "email": "<TEST_LOGIN_EMAIL>",
+  "password": "<TEST_LOGIN_PASSWORD>"
 }
 ```
 
@@ -264,7 +264,7 @@ WHERE probability_given_disease < 0 OR probability_given_disease > 1
 Ejecutar:
 
 ```powershell
-$env:DATABASE_URL='postgresql+psycopg://postgres:postgres@localhost:5433/vet_inference'
+$env:DATABASE_URL='postgresql+psycopg://vet_app:<POSTGRES_PASSWORD>@localhost:5433/vet_inference'
 .\.venv\Scripts\python.exe tests\e2e_backend_flow.py
 ```
 
@@ -357,3 +357,4 @@ Guardar:
 ## 15. Conclusion academica
 
 Se valido el flujo completo end-to-end del backend API REST correspondiente al OE3, comprobando autenticacion mediante JWT, gestion de duenos y pacientes, registro de evaluaciones clinicas con sintomas y variables, procesamiento mediante motor hibrido de reglas IF-THEN y Bayes, persistencia de resultados, trazabilidad de reglas activadas e incorporacion al historial clinico. La ejecucion automatizada obtuvo 100% de exito y las consultas SQL confirmaron la integridad referencial y la ausencia de registros huerfanos, por lo que el backend queda validado como evidencia tecnica del desarrollo del OE3.
+

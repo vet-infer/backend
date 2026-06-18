@@ -6,6 +6,7 @@ from app.core.security import create_access_token, get_current_user
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.auth import LoginRequest, TokenResponse
+from app.schemas.user import UserOut
 from app.services.auth_service import AuthService
 
 router = APIRouter(prefix="/auth", tags=["Autenticacion"])
@@ -20,3 +21,8 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
 def refresh_token(current_user: User = Depends(get_current_user)):
     role_name = current_user.role.name if current_user.role else "veterinario"
     return TokenResponse(access_token=create_access_token(str(current_user.id), role_name))
+
+
+@router.get("/me", response_model=UserOut)
+def read_current_user(current_user: User = Depends(get_current_user)):
+    return current_user
