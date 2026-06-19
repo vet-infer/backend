@@ -20,8 +20,21 @@ class UserRepository(BaseRepository[User]):
     def list_with_roles(self, skip: int = 0, limit: int = settings.default_page_size) -> list[User]:
         return self.db.query(User).options(joinedload(User.role)).offset(skip).limit(limit).all()
 
+    def get_with_role(self, user_id: int) -> User | None:
+        return (
+            self.db.query(User)
+            .options(joinedload(User.role))
+            .filter(User.id == user_id)
+            .first()
+        )
+
     def role_exists(self, role_id: int) -> bool:
         return self.db.get(Role, role_id) is not None
+
+    def save(self, user: User) -> User:
+        self.db.commit()
+        self.db.refresh(user)
+        return user
 
     def ensure_default_roles(self) -> None:
         for name, description in [
