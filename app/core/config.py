@@ -13,6 +13,14 @@ class Settings(BaseSettings):
     jwt_secret: str = "dev-only-change-me"
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60
+    password_reset_token_expire_minutes: int = 15
+    frontend_base_url: str = "http://localhost:5173"
+    smtp_host: str | None = None
+    smtp_port: int = 587
+    smtp_username: str | None = None
+    smtp_password: str | None = None
+    smtp_from_email: str | None = None
+    smtp_use_tls: bool = True
     cors_origins: list[str] = []
     bootstrap_admin_email: str | None = None
     bootstrap_admin_password: str | None = None
@@ -45,6 +53,21 @@ class Settings(BaseSettings):
                 raise ValueError("CORS_ORIGINS debe configurarse explicitamente en produccion.")
             if self.database_url.startswith("sqlite"):
                 raise ValueError("DATABASE_URL debe apuntar a PostgreSQL en produccion.")
+            required_email_settings = {
+                "FRONTEND_BASE_URL": self.frontend_base_url,
+                "SMTP_HOST": self.smtp_host,
+                "SMTP_USERNAME": self.smtp_username,
+                "SMTP_PASSWORD": self.smtp_password,
+                "SMTP_FROM_EMAIL": self.smtp_from_email,
+            }
+            missing_email_settings = [name for name, value in required_email_settings.items() if not value]
+            if missing_email_settings:
+                raise ValueError(
+                    "La recuperacion de contrasena requiere configurar: "
+                    + ", ".join(missing_email_settings)
+                )
+            if "localhost" in self.frontend_base_url or "127.0.0.1" in self.frontend_base_url:
+                raise ValueError("FRONTEND_BASE_URL debe usar el dominio publico del frontend en produccion.")
         return self
 
 

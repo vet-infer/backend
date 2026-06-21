@@ -7,6 +7,7 @@ class RuleConditionCreate(BaseModel):
     variable_key: str = Field(min_length=1, max_length=100)
     operator: str
     expected_value: Any
+    logical_group: int = Field(default=1, ge=1)
 
 
 class RuleConditionOut(BaseModel):
@@ -14,6 +15,7 @@ class RuleConditionOut(BaseModel):
     variable_key: str
     operator: str
     expected_value: Any
+    logical_group: int = 1
 
     model_config = {"from_attributes": True}
 

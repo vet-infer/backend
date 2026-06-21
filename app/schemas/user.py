@@ -30,6 +30,29 @@ class UserCreate(BaseModel):
         return value
 
 
+class UserUpdate(BaseModel):
+    full_name: str | None = Field(default=None, min_length=3, max_length=120)
+    email: str | None = Field(default=None, min_length=3, max_length=255)
+    password: str | None = Field(default=None, min_length=8, max_length=72)
+    role_id: int | None = None
+    is_active: bool | None = None
+
+    @field_validator("email")
+    @classmethod
+    def validate_email(cls, value: str | None) -> str | None:
+        if value is None:
+            return value
+        return validate_email_format(value)
+
+    @field_validator("password")
+    @classmethod
+    def validate_password_bytes(cls, value: str | None) -> str | None:
+        if value is None:
+            return value
+        validate_bcrypt_password_length(value)
+        return value
+
+
 class UserOut(BaseModel):
     id: int
     full_name: str

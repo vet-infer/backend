@@ -5,7 +5,14 @@ from app.core.database import get_db
 from app.core.security import create_access_token, get_current_user
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
-from app.schemas.auth import LoginRequest, TokenResponse
+from app.schemas.auth import (
+    ChangePasswordRequest,
+    ForgotPasswordRequest,
+    LoginRequest,
+    MessageResponse,
+    ResetPasswordRequest,
+    TokenResponse,
+)
 from app.schemas.user import UserOut
 from app.services.auth_service import AuthService
 
@@ -26,3 +33,29 @@ def refresh_token(current_user: User = Depends(get_current_user)):
 @router.get("/me", response_model=UserOut)
 def read_current_user(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.patch("/change-password", response_model=MessageResponse)
+def change_password(
+    payload: ChangePasswordRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    AuthService(UserRepository(db)).change_password(
+        current_user,
+        payload.current_password,
+        payload.new_password,
+    )
+    return MessageResponse(message="Contrasena actualizada correctamente")
+
+
+@router.post("/forgot-password", response_model=MessageResponse)
+def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    message = AuthService(UserRepository(db)).request_password_reset(payload.email)
+    return MessageResponse(message=message)
+
+
+@router.post("/reset-password", response_model=MessageResponse)
+def reset_password(payload: ResetPasswordRequest, db: Session = Depends(get_db)):
+    AuthService(UserRepository(db)).reset_password(payload.token, payload.new_password)
+    return MessageResponse(message="Contrasena restablecida correctamente")

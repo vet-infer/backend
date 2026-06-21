@@ -44,6 +44,8 @@ class ActivatedRule(Base):
     rule_id: Mapped[int] = mapped_column(ForeignKey("inference_rules.id"))
     fulfilled_conditions: Mapped[Any] = mapped_column(JSON)
     justification: Mapped[str] = mapped_column(Text)
+    rule_code: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    rule_version: Mapped[int | None] = mapped_column(nullable=True)
 
     result = relationship("InferenceResult", back_populates="activated_rules")
     rule = relationship("InferenceRule", back_populates="activated_records")
