@@ -18,7 +18,10 @@ from app.services.patient_service import PatientService
 from app.schemas.species import SpeciesCreate, SpeciesUpdate
 from app.schemas.breed import BreedCreate, BreedUpdate
 from app.schemas.patient import PatientCreate, PatientUpdate
-from app.core.exceptions import NotFoundError, ConflictError, AppException
+from app.core.exceptions import NotFoundError, ConflictError, AppException, UnauthorizedError
+from app.core.security import get_password_hash, verify_password
+from app.repositories.user_repository import UserRepository
+from app.services.auth_service import AuthService
 
 TEST_ADMIN_EMAIL = "test-admin@example.test"
 
@@ -191,3 +194,23 @@ def test_patient_service_validation(db):
     with pytest.raises(AppException) as excinfo:
         patient_service.update_patient(patient.id, update_payload)
     assert "La raza no pertenece a la especie seleccionada" in str(excinfo.value.detail)
+
+
+def test_change_password_requires_current_password_and_persists_new_hash(db):
+    user = db.query(User).filter(User.email == TEST_ADMIN_EMAIL).one()
+    user.password_hash = get_password_hash("ContrasenaInicial1")
+    db.commit()
+
+    auth_service = AuthService(UserRepository(db))
+
+    with pytest.raises(UnauthorizedError):
+        auth_service.change_password(user, "Incorrecta1", "ContrasenaNueva1")
+
+    with pytest.raises(AppException, match="diferente"):
+        auth_service.change_password(user, "ContrasenaInicial1", "ContrasenaInicial1")
+
+    auth_service.change_password(user, "ContrasenaInicial1", "ContrasenaNueva1")
+    db.refresh(user)
+
+    assert verify_password("ContrasenaNueva1", user.password_hash)
+    assert not verify_password("ContrasenaInicial1", user.password_hash)

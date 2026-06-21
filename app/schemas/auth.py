@@ -23,3 +23,18 @@ class LoginRequest(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str = Field(min_length=8, max_length=72)
+    new_password: str = Field(min_length=8, max_length=72)
+
+    @field_validator("current_password", "new_password")
+    @classmethod
+    def validate_password_bytes(cls, value: str) -> str:
+        validate_bcrypt_password_length(value)
+        return value
+
+
+class MessageResponse(BaseModel):
+    message: str
