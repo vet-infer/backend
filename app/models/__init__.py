@@ -4,6 +4,7 @@ from app.models.clinical_probability import ClinicalProbability
 from app.models.disease import Disease
 from app.models.evaluation import EvaluationClinicalFact, EvaluationClinical
 from app.models.inference_result import ActivatedRule, InferenceResult
+from app.models.knowledge import FactDefinition, KnowledgeSource, RuleReference
 from app.models.breed import Breed
 from app.models.owner import Owner
 from app.models.patient import Patient
@@ -25,10 +26,13 @@ __all__ = [
     "EvaluationClinicalFact",
     "InferenceResult",
     "InferenceRule",
+    "FactDefinition",
+    "KnowledgeSource",
     "Owner",
     "Patient",
     "Role",
     "RuleCondition",
+    "RuleReference",
     "RiskLevel",
     "Species",
     "Symptom",

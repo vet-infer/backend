@@ -1,5 +1,6 @@
 from app.core.exceptions import ConflictError, NotFoundError
 from app.models.disease import Disease
+from app.models.knowledge import FactDefinition
 from app.services.bootstrap_service import get_or_create_risk_level, normalize_risk_level
 from app.repositories.rule_repository import RuleRepository
 from app.schemas.rule import RuleCreate, RuleUpdate
@@ -30,6 +31,7 @@ class RuleService:
             data["risk_level_id"] = risk_level.id
             data["risk_level"] = risk_level.code
         conditions = [condition.model_dump() for condition in payload.conditions]
+        self._validate_conditions(payload.disease_id, conditions)
         return self.repository.create_rule(data, conditions)
 
     def update_rule(self, rule_id: int, payload: RuleUpdate):
@@ -54,6 +56,7 @@ class RuleService:
             setattr(rule, field, value)
 
         if payload.conditions is not None:
+            self._validate_conditions(rule.disease_id, [condition.model_dump() for condition in payload.conditions])
             self.repository.replace_conditions(
                 rule,
                 [condition.model_dump() for condition in payload.conditions],
@@ -62,3 +65,10 @@ class RuleService:
             self.repository.db.commit()
             self.repository.db.refresh(rule)
         return rule
+
+    def _validate_conditions(self, disease_id: int, conditions: list[dict]) -> None:
+        disease = self.repository.db.get(Disease, disease_id)
+        for condition in conditions:
+            fact = self.repository.db.query(FactDefinition).filter(FactDefinition.fact_key == condition["variable_key"], FactDefinition.species_id == disease.species_id, FactDefinition.is_active.is_(True)).first()
+            if fact is None:
+                raise NotFoundError(f"Fact activo no encontrado o incompatible con la especie: {condition['variable_key']}")

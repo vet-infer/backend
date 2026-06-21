@@ -39,6 +39,8 @@ class PersistedActivatedRuleOut(BaseModel):
     rule_id: int
     fulfilled_conditions: Any
     justification: str
+    rule_code: str | None = None
+    rule_version: int | None = None
 
     model_config = {"from_attributes": True}
 

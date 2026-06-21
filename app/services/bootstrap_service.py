@@ -17,6 +17,7 @@ from app.models.rule import InferenceRule, RuleCondition
 from app.models.species import Species
 from app.models.symptom import Symptom
 from app.models.user import User
+from app.models.knowledge import FactDefinition, KnowledgeSource, RuleReference
 
 
 def load_seed_data() -> dict[str, Any]:
@@ -169,6 +170,17 @@ def bootstrap_reference_data(db: Session) -> None:
             )
     db.commit()
 
+    # The dictionary is derived from existing active catalogues; it never creates clinical facts not available in OE3.
+    for symptom in db.query(Symptom).filter(Symptom.is_active.is_(True)).all():
+        exists = db.query(FactDefinition).filter(FactDefinition.fact_key == symptom.name, FactDefinition.species_id == symptom.species_id).first()
+        if exists is None:
+            db.add(FactDefinition(fact_key=symptom.name, display_name=symptom.name, source_type="symptom", data_type="boolean", species_id=symptom.species_id, symptom_id=symptom.id, is_active=True))
+    for variable in db.query(ClinicalVariable).filter(ClinicalVariable.is_active.is_(True)).all():
+        exists = db.query(FactDefinition).filter(FactDefinition.fact_key == variable.key, FactDefinition.species_id == variable.species_id).first()
+        if exists is None:
+            db.add(FactDefinition(fact_key=variable.key, display_name=variable.name, source_type="clinical_variable", data_type=variable.data_type, unit=variable.unit, species_id=variable.species_id, clinical_variable_id=variable.id, is_active=True))
+    db.commit()
+
     for disease in seed_data["diseases"]:
         species_id = _species_id(db, disease["species"])
         existing = db.query(Disease).filter(
@@ -215,6 +227,24 @@ def bootstrap_reference_data(db: Session) -> None:
                 )
             )
         db.commit()
+
+    # References are limited to citations already present in the academic Markdown.
+    source_specs = {
+        "ERC": ("Kim y Yun (2026)", "Kim y Yun (2026)"),
+        "DM": ("Winiarczyk et al. (2022)", "Winiarczyk et al. (2022)"),
+        "MMVD": ("Park, Choi y Hyun (2026)", "Park, Choi y Hyun (2026)"),
+        "FELV": ("Beall et al. (2025)", "Beall et al. (2025)"),
+        "PERIO": ("Wallis, Colyer y Holcombe (2025)", "Wallis, Colyer y Holcombe (2025)"),
+    }
+    for prefix, (title, citation) in source_specs.items():
+        source = db.query(KnowledgeSource).filter(KnowledgeSource.citation == citation).first()
+        if source is None:
+            source = KnowledgeSource(title=title, citation=citation, is_active=True)
+            db.add(source); db.flush()
+        for rule in db.query(InferenceRule).filter(InferenceRule.code.like(f"{prefix}%")).all():
+            if db.query(RuleReference).filter(RuleReference.rule_id == rule.id, RuleReference.source_id == source.id).first() is None:
+                db.add(RuleReference(rule_id=rule.id, source_id=source.id, rationale="Fuente cl?nica citada en Base de Conocimiento.md."))
+    db.commit()
 
     for probability in seed_data["clinical_probabilities"]:
         disease = _disease(db, probability["disease"], probability["species"])

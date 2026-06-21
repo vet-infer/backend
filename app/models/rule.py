@@ -28,6 +28,7 @@ class InferenceRule(Base):
         cascade="all, delete-orphan",
     )
     activated_records = relationship("ActivatedRule", back_populates="rule")
+    references = relationship("RuleReference", back_populates="rule", cascade="all, delete-orphan")
 
 
 class RuleCondition(Base):
@@ -38,5 +39,6 @@ class RuleCondition(Base):
     variable_key: Mapped[str] = mapped_column(String(100), index=True)
     operator: Mapped[str] = mapped_column(String(30))
     expected_value: Mapped[Any] = mapped_column(JSON)
+    logical_group: Mapped[int] = mapped_column(Integer, default=1)
 
     rule = relationship("InferenceRule", back_populates="conditions")
