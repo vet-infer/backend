@@ -36,3 +36,19 @@ class EvaluationOut(BaseModel):
     facts: list[ClinicalFactOut] = []
 
     model_config = {"from_attributes": True}
+
+
+class FactDefinitionOut(BaseModel):
+    """Metadata exposed to the clinical form; it never exposes rule internals."""
+
+    id: int
+    fact_key: str
+    display_name: str
+    source_type: str
+    data_type: str
+    unit: str | None = None
+    allowed_values: list[object] | None = None
+    species_id: int | None = None
+    is_active: bool
+
+    model_config = {"from_attributes": True}

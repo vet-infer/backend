@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -7,7 +7,7 @@ from app.models.user import User
 from app.repositories.evaluation_repository import EvaluationRepository
 from app.repositories.patient_repository import PatientRepository
 from app.repositories.result_repository import ResultRepository
-from app.schemas.evaluation import EvaluationCreate, EvaluationOut
+from app.schemas.evaluation import EvaluationCreate, EvaluationOut, FactDefinitionOut
 from app.schemas.inference import (
     PersistedInferenceResultOut,
     SpanishInferenceResponse,
@@ -39,6 +39,16 @@ def list_evaluations(
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     return _evaluation_service(db).list_recent()
+
+
+@router.get("/evaluation-facts", response_model=list[FactDefinitionOut])
+def list_evaluation_fact_definitions(
+    species_id: int | None = Query(default=None, ge=1),
+    db: Session = Depends(get_db),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
+):
+    """Metadatos clínicos activos para el formulario, sin exponer la lógica de las reglas."""
+    return _evaluation_service(db).list_fact_definitions(species_id)
 
 
 @router.get("/evaluations/{evaluation_id}", response_model=EvaluationOut)

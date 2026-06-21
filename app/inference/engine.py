@@ -34,7 +34,7 @@ class InferenceEngine:
                     "rule_id": rule.id,
                     "rule_code": rule.code,
                     "rule_name": rule.name,
-                    "rule_version": rule.version,
+                    "rule_version": getattr(rule, "version", None),
                     "risk_level": rule.risk_level,
                     "fulfilled_conditions": [trace.as_text() for trace in traces],
                     "justification": (
@@ -55,16 +55,26 @@ class InferenceEngine:
         return sorted(output, key=lambda result: result["score"], reverse=True)
 
     def _rule_matches(self, rule, facts: dict, traces: list[ConditionTrace]) -> bool:
+        # Cada grupo conserva AND; grupos distintos son alternativas OR.
+        # Las nueve reglas seed siguen en el grupo 1, por lo que no cambia su comportamiento.
+        groups: dict[int, list] = {}
         for condition in rule.conditions:
-            observed = facts.get(condition.variable_key)
-            if not self.evaluator.matches(observed, condition.operator, condition.expected_value):
-                return False
-            traces.append(
+            groups.setdefault(getattr(condition, "logical_group", 1), []).append(condition)
+
+        for conditions in groups.values():
+            if not all(
+                self.evaluator.matches(facts.get(condition.variable_key), condition.operator, condition.expected_value)
+                for condition in conditions
+            ):
+                continue
+            traces.extend(
                 ConditionTrace(
                     variable_key=condition.variable_key,
                     operator=condition.operator,
                     expected_value=condition.expected_value,
-                    observed_value=observed,
+                    observed_value=facts.get(condition.variable_key),
                 )
+                for condition in conditions
             )
-        return True
+            return True
+        return False

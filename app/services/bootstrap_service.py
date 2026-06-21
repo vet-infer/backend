@@ -228,6 +228,30 @@ def bootstrap_reference_data(db: Session) -> None:
             )
         db.commit()
 
+    # Los valores categóricos publicados al frontend se derivan de condiciones
+    # seed existentes; no se agregan facts ni reglas fuera del alcance OE3.
+    for definition in db.query(FactDefinition).filter(
+        FactDefinition.data_type.in_(["string", "categorical", "select"])
+    ):
+        values = [
+            condition.expected_value
+            for condition in (
+                db.query(RuleCondition)
+                .join(InferenceRule)
+                .join(Disease)
+                .filter(
+                    RuleCondition.variable_key == definition.fact_key,
+                    Disease.species_id == definition.species_id,
+                    RuleCondition.operator == "eq",
+                )
+                .all()
+            )
+            if isinstance(condition.expected_value, (str, int, float, bool))
+        ]
+        if values:
+            definition.allowed_values = list(dict.fromkeys(values))
+    db.commit()
+
     # References are limited to citations already present in the academic Markdown.
     source_specs = {
         "ERC": ("Kim y Yun (2026)", "Kim y Yun (2026)"),
