@@ -52,6 +52,14 @@ ACCESS_TOKEN_EXPIRE_MINUTES=60
 CORS_ORIGINS=["http://localhost:3000","http://localhost:5173"]
 BOOTSTRAP_ADMIN_EMAIL=<ADMIN_EMAIL_LOCAL_OPCIONAL>
 BOOTSTRAP_ADMIN_PASSWORD=<ADMIN_PASSWORD_LOCAL_OPCIONAL>
+PASSWORD_RESET_TOKEN_EXPIRE_MINUTES=15
+FRONTEND_BASE_URL=http://localhost:5173
+SMTP_HOST=<HOST_SMTP>
+SMTP_PORT=587
+SMTP_USERNAME=<USUARIO_SMTP>
+SMTP_PASSWORD=<CLAVE_SMTP>
+SMTP_FROM_EMAIL=<EMISOR_VERIFICADO>
+SMTP_USE_TLS=true
 ```
 
 Para produccion, cambiar obligatoriamente `JWT_SECRET` y las credenciales bootstrap.
@@ -108,6 +116,15 @@ alembic upgrade head
 
 - `POST /api/v1/auth/login`
 - `GET /api/v1/auth/me`
+- `PATCH /api/v1/auth/change-password`
+- `POST /api/v1/auth/forgot-password`
+- `POST /api/v1/auth/reset-password`
+
+### Recuperacion de contrasena
+
+`POST /api/v1/auth/forgot-password` genera un token aleatorio de un solo uso, conserva solo su hash en la base de datos y envia el enlace de recuperacion por SMTP. El token vence en 15 minutos por defecto y se invalida al generar uno nuevo o al ser usado.
+
+En Railway deben configurarse las variables `FRONTEND_BASE_URL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM_EMAIL` y `SMTP_USE_TLS` en el servicio backend. Para produccion se debe usar un proveedor SMTP transaccional y un remitente/dominio verificado; el backend detiene su inicio si faltan estas variables o si `FRONTEND_BASE_URL` apunta a localhost.
 
 ### Catalogos Clinicos
 

@@ -38,3 +38,23 @@ class ChangePasswordRequest(BaseModel):
 
 class MessageResponse(BaseModel):
     message: str
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: str = Field(min_length=3, max_length=255)
+
+    @field_validator("email")
+    @classmethod
+    def validate_email(cls, value: str) -> str:
+        return validate_email_format(value)
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str = Field(min_length=32, max_length=512)
+    new_password: str = Field(min_length=8, max_length=72)
+
+    @field_validator("new_password")
+    @classmethod
+    def validate_password_bytes(cls, value: str) -> str:
+        validate_bcrypt_password_length(value)
+        return value

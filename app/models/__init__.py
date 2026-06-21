@@ -8,6 +8,7 @@ from app.models.knowledge import FactDefinition, KnowledgeSource, RuleReference
 from app.models.breed import Breed
 from app.models.owner import Owner
 from app.models.patient import Patient
+from app.models.password_reset_token import PasswordResetToken
 from app.models.risk_level import RiskLevel
 from app.models.species import Species
 from app.models.role import Role
@@ -30,6 +31,7 @@ __all__ = [
     "KnowledgeSource",
     "Owner",
     "Patient",
+    "PasswordResetToken",
     "Role",
     "RuleCondition",
     "RuleReference",
