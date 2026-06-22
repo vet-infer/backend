@@ -25,7 +25,9 @@ class Settings(BaseSettings):
     bootstrap_admin_email: str | None = None
     bootstrap_admin_password: str | None = None
     default_page_size: int = 50
-    max_page_size: int = 100
+    # El catalogo de razas contiene varios cientos de registros por especie.
+    # Debe poder cargarse completo en los formularios que ofrecen busqueda local.
+    max_page_size: int = 500
     bayes_default_prior: float = 0.20
     bayes_smoothing_factor: float = 0.50
     probability_precision: int = 4
