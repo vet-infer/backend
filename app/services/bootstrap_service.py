@@ -170,6 +170,17 @@ def bootstrap_reference_data(db: Session) -> None:
             )
     db.commit()
 
+    default_allowed_values = {
+        "placa": ["ausente", "leve", "moderada", "severa"],
+        "glucosuria": ["negativa", "positiva"],
+        "felv_p27": ["negativo", "positivo"],
+        "snap_felv": ["negativo", "positivo"],
+    }
+    variable_allowed_values = {
+        (variable["key"], _species_id(db, variable["species"])): variable.get("allowed_values", default_allowed_values.get(variable["key"]))
+        for variable in seed_data["clinical_variables"]
+    }
+
     # The dictionary is derived from existing active catalogues; it never creates clinical facts not available in OE3.
     for symptom in db.query(Symptom).filter(Symptom.is_active.is_(True)).all():
         exists = db.query(FactDefinition).filter(FactDefinition.fact_key == symptom.name, FactDefinition.species_id == symptom.species_id).first()
@@ -178,7 +189,11 @@ def bootstrap_reference_data(db: Session) -> None:
     for variable in db.query(ClinicalVariable).filter(ClinicalVariable.is_active.is_(True)).all():
         exists = db.query(FactDefinition).filter(FactDefinition.fact_key == variable.key, FactDefinition.species_id == variable.species_id).first()
         if exists is None:
-            db.add(FactDefinition(fact_key=variable.key, display_name=variable.name, source_type="clinical_variable", data_type=variable.data_type, unit=variable.unit, species_id=variable.species_id, clinical_variable_id=variable.id, is_active=True))
+            exists = FactDefinition(fact_key=variable.key, display_name=variable.name, source_type="clinical_variable", data_type=variable.data_type, unit=variable.unit, species_id=variable.species_id, clinical_variable_id=variable.id, is_active=True)
+            db.add(exists)
+        allowed_values = variable_allowed_values.get((variable.key, variable.species_id))
+        if allowed_values is not None:
+            exists.allowed_values = allowed_values
     db.commit()
 
     for disease in seed_data["diseases"]:
@@ -248,7 +263,7 @@ def bootstrap_reference_data(db: Session) -> None:
             )
             if isinstance(condition.expected_value, (str, int, float, bool))
         ]
-        if values:
+        if values and definition.allowed_values is None:
             definition.allowed_values = list(dict.fromkeys(values))
     db.commit()
 

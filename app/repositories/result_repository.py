@@ -60,7 +60,7 @@ class ResultRepository:
             self.db.query(InferenceResult)
             .options(joinedload(InferenceResult.activated_rules), joinedload(InferenceResult.evaluation))
             .filter(InferenceResult.evaluation_id == evaluation_id)
-            .order_by(InferenceResult.score.desc())
+            .order_by(InferenceResult.probability.desc(), InferenceResult.score.desc())
             .all()
         )
 

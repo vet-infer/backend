@@ -42,6 +42,16 @@ engine = create_engine(
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
+@pytest.mark.parametrize(
+    ("probability", "expected_risk"),
+    [(0.0, "Bajo"), (0.3999, "Bajo"), (0.40, "Moderado"), (0.6999, "Moderado"), (0.70, "Alto"), (1.0, "Alto")],
+)
+def test_risk_level_uses_documented_probability_ranges(probability, expected_risk):
+    service = BayesService(db=None)
+
+    assert service.determinar_nivel_riesgo(probability, [{"risk_level": "alto"}]) == expected_risk
+
+
 @pytest.fixture(name="db")
 def fixture_db():
     Base.metadata.create_all(bind=engine)
