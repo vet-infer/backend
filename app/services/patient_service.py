@@ -58,3 +58,8 @@ class PatientService:
         self.repository.db.refresh(patient)
         return patient
 
+    def delete_patient(self, patient_id: int) -> None:
+        patient = self.get_patient(patient_id)
+        self.repository.delete(patient)
+
+
