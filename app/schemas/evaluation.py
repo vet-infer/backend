@@ -12,6 +12,8 @@ class ClinicalFactIn(BaseModel):
 
 class ClinicalFactOut(BaseModel):
     id: int
+    patient_id: int
+    evaluation_id: int
     fact_key: str
     value: Any
     source_type: str

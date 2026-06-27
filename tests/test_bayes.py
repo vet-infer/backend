@@ -335,9 +335,25 @@ def test_evaluation_create_normalizes_legacy_clinical_input_source_type(client, 
     response = client.post("/api/v1/evaluations", json=payload)
 
     assert response.status_code == 201
-    facts_by_key = {fact["fact_key"]: fact for fact in response.json()["facts"]}
+    evaluation_data = response.json()
+    facts_by_key = {fact["fact_key"]: fact for fact in evaluation_data["facts"]}
     assert facts_by_key["poliuria"]["source_type"] == "symptom"
     assert facts_by_key["glucosa"]["source_type"] == "clinical_variable"
+    assert facts_by_key["poliuria"]["patient_id"] == patient.id
+    assert facts_by_key["poliuria"]["evaluation_id"] == evaluation_data["id"]
+    assert facts_by_key["glucosa"]["patient_id"] == patient.id
+    assert facts_by_key["glucosa"]["evaluation_id"] == evaluation_data["id"]
+
+    history_response = client.get(f"/api/v1/patients/{patient.id}/history")
+    assert history_response.status_code == 200
+    evaluation_event = next(
+        item for item in history_response.json() if item["evaluation_id"] == evaluation_data["id"]
+    )
+    history_facts_by_key = {fact["fact_key"]: fact for fact in evaluation_event["clinical_facts"]}
+    assert history_facts_by_key["poliuria"]["source_type"] == "symptom"
+    assert history_facts_by_key["glucosa"]["source_type"] == "clinical_variable"
+    assert history_facts_by_key["poliuria"]["patient_id"] == patient.id
+    assert history_facts_by_key["poliuria"]["evaluation_id"] == evaluation_data["id"]
 
 def test_clinical_probabilities_crud(client, db):
     """
