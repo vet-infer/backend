@@ -288,6 +288,57 @@ def test_spanish_inference_endpoint(client, db):
     assert "glucosa" in dm_res["explicacion"].lower()
 
 
+
+
+def test_evaluation_fact_definition_endpoints_are_separated(client, db):
+    dog = db.query(Species).filter(Species.name == "Perro").first()
+
+    symptoms_response = client.get(f"/api/v1/evaluation-symptoms?species_id={dog.id}")
+    variables_response = client.get(f"/api/v1/evaluation-clinical-variables?species_id={dog.id}")
+
+    assert symptoms_response.status_code == 200
+    assert variables_response.status_code == 200
+    assert symptoms_response.json()
+    assert variables_response.json()
+    assert {item["source_type"] for item in symptoms_response.json()} == {"symptom"}
+    assert {item["source_type"] for item in variables_response.json()} == {"clinical_variable"}
+
+
+def test_evaluation_create_normalizes_legacy_clinical_input_source_type(client, db):
+    dog = db.query(Species).filter(Species.name == "Perro").first()
+    poodle = db.query(Breed).filter(Breed.name == "Poodle", Breed.species_id == dog.id).first()
+    owner = Owner(first_name="Ana", last_name="Ruiz", email="ana.ruiz@example.com")
+    db.add(owner)
+    db.commit()
+
+    patient = Patient(
+        owner_id=owner.id,
+        name="Luna",
+        species_id=dog.id,
+        breed_id=poodle.id,
+        sex="Hembra",
+        weight=10.0,
+        created_by=1,
+    )
+    db.add(patient)
+    db.commit()
+
+    payload = {
+        "patient_id": patient.id,
+        "reason": "Poliuria y glucosa elevada",
+        "facts": [
+            {"fact_key": "poliuria", "value": True, "source_type": "clinical_input"},
+            {"fact_key": "glucosa", "value": 240.0, "source_type": "clinical_input"},
+        ],
+    }
+
+    response = client.post("/api/v1/evaluations", json=payload)
+
+    assert response.status_code == 201
+    facts_by_key = {fact["fact_key"]: fact for fact in response.json()["facts"]}
+    assert facts_by_key["poliuria"]["source_type"] == "symptom"
+    assert facts_by_key["glucosa"]["source_type"] == "clinical_variable"
+
 def test_clinical_probabilities_crud(client, db):
     """
     Tests GET, POST, PUT, DELETE endpoints for Clinical Probability management.

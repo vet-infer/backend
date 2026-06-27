@@ -23,8 +23,7 @@ class EvaluationService:
         if patient is None:
             raise NotFoundError("Paciente no encontrado")
 
-        self._validate_facts(payload.facts, patient.species_id)
-        facts = [fact.model_dump() for fact in payload.facts]
+        facts = self._validate_and_normalize_facts(payload.facts, patient.species_id)
         evaluation = self.evaluation_repository.create_with_facts(
             patient_id=payload.patient_id,
             veterinarian_id=veterinarian_id,
@@ -59,18 +58,30 @@ class EvaluationService:
         return self.evaluation_repository.list_by_patient(patient_id)
 
     def list_fact_definitions(self, species_id: int | None = None):
+        return self._fact_definition_query(species_id).order_by(FactDefinition.source_type, FactDefinition.display_name).all()
+
+    def list_fact_definitions_by_source(self, source_type: str, species_id: int | None = None):
+        return (
+            self._fact_definition_query(species_id)
+            .filter(FactDefinition.source_type == source_type)
+            .order_by(FactDefinition.display_name)
+            .all()
+        )
+
+    def _fact_definition_query(self, species_id: int | None = None):
         query = self.evaluation_repository.db.query(FactDefinition).filter(FactDefinition.is_active.is_(True))
         if species_id is not None:
             query = query.filter(
                 (FactDefinition.species_id == species_id) | (FactDefinition.species_id.is_(None))
             )
-        return query.order_by(FactDefinition.source_type, FactDefinition.display_name).all()
+        return query
 
-    def _validate_facts(self, facts, species_id: int) -> None:
+    def _validate_and_normalize_facts(self, facts, species_id: int) -> list[dict]:
         seen: set[str] = set()
+        normalized: list[dict] = []
         for submitted in facts:
             if submitted.fact_key in seen:
-                raise AppException(f"El fact '{submitted.fact_key}' fue enviado más de una vez")
+                raise AppException(f"El fact '{submitted.fact_key}' fue enviado mas de una vez")
             seen.add(submitted.fact_key)
 
             definition = (
@@ -86,7 +97,19 @@ class EvaluationService:
                 raise AppException(
                     f"Fact inexistente, inactivo o incompatible con la especie del paciente: {submitted.fact_key}"
                 )
+            if submitted.source_type not in {"clinical_input", definition.source_type}:
+                raise AppException(
+                    f"El fact '{submitted.fact_key}' pertenece a '{definition.source_type}' y no a '{submitted.source_type}'"
+                )
             self._validate_fact_value(definition, submitted.value)
+            normalized.append(
+                {
+                    "fact_key": submitted.fact_key,
+                    "value": submitted.value,
+                    "source_type": definition.source_type,
+                }
+            )
+        return normalized
 
     @staticmethod
     def _validate_fact_value(definition: FactDefinition, value: Any) -> None:
@@ -95,9 +118,9 @@ class EvaluationService:
             raise AppException(f"El fact '{definition.fact_key}' debe ser booleano")
         if kind in {"numeric", "number", "float", "integer", "decimal"}:
             if type(value) is bool or not isinstance(value, (int, float)) or not math.isfinite(float(value)):
-                raise AppException(f"El fact '{definition.fact_key}' debe ser numérico y finito")
+                raise AppException(f"El fact '{definition.fact_key}' debe ser numerico y finito")
         if kind in {"string", "text", "categorical", "select"} and not isinstance(value, str):
-            raise AppException(f"El fact '{definition.fact_key}' debe ser categórico o textual")
+            raise AppException(f"El fact '{definition.fact_key}' debe ser categorico o textual")
         if definition.allowed_values is not None and value not in definition.allowed_values:
             raise AppException(
                 f"Valor no permitido para '{definition.fact_key}'. Valores permitidos: {definition.allowed_values}"

@@ -47,8 +47,26 @@ def list_evaluation_fact_definitions(
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
-    """Metadatos clínicos activos para el formulario, sin exponer la lógica de las reglas."""
+    """Metadatos clinicos activos para el formulario, sin exponer la logica de las reglas."""
     return _evaluation_service(db).list_fact_definitions(species_id)
+
+
+@router.get("/evaluation-symptoms", response_model=list[FactDefinitionOut])
+def list_evaluation_symptom_definitions(
+    species_id: int | None = Query(default=None, ge=1),
+    db: Session = Depends(get_db),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
+):
+    return _evaluation_service(db).list_fact_definitions_by_source("symptom", species_id)
+
+
+@router.get("/evaluation-clinical-variables", response_model=list[FactDefinitionOut])
+def list_evaluation_clinical_variable_definitions(
+    species_id: int | None = Query(default=None, ge=1),
+    db: Session = Depends(get_db),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
+):
+    return _evaluation_service(db).list_fact_definitions_by_source("clinical_variable", species_id)
 
 
 @router.get("/evaluations/{evaluation_id}", response_model=EvaluationOut)
