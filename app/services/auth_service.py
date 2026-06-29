@@ -10,7 +10,7 @@ from app.models.user import User
 from app.models.password_reset_token import PasswordResetToken
 from app.repositories.password_reset_token_repository import PasswordResetTokenRepository
 from app.repositories.user_repository import UserRepository
-from app.schemas.auth import TokenResponse
+from app.schemas.auth import PasswordResetEmailPayload, TokenResponse
 from app.services.email_service import EmailService
 
 logger = logging.getLogger(__name__)
@@ -49,29 +49,41 @@ class AuthService:
         user.password_hash = get_password_hash(new_password)
         self.user_repository.save(user)
 
-    def request_password_reset(self, email: str) -> str:
+    def request_password_reset(self, email: str) -> tuple[str, PasswordResetEmailPayload | None]:
         user = self.user_repository.get_by_email(email)
         if user is None or not user.is_active:
-            return GENERIC_RESET_MESSAGE
+            return GENERIC_RESET_MESSAGE, None
 
         raw_token = secrets.token_urlsafe(32)
         now = datetime.now(timezone.utc)
+        expires_minutes = settings.password_reset_token_expire_minutes
         self.reset_token_repository.invalidate_active_for_user(user.id, now)
         self.reset_token_repository.create(
             PasswordResetToken(
                 user_id=user.id,
                 token_hash=self._hash_reset_token(raw_token),
-                expires_at=now + timedelta(minutes=settings.password_reset_token_expire_minutes),
+                expires_at=now + timedelta(minutes=expires_minutes),
             )
         )
-        reset_url = f"{settings.frontend_base_url.rstrip('/')}/reset-password?token={raw_token}"
+        base_url = settings.frontend_base_url.rstrip("/")
+        reset_url = f"{base_url}/reset-password?token={raw_token}"
+        reset_payload = PasswordResetEmailPayload(
+            to_email=user.email,
+            to_name=user.full_name,
+            reset_url=reset_url,
+            reset_token=raw_token,
+            expires_minutes=expires_minutes,
+        )
+
+        if settings.password_reset_delivery == "emailjs":
+            return GENERIC_RESET_MESSAGE, reset_payload
 
         try:
-            self.email_service.send_password_reset(user.email, reset_url)
+            self.email_service.send_password_reset(user.email, reset_url, user.full_name)
         except Exception:
             logger.exception("No se pudo enviar el correo de recuperacion para el usuario %s", user.id)
 
-        return GENERIC_RESET_MESSAGE
+        return GENERIC_RESET_MESSAGE, None
 
     def reset_password(self, token: str, new_password: str) -> None:
         reset_token = self.reset_token_repository.get_valid_by_hash(self._hash_reset_token(token))

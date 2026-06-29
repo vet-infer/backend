@@ -221,7 +221,7 @@ class FakeEmailService:
     def __init__(self):
         self.messages: list[tuple[str, str]] = []
 
-    def send_password_reset(self, recipient: str, reset_url: str) -> None:
+    def send_password_reset(self, recipient: str, reset_url: str, recipient_name: str | None = None) -> None:
         self.messages.append((recipient, reset_url))
 
 
@@ -236,8 +236,9 @@ def test_password_recovery_sends_single_use_token_and_resets_password(db):
         email_service,
     )
 
-    message = auth_service.request_password_reset(TEST_ADMIN_EMAIL)
+    message, reset_email = auth_service.request_password_reset(TEST_ADMIN_EMAIL)
     assert "Si el correo existe" in message
+    assert reset_email is None
     assert len(email_service.messages) == 1
     token = email_service.messages[0][1].split("token=", maxsplit=1)[1]
 
