@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60
     password_reset_token_expire_minutes: int = 15
+    password_reset_delivery: str = "smtp"
     frontend_base_url: str = "http://localhost:5173"
     smtp_host: str | None = None
     smtp_port: int = 587
@@ -46,6 +47,9 @@ class Settings(BaseSettings):
     def normalize_and_validate_settings(self) -> "Settings":
         if self.database_url.startswith("postgresql://"):
             self.database_url = self.database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+
+        if self.password_reset_delivery not in {"smtp", "emailjs"}:
+            raise ValueError("PASSWORD_RESET_DELIVERY debe ser smtp o emailjs.")
 
         if self.environment.lower() in {"production", "prod"}:
             insecure_jwt_values = {"dev-only-change-me", "change-me-in-production", "change-this-secret"}

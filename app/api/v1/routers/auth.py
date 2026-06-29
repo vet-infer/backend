@@ -51,8 +51,8 @@ def change_password(
 
 @router.post("/forgot-password", response_model=MessageResponse)
 def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
-    message = AuthService(UserRepository(db)).request_password_reset(payload.email)
-    return MessageResponse(message=message)
+    message, reset_email = AuthService(UserRepository(db)).request_password_reset(payload.email)
+    return MessageResponse(message=message, reset_email=reset_email)
 
 
 @router.post("/reset-password", response_model=MessageResponse)
