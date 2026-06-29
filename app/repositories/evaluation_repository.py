@@ -47,7 +47,7 @@ class EvaluationRepository(BaseRepository[EvaluationClinical]):
             reason=reason,
             observations=observations,
         )
-        evaluation.facts = [EvaluationClinicalFact(**fact) for fact in facts]
+        evaluation.facts = [EvaluationClinicalFact(patient_id=patient_id, **fact) for fact in facts]
         self.db.add(evaluation)
         self.db.commit()
         self.db.refresh(evaluation)

@@ -19,7 +19,7 @@ class PatientRepository(BaseRepository[Patient]):
                 joinedload(Patient.owner),
                 joinedload(Patient.breed)
             )
-            .filter(Patient.id == patient_id)
+            .filter(Patient.id == patient_id, Patient.is_active == True)
             .first()
         )
 
@@ -31,10 +31,12 @@ class PatientRepository(BaseRepository[Patient]):
                 joinedload(Patient.owner),
                 joinedload(Patient.breed)
             )
+            .filter(Patient.is_active == True)
             .offset(skip)
             .limit(limit)
             .all()
         )
+
 
     def species_exists(self, species_id: int) -> bool:
         return self.db.get(Species, species_id) is not None

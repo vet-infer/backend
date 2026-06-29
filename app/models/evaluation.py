@@ -33,8 +33,10 @@ class EvaluationClinicalFact(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     evaluation_id: Mapped[int] = mapped_column(ForeignKey("evaluations.id"))
+    patient_id: Mapped[int] = mapped_column(ForeignKey("patients.id"), index=True)
     fact_key: Mapped[str] = mapped_column(String(100), index=True)
     value: Mapped[Any] = mapped_column(JSON)
     source_type: Mapped[str] = mapped_column(String(40), default="clinical_input")
 
     evaluation = relationship("EvaluationClinical", back_populates="facts")
+    patient = relationship("Patient")

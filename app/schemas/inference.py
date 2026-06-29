@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -77,11 +78,24 @@ class SpanishInferenceResponse(BaseModel):
     resultados: list[SpanishInferenceResult]
 
 
+class ClinicalHistoryFactOut(BaseModel):
+    id: int
+    patient_id: int
+    evaluation_id: int
+    fact_key: str
+    value: Any
+    source_type: str
+
+    model_config = {"from_attributes": True}
+
+
 class ClinicalHistoryOut(BaseModel):
     id: int
     patient_id: int
     evaluation_id: int | None = None
     event_type: str
     summary: str
+    created_at: datetime | None = None
+    clinical_facts: list[ClinicalHistoryFactOut] = []
 
     model_config = {"from_attributes": True}

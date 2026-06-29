@@ -214,23 +214,21 @@ def bootstrap_reference_data(db: Session) -> None:
     db.commit()
 
     for rule in seed_data["rules"]:
-        if db.query(InferenceRule).filter(InferenceRule.code == rule["code"]).first() is not None:
-            continue
-
         disease = _disease(db, rule["disease"], rule["species"])
         risk_level = get_or_create_risk_level(db, rule["risk_level"])
-        db_rule = InferenceRule(
-            code=rule["code"],
-            name=rule["name"],
-            disease_id=disease.id,
-            risk_level_id=risk_level.id,
-            risk_level=normalize_risk_level(rule["risk_level"]),
-            weight=rule["weight"],
-            priority=rule["priority"],
-        )
-        db.add(db_rule)
-        db.commit()
-        db.refresh(db_rule)
+        db_rule = db.query(InferenceRule).filter(InferenceRule.code == rule["code"]).first()
+        if db_rule is None:
+            db_rule = InferenceRule(code=rule["code"], disease_id=disease.id, risk_level_id=risk_level.id)
+            db.add(db_rule)
+        db_rule.name = rule["name"]
+        db_rule.disease_id = disease.id
+        db_rule.risk_level_id = risk_level.id
+        db_rule.risk_level = normalize_risk_level(rule["risk_level"])
+        db_rule.weight = rule["weight"]
+        db_rule.priority = rule["priority"]
+        db_rule.is_active = True
+        db.flush()
+        db.query(RuleCondition).filter(RuleCondition.rule_id == db_rule.id).delete()
 
         for condition in rule["conditions"]:
             db.add(
@@ -239,9 +237,16 @@ def bootstrap_reference_data(db: Session) -> None:
                     variable_key=condition["variable_key"],
                     operator=condition["operator"],
                     expected_value=condition["expected_value"],
+                    logical_group=condition.get("logical_group", 1),
                 )
             )
         db.commit()
+
+    # Reglas del catálogo inicial sustituidas por los códigos de la tabla 12.
+    db.query(InferenceRule).filter(
+        InferenceRule.code.in_(["MMVD-R01", "MMVD-R02", "PERIO-R01"])
+    ).update({"is_active": False}, synchronize_session=False)
+    db.commit()
 
     # Los valores categóricos publicados al frontend se derivan de condiciones
     # seed existentes; no se agregan facts ni reglas fuera del alcance OE3.
@@ -271,9 +276,9 @@ def bootstrap_reference_data(db: Session) -> None:
     source_specs = {
         "ERC": ("Kim y Yun (2026)", "Kim y Yun (2026)"),
         "DM": ("Winiarczyk et al. (2022)", "Winiarczyk et al. (2022)"),
-        "MMVD": ("Park, Choi y Hyun (2026)", "Park, Choi y Hyun (2026)"),
+        "CARD": ("Park, Choi y Hyun (2026)", "Park, Choi y Hyun (2026)"),
         "FELV": ("Beall et al. (2025)", "Beall et al. (2025)"),
-        "PERIO": ("Wallis, Colyer y Holcombe (2025)", "Wallis, Colyer y Holcombe (2025)"),
+        "PER": ("Wallis, Colyer y Holcombe (2025)", "Wallis, Colyer y Holcombe (2025)"),
     }
     for prefix, (title, citation) in source_specs.items():
         source = db.query(KnowledgeSource).filter(KnowledgeSource.citation == citation).first()
