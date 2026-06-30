@@ -67,7 +67,7 @@ Para produccion, cambiar obligatoriamente `JWT_SECRET` y las credenciales bootst
 ## Ejecucion con Docker
 
 ```bash
-docker compose up --build
+docker-compose up --build -d
 ```
 
 Servicios:

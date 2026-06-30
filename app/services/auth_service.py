@@ -4,7 +4,7 @@ import logging
 import secrets
 
 from app.core.config import settings
-from app.core.exceptions import AppException, UnauthorizedError
+from app.core.exceptions import AppException, NotFoundError, UnauthorizedError
 from app.core.security import create_access_token, get_password_hash, verify_password
 from app.models.user import User
 from app.models.password_reset_token import PasswordResetToken
@@ -51,8 +51,10 @@ class AuthService:
 
     def request_password_reset(self, email: str) -> tuple[str, PasswordResetEmailPayload | None]:
         user = self.user_repository.get_by_email(email)
-        if user is None or not user.is_active:
-            return GENERIC_RESET_MESSAGE, None
+        if user is None:
+            raise NotFoundError("No existe un usuario con ese correo.")
+        if not user.is_active:
+            raise NotFoundError("No existe una cuenta activa con ese correo.")
 
         raw_token = secrets.token_urlsafe(32)
         now = datetime.now(timezone.utc)

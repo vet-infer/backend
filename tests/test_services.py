@@ -248,3 +248,14 @@ def test_password_recovery_sends_single_use_token_and_resets_password(db):
 
     with pytest.raises(UnauthorizedError):
         auth_service.reset_password(token, "OtraContrasena1")
+
+
+def test_password_recovery_rejects_unknown_email(db):
+    auth_service = AuthService(
+        UserRepository(db),
+        PasswordResetTokenRepository(db),
+        FakeEmailService(),
+    )
+
+    with pytest.raises(NotFoundError, match="No existe un usuario con ese correo"):
+        auth_service.request_password_reset("no-registrado@example.test")
