@@ -52,6 +52,11 @@ class Settings(BaseSettings):
             raise ValueError("PASSWORD_RESET_DELIVERY debe ser smtp o emailjs.")
 
         if self.environment.lower() in {"production", "prod"}:
+            if self._is_local_frontend_url(self.frontend_base_url):
+                public_origin = self._first_public_cors_origin()
+                if public_origin:
+                    self.frontend_base_url = public_origin
+
             insecure_jwt_values = {"dev-only-change-me", "change-me-in-production", "change-this-secret"}
             if self.jwt_secret in insecure_jwt_values:
                 raise ValueError("JWT_SECRET debe configurarse con un secreto seguro en produccion.")
@@ -72,11 +77,20 @@ class Settings(BaseSettings):
                     "SMTP debe configurarse completamente o dejarse deshabilitado. Faltan: "
                     + ", ".join(missing_smtp_settings)
                 )
-            if configured_smtp_settings and (
-                "localhost" in self.frontend_base_url or "127.0.0.1" in self.frontend_base_url
-            ):
-                raise ValueError("FRONTEND_BASE_URL debe usar el dominio publico cuando SMTP este configurado.")
+            if self._is_local_frontend_url(self.frontend_base_url):
+                raise ValueError("FRONTEND_BASE_URL debe usar el dominio publico en produccion.")
         return self
+
+    def _first_public_cors_origin(self) -> str | None:
+        for origin in self.cors_origins:
+            normalized_origin = origin.rstrip("/")
+            if normalized_origin.startswith("https://") and not self._is_local_frontend_url(normalized_origin):
+                return normalized_origin
+        return None
+
+    @staticmethod
+    def _is_local_frontend_url(url: str) -> bool:
+        return "localhost" in url or "127.0.0.1" in url
 
 
 @lru_cache
