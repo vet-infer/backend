@@ -21,7 +21,9 @@ class Patient(Base):
     birth_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     weight: Mapped[float | None] = mapped_column(Float, nullable=True)
     created_by: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    is_active: Mapped[bool] = mapped_column(default=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
 
     species = relationship("Species", back_populates="patients")
     breed = relationship("Breed", back_populates="patients")

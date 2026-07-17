@@ -1,6 +1,6 @@
 from sqlalchemy.orm import joinedload
-from app.core.config import settings
 
+from app.core.config import settings
 from app.models.disease import Disease
 from app.models.risk_level import RiskLevel
 from app.models.rule import InferenceRule, RuleCondition
@@ -13,7 +13,11 @@ class RuleRepository(BaseRepository[InferenceRule]):
     def get_with_conditions(self, rule_id: int) -> InferenceRule | None:
         return (
             self.db.query(InferenceRule)
-            .options(joinedload(InferenceRule.conditions), joinedload(InferenceRule.disease))
+            .options(
+                joinedload(InferenceRule.conditions),
+                joinedload(InferenceRule.disease),
+                joinedload(InferenceRule.risk_level_ref),
+            )
             .filter(InferenceRule.id == rule_id)
             .first()
         )
@@ -21,7 +25,12 @@ class RuleRepository(BaseRepository[InferenceRule]):
     def list_with_conditions(self, skip: int = 0, limit: int = settings.default_page_size) -> list[InferenceRule]:
         return (
             self.db.query(InferenceRule)
-            .options(joinedload(InferenceRule.conditions))
+            .options(
+                joinedload(InferenceRule.conditions),
+                joinedload(InferenceRule.disease),
+                joinedload(InferenceRule.risk_level_ref),
+            )
+            .order_by(InferenceRule.priority.desc(), InferenceRule.code.asc())
             .offset(skip)
             .limit(limit)
             .all()
@@ -59,4 +68,3 @@ class RuleRepository(BaseRepository[InferenceRule]):
         self.db.commit()
         self.db.refresh(rule)
         return rule
-

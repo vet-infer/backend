@@ -33,6 +33,8 @@ class ResultRepository:
                     rule_id=rule["rule_id"],
                     fulfilled_conditions=rule["fulfilled_conditions"],
                     justification=rule["justification"],
+                    rule_code=rule.get("rule_code"),
+                    rule_version=rule.get("rule_version"),
                 )
                 for rule in activated_payload
             ]
@@ -58,7 +60,7 @@ class ResultRepository:
             self.db.query(InferenceResult)
             .options(joinedload(InferenceResult.activated_rules), joinedload(InferenceResult.evaluation))
             .filter(InferenceResult.evaluation_id == evaluation_id)
-            .order_by(InferenceResult.score.desc())
+            .order_by(InferenceResult.probability.desc(), InferenceResult.score.desc())
             .all()
         )
 

@@ -8,7 +8,7 @@ class CatalogRepository:
         self.db = db
 
     def list_diseases(self) -> list[Disease]:
-        return self.db.query(Disease).filter(Disease.is_active.is_(True)).all()
+        return self.db.query(Disease).filter(Disease.is_active.is_(True)).order_by(Disease.species_id, Disease.name).all()
 
     def create_disease(self, disease: Disease) -> Disease:
         self.db.add(disease)

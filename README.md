@@ -1,4 +1,4 @@
-﻿# Backend OE3 - Motor de Inferencia Veterinario
+# Backend OE3 - Motor de Inferencia Veterinario
 
 API REST desarrollada con FastAPI para el OE3 de la tesis: aplicacion web con motor de inferencia basado en reglas y Bayes para apoyo a la evaluacion clinica veterinaria en perros y gatos.
 
@@ -52,6 +52,14 @@ ACCESS_TOKEN_EXPIRE_MINUTES=60
 CORS_ORIGINS=["http://localhost:3000","http://localhost:5173"]
 BOOTSTRAP_ADMIN_EMAIL=<ADMIN_EMAIL_LOCAL_OPCIONAL>
 BOOTSTRAP_ADMIN_PASSWORD=<ADMIN_PASSWORD_LOCAL_OPCIONAL>
+PASSWORD_RESET_TOKEN_EXPIRE_MINUTES=15
+FRONTEND_BASE_URL=http://localhost:5173
+SMTP_HOST=<HOST_SMTP>
+SMTP_PORT=587
+SMTP_USERNAME=<USUARIO_SMTP>
+SMTP_PASSWORD=<CLAVE_SMTP>
+SMTP_FROM_EMAIL=<EMISOR_VERIFICADO>
+SMTP_USE_TLS=true
 ```
 
 Para produccion, cambiar obligatoriamente `JWT_SECRET` y las credenciales bootstrap.
@@ -59,7 +67,7 @@ Para produccion, cambiar obligatoriamente `JWT_SECRET` y las credenciales bootst
 ## Ejecucion con Docker
 
 ```bash
-docker compose up --build
+docker-compose up --build -d
 ```
 
 Servicios:
@@ -108,6 +116,20 @@ alembic upgrade head
 
 - `POST /api/v1/auth/login`
 - `GET /api/v1/auth/me`
+- `PATCH /api/v1/auth/change-password`
+- `POST /api/v1/auth/forgot-password`
+- `POST /api/v1/auth/reset-password`
+
+### Recuperacion de contrasena
+
+`POST /api/v1/auth/forgot-password` genera un token aleatorio de un solo uso, conserva solo su hash en la base de datos y construye el enlace de recuperacion. El token vence en 15 minutos por defecto y se invalida al generar uno nuevo o al ser usado.
+
+Modalidades disponibles:
+
+- `PASSWORD_RESET_DELIVERY=smtp`: el backend envia el correo con SMTP.
+- `PASSWORD_RESET_DELIVERY=emailjs`: el backend devuelve `reset_email` con `to_email`, `to_name`, `reset_url`, `reset_token` y `expires_minutes`; el frontend envia el correo con EmailJS.
+
+Para produccion con SMTP deben configurarse `FRONTEND_BASE_URL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM_EMAIL` y `SMTP_USE_TLS` en el servicio backend. Para EmailJS, las credenciales publicas se configuran en el frontend con variables `VITE_EMAILJS_*`. En ningun caso se envia la contrasena actual por correo.
 
 ### Catalogos Clinicos
 

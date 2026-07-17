@@ -17,6 +17,7 @@ from app.models.rule import InferenceRule, RuleCondition
 from app.models.species import Species
 from app.models.symptom import Symptom
 from app.models.user import User
+from app.models.knowledge import FactDefinition, KnowledgeSource, RuleReference
 
 
 def load_seed_data() -> dict[str, Any]:
@@ -169,6 +170,32 @@ def bootstrap_reference_data(db: Session) -> None:
             )
     db.commit()
 
+    default_allowed_values = {
+        "placa": ["ausente", "leve", "moderada", "severa"],
+        "glucosuria": ["negativa", "positiva"],
+        "felv_p27": ["negativo", "positivo"],
+        "snap_felv": ["negativo", "positivo"],
+    }
+    variable_allowed_values = {
+        (variable["key"], _species_id(db, variable["species"])): variable.get("allowed_values", default_allowed_values.get(variable["key"]))
+        for variable in seed_data["clinical_variables"]
+    }
+
+    # The dictionary is derived from existing active catalogues; it never creates clinical facts not available in OE3.
+    for symptom in db.query(Symptom).filter(Symptom.is_active.is_(True)).all():
+        exists = db.query(FactDefinition).filter(FactDefinition.fact_key == symptom.name, FactDefinition.species_id == symptom.species_id).first()
+        if exists is None:
+            db.add(FactDefinition(fact_key=symptom.name, display_name=symptom.name, source_type="symptom", data_type="boolean", species_id=symptom.species_id, symptom_id=symptom.id, is_active=True))
+    for variable in db.query(ClinicalVariable).filter(ClinicalVariable.is_active.is_(True)).all():
+        exists = db.query(FactDefinition).filter(FactDefinition.fact_key == variable.key, FactDefinition.species_id == variable.species_id).first()
+        if exists is None:
+            exists = FactDefinition(fact_key=variable.key, display_name=variable.name, source_type="clinical_variable", data_type=variable.data_type, unit=variable.unit, species_id=variable.species_id, clinical_variable_id=variable.id, is_active=True)
+            db.add(exists)
+        allowed_values = variable_allowed_values.get((variable.key, variable.species_id))
+        if allowed_values is not None:
+            exists.allowed_values = allowed_values
+    db.commit()
+
     for disease in seed_data["diseases"]:
         species_id = _species_id(db, disease["species"])
         existing = db.query(Disease).filter(
@@ -187,23 +214,21 @@ def bootstrap_reference_data(db: Session) -> None:
     db.commit()
 
     for rule in seed_data["rules"]:
-        if db.query(InferenceRule).filter(InferenceRule.code == rule["code"]).first() is not None:
-            continue
-
         disease = _disease(db, rule["disease"], rule["species"])
         risk_level = get_or_create_risk_level(db, rule["risk_level"])
-        db_rule = InferenceRule(
-            code=rule["code"],
-            name=rule["name"],
-            disease_id=disease.id,
-            risk_level_id=risk_level.id,
-            risk_level=normalize_risk_level(rule["risk_level"]),
-            weight=rule["weight"],
-            priority=rule["priority"],
-        )
-        db.add(db_rule)
-        db.commit()
-        db.refresh(db_rule)
+        db_rule = db.query(InferenceRule).filter(InferenceRule.code == rule["code"]).first()
+        if db_rule is None:
+            db_rule = InferenceRule(code=rule["code"], disease_id=disease.id, risk_level_id=risk_level.id)
+            db.add(db_rule)
+        db_rule.name = rule["name"]
+        db_rule.disease_id = disease.id
+        db_rule.risk_level_id = risk_level.id
+        db_rule.risk_level = normalize_risk_level(rule["risk_level"])
+        db_rule.weight = rule["weight"]
+        db_rule.priority = rule["priority"]
+        db_rule.is_active = True
+        db.flush()
+        db.query(RuleCondition).filter(RuleCondition.rule_id == db_rule.id).delete()
 
         for condition in rule["conditions"]:
             db.add(
@@ -212,9 +237,58 @@ def bootstrap_reference_data(db: Session) -> None:
                     variable_key=condition["variable_key"],
                     operator=condition["operator"],
                     expected_value=condition["expected_value"],
+                    logical_group=condition.get("logical_group", 1),
                 )
             )
         db.commit()
+
+    # Reglas del catálogo inicial sustituidas por los códigos de la tabla 12.
+    db.query(InferenceRule).filter(
+        InferenceRule.code.in_(["MMVD-R01", "MMVD-R02", "PERIO-R01"])
+    ).update({"is_active": False}, synchronize_session=False)
+    db.commit()
+
+    # Los valores categóricos publicados al frontend se derivan de condiciones
+    # seed existentes; no se agregan facts ni reglas fuera del alcance OE3.
+    for definition in db.query(FactDefinition).filter(
+        FactDefinition.data_type.in_(["string", "categorical", "select"])
+    ):
+        values = [
+            condition.expected_value
+            for condition in (
+                db.query(RuleCondition)
+                .join(InferenceRule)
+                .join(Disease)
+                .filter(
+                    RuleCondition.variable_key == definition.fact_key,
+                    Disease.species_id == definition.species_id,
+                    RuleCondition.operator == "eq",
+                )
+                .all()
+            )
+            if isinstance(condition.expected_value, (str, int, float, bool))
+        ]
+        if values and definition.allowed_values is None:
+            definition.allowed_values = list(dict.fromkeys(values))
+    db.commit()
+
+    # References are limited to citations already present in the academic Markdown.
+    source_specs = {
+        "ERC": ("Kim y Yun (2026)", "Kim y Yun (2026)"),
+        "DM": ("Winiarczyk et al. (2022)", "Winiarczyk et al. (2022)"),
+        "CARD": ("Park, Choi y Hyun (2026)", "Park, Choi y Hyun (2026)"),
+        "FELV": ("Beall et al. (2025)", "Beall et al. (2025)"),
+        "PER": ("Wallis, Colyer y Holcombe (2025)", "Wallis, Colyer y Holcombe (2025)"),
+    }
+    for prefix, (title, citation) in source_specs.items():
+        source = db.query(KnowledgeSource).filter(KnowledgeSource.citation == citation).first()
+        if source is None:
+            source = KnowledgeSource(title=title, citation=citation, is_active=True)
+            db.add(source); db.flush()
+        for rule in db.query(InferenceRule).filter(InferenceRule.code.like(f"{prefix}%")).all():
+            if db.query(RuleReference).filter(RuleReference.rule_id == rule.id, RuleReference.source_id == source.id).first() is None:
+                db.add(RuleReference(rule_id=rule.id, source_id=source.id, rationale="Fuente cl?nica citada en Base de Conocimiento.md."))
+    db.commit()
 
     for probability in seed_data["clinical_probabilities"]:
         disease = _disease(db, probability["disease"], probability["species"])

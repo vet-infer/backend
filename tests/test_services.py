@@ -18,7 +18,11 @@ from app.services.patient_service import PatientService
 from app.schemas.species import SpeciesCreate, SpeciesUpdate
 from app.schemas.breed import BreedCreate, BreedUpdate
 from app.schemas.patient import PatientCreate, PatientUpdate
-from app.core.exceptions import NotFoundError, ConflictError, AppException
+from app.core.exceptions import NotFoundError, ConflictError, AppException, UnauthorizedError
+from app.core.security import get_password_hash, verify_password
+from app.repositories.user_repository import UserRepository
+from app.repositories.password_reset_token_repository import PasswordResetTokenRepository
+from app.services.auth_service import AuthService
 
 TEST_ADMIN_EMAIL = "test-admin@example.test"
 
@@ -191,3 +195,67 @@ def test_patient_service_validation(db):
     with pytest.raises(AppException) as excinfo:
         patient_service.update_patient(patient.id, update_payload)
     assert "La raza no pertenece a la especie seleccionada" in str(excinfo.value.detail)
+
+
+def test_change_password_requires_current_password_and_persists_new_hash(db):
+    user = db.query(User).filter(User.email == TEST_ADMIN_EMAIL).one()
+    user.password_hash = get_password_hash("ContrasenaInicial1")
+    db.commit()
+
+    auth_service = AuthService(UserRepository(db))
+
+    with pytest.raises(UnauthorizedError):
+        auth_service.change_password(user, "Incorrecta1", "ContrasenaNueva1")
+
+    with pytest.raises(AppException, match="diferente"):
+        auth_service.change_password(user, "ContrasenaInicial1", "ContrasenaInicial1")
+
+    auth_service.change_password(user, "ContrasenaInicial1", "ContrasenaNueva1")
+    db.refresh(user)
+
+    assert verify_password("ContrasenaNueva1", user.password_hash)
+    assert not verify_password("ContrasenaInicial1", user.password_hash)
+
+
+class FakeEmailService:
+    def __init__(self):
+        self.messages: list[tuple[str, str]] = []
+
+    def send_password_reset(self, recipient: str, reset_url: str, recipient_name: str | None = None) -> None:
+        self.messages.append((recipient, reset_url))
+
+
+def test_password_recovery_sends_single_use_token_and_resets_password(db):
+    user = db.query(User).filter(User.email == TEST_ADMIN_EMAIL).one()
+    user.password_hash = get_password_hash("ContrasenaInicial1")
+    db.commit()
+    email_service = FakeEmailService()
+    auth_service = AuthService(
+        UserRepository(db),
+        PasswordResetTokenRepository(db),
+        email_service,
+    )
+
+    message, reset_email = auth_service.request_password_reset(TEST_ADMIN_EMAIL)
+    assert "Si el correo existe" in message
+    assert reset_email is None
+    assert len(email_service.messages) == 1
+    token = email_service.messages[0][1].split("token=", maxsplit=1)[1]
+
+    auth_service.reset_password(token, "ContrasenaNueva1")
+    db.refresh(user)
+    assert verify_password("ContrasenaNueva1", user.password_hash)
+
+    with pytest.raises(UnauthorizedError):
+        auth_service.reset_password(token, "OtraContrasena1")
+
+
+def test_password_recovery_rejects_unknown_email(db):
+    auth_service = AuthService(
+        UserRepository(db),
+        PasswordResetTokenRepository(db),
+        FakeEmailService(),
+    )
+
+    with pytest.raises(NotFoundError, match="No existe un usuario con ese correo"):
+        auth_service.request_password_reset("no-registrado@example.test")

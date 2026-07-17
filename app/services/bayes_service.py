@@ -6,7 +6,6 @@ from app.core.config import settings
 from app.core.constants import RISK_HIGH, RISK_LOW, RISK_MODERATE
 from app.models.clinical_probability import ClinicalProbability
 from app.models.disease import Disease
-from app.models.risk_level import RiskLevel
 
 
 class BayesService:
@@ -126,35 +125,20 @@ class BayesService:
         return resultados
 
     def determinar_nivel_riesgo(self, probabilidad: float, reglas_activadas: list[dict]) -> str:
-        has_high_rule = any(r.get("risk_level", "").lower() == RISK_HIGH for r in reglas_activadas)
-        has_mod_rule = any(r.get("risk_level", "").lower() == RISK_MODERATE for r in reglas_activadas)
+        """Clasifica exclusivamente por el porcentaje de probabilidad acordado.
 
-        base_risk = self._risk_from_probability(probabilidad)
-        if base_risk == "Alto":
-            return "Alto"
-        if base_risk == "Moderado":
-            return "Alto" if has_high_rule else "Moderado"
-        if base_risk == "Bajo" and (has_high_rule or has_mod_rule):
-            return "Moderado"
-        return base_risk
+        Las reglas IF-THEN aportan la evidencia trazable de la conclusión, pero no
+        pueden elevar un resultado fuera de los rangos publicados al veterinario.
+        """
+        return self._risk_from_probability(probabilidad)
 
     def _risk_from_probability(self, probabilidad: float) -> str:
-        risk_levels = (
-            self.db.query(RiskLevel)
-            .filter(RiskLevel.is_active.is_(True))
-            .order_by(RiskLevel.sort_order)
-            .all()
-        )
-        matching_level = next(
-            (
-                level
-                for level in risk_levels
-                if (level.min_probability is None or probabilidad >= level.min_probability)
-                and (level.max_probability is None or probabilidad <= level.max_probability)
-            ),
-            None,
-        )
-        return matching_level.name if matching_level else RISK_LOW.capitalize()
+        probability = max(0.0, min(1.0, probabilidad))
+        if probability >= 0.70:
+            return RISK_HIGH.capitalize()
+        if probability >= 0.40:
+            return RISK_MODERATE.capitalize()
+        return RISK_LOW.capitalize()
 
     def generar_explicacion_bayes(
         self,
@@ -171,6 +155,14 @@ class BayesService:
             f"con una probabilidad calculada de {probabilidad * 100:.2f}%. "
         )
 
+        nivel_riesgo = self._risk_from_probability(probabilidad)
+        rango_riesgo = {
+            "Bajo": "0% a menos de 40%",
+            "Moderado": "40% a menos de 70%",
+            "Alto": "70% a 100%",
+        }[nivel_riesgo]
+        explicacion += f"El porcentaje se clasifica como riesgo {nivel_riesgo.lower()} ({rango_riesgo}). "
+
         matched_evidences = []
         if sintomas_detectados:
             matched_evidences.append(f"sintomas observados: {', '.join(sintomas_detectados)}")
@@ -182,7 +174,10 @@ class BayesService:
 
         if reglas_activadas:
             codigos_reglas = [r["rule_code"] for r in reglas_activadas]
-            explicacion += f"Se activaron las reglas clinicas de soporte: {', '.join(codigos_reglas)}."
+            explicacion += (
+                f"Las reglas IF-THEN activadas ({', '.join(codigos_reglas)}) "
+                "sustentan la evidencia clinica registrada para esta inferencia."
+            )
         else:
             explicacion += (
                 "No se activaron reglas clinicas de soporte directas; "
