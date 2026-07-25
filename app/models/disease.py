@@ -9,7 +9,7 @@ class Disease(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(120), index=True)
-    species_id: Mapped[int] = mapped_column(ForeignKey("species.id"))
+    species_id: Mapped[int] = mapped_column(ForeignKey("species.id"), index=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     base_probability: Mapped[float | None] = mapped_column(Float, nullable=True, default=0.20)
     is_degenerative: Mapped[bool] = mapped_column(Boolean, default=True)

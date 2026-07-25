@@ -220,7 +220,6 @@ def bootstrap_reference_data(db: Session) -> None:
         db_rule.name = rule["name"]
         db_rule.disease_id = disease.id
         db_rule.risk_level_id = risk_level.id
-        db_rule.risk_level = normalize_risk_level(rule["risk_level"])
         db_rule.weight = rule["weight"]
         db_rule.priority = rule["priority"]
         db_rule.is_active = True

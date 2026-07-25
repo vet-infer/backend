@@ -88,16 +88,13 @@ class RuleService:
             risk_level = self.repository.get_risk_level(data["risk_level_id"])
             if risk_level is None:
                 raise NotFoundError("Nivel de riesgo no encontrado")
-            data["risk_level"] = risk_level.code
+            data.pop("risk_level", None)
             return
 
-        if "risk_level" in data and data["risk_level"] is not None:
-            risk_level = get_or_create_risk_level(
-                self.repository.db,
-                normalize_risk_level(data["risk_level"]),
-            )
+        risk_level_name = data.pop("risk_level", None)
+        if risk_level_name is not None:
+            risk_level = get_or_create_risk_level(self.repository.db, normalize_risk_level(risk_level_name))
             data["risk_level_id"] = risk_level.id
-            data["risk_level"] = risk_level.code
 
     def _validate_conditions(self, disease_id: int, conditions: list[dict]) -> None:
         disease = self._get_disease_or_raise(disease_id)

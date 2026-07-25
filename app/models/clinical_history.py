@@ -10,7 +10,7 @@ class ClinicalHistory(Base):
     __tablename__ = "clinical_history"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    patient_id: Mapped[int] = mapped_column(ForeignKey("patients.id"))
+    patient_id: Mapped[int] = mapped_column(ForeignKey("patients.id"), index=True)
     evaluation_id: Mapped[int | None] = mapped_column(ForeignKey("evaluations.id"), nullable=True)
     event_type: Mapped[str] = mapped_column(String(60))
     summary: Mapped[str] = mapped_column(Text)

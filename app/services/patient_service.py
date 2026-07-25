@@ -8,8 +8,8 @@ class PatientService:
     def __init__(self, repository: PatientRepository):
         self.repository = repository
 
-    def list_patients(self) -> list[Patient]:
-        return self.repository.list_with_species()
+    def list_patients(self, skip: int = 0, limit: int = 50) -> list[Patient]:
+        return self.repository.list_with_species(skip, limit)
 
     def get_patient(self, patient_id: int) -> Patient:
         patient = self.repository.get_with_species(patient_id)

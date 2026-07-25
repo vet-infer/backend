@@ -15,7 +15,13 @@ class ClinicalProbabilityRepository(BaseRepository[ClinicalProbability]):
         return self.get(entity_id)
 
     def listar_probabilidades(self, skip: int = 0, limit: int = settings.default_page_size) -> list[ClinicalProbability]:
-        return self.db.query(ClinicalProbability).offset(skip).limit(limit).all()
+        return (
+            self.db.query(ClinicalProbability)
+            .filter(ClinicalProbability.is_active == True)
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
 
     def listar_probabilidades_por_enfermedad(self, disease_id: int) -> list[ClinicalProbability]:
         return (

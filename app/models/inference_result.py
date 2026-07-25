@@ -11,11 +11,10 @@ class InferenceResult(Base):
     __tablename__ = "inference_results"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    evaluation_id: Mapped[int] = mapped_column(ForeignKey("evaluations.id"))
-    disease_id: Mapped[int] = mapped_column(ForeignKey("diseases.id"))
-    risk_level_id: Mapped[int] = mapped_column(ForeignKey("risk_levels.id"))
+    evaluation_id: Mapped[int] = mapped_column(ForeignKey("evaluations.id"), index=True)
+    disease_id: Mapped[int] = mapped_column(ForeignKey("diseases.id"), index=True)
+    risk_level_id: Mapped[int] = mapped_column(ForeignKey("risk_levels.id"), index=True)
     suggested_diagnosis: Mapped[str] = mapped_column(String(255))
-    risk_level: Mapped[str] = mapped_column(String(20))
     score: Mapped[float] = mapped_column(Float)
     probability: Mapped[float | None] = mapped_column(Float, nullable=True)
     inference_method: Mapped[str | None] = mapped_column(String(50), nullable=True)
@@ -35,13 +34,17 @@ class InferenceResult(Base):
     def patient_id(self) -> int:
         return self.evaluation.patient_id
 
+    @property
+    def risk_level(self) -> str:
+        return self.risk_level_ref.name
+
 
 class ActivatedRule(Base):
     __tablename__ = "activated_rules"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    result_id: Mapped[int] = mapped_column(ForeignKey("inference_results.id"))
-    rule_id: Mapped[int] = mapped_column(ForeignKey("inference_rules.id"))
+    result_id: Mapped[int] = mapped_column(ForeignKey("inference_results.id"), index=True)
+    rule_id: Mapped[int] = mapped_column(ForeignKey("inference_rules.id"), index=True)
     fulfilled_conditions: Mapped[Any] = mapped_column(JSON)
     justification: Mapped[str] = mapped_column(Text)
     rule_code: Mapped[str | None] = mapped_column(String(50), nullable=True)
