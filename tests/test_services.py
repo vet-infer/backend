@@ -236,9 +236,8 @@ def test_password_recovery_sends_single_use_token_and_resets_password(db):
         email_service,
     )
 
-    message, reset_email = auth_service.request_password_reset(TEST_ADMIN_EMAIL)
+    message = auth_service.request_password_reset(TEST_ADMIN_EMAIL)
     assert "Si el correo existe" in message
-    assert reset_email is None
     assert len(email_service.messages) == 1
     token = email_service.messages[0][1].split("token=", maxsplit=1)[1]
 
@@ -250,12 +249,14 @@ def test_password_recovery_sends_single_use_token_and_resets_password(db):
         auth_service.reset_password(token, "OtraContrasena1")
 
 
-def test_password_recovery_rejects_unknown_email(db):
+def test_password_recovery_returns_generic_message_for_unknown_email(db):
+    email_service = FakeEmailService()
     auth_service = AuthService(
         UserRepository(db),
         PasswordResetTokenRepository(db),
-        FakeEmailService(),
+        email_service,
     )
 
-    with pytest.raises(NotFoundError, match="No existe un usuario con ese correo"):
-        auth_service.request_password_reset("no-registrado@example.test")
+    message = auth_service.request_password_reset("no-registrado@example.test")
+    assert "Si el correo existe" in message
+    assert len(email_service.messages) == 0

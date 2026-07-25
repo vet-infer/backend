@@ -36,17 +36,8 @@ class ChangePasswordRequest(BaseModel):
         return value
 
 
-class PasswordResetEmailPayload(BaseModel):
-    to_email: str
-    to_name: str
-    reset_url: str
-    reset_token: str
-    expires_minutes: int
-
-
 class MessageResponse(BaseModel):
     message: str
-    reset_email: PasswordResetEmailPayload | None = None
 
 
 class ForgotPasswordRequest(BaseModel):
