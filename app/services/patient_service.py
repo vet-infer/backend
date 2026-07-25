@@ -52,11 +52,7 @@ class PatientService:
             if breed.species_id != species_id:
                 raise AppException("La raza no pertenece a la especie seleccionada")
 
-        for field, value in data.items():
-            setattr(patient, field, value)
-        self.repository.db.commit()
-        self.repository.db.refresh(patient)
-        return patient
+        return self.repository.update(patient, data)
 
     def delete_patient(self, patient_id: int) -> None:
         patient = self.get_patient(patient_id)

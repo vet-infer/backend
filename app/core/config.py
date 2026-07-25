@@ -33,6 +33,8 @@ class Settings(BaseSettings):
     probability_precision: int = 4
     inference_high_score_threshold: float = 7.0
     inference_moderate_score_threshold: float = 4.0
+    bayes_high_probability_threshold: float = 0.70
+    bayes_moderate_probability_threshold: float = 0.40
     seed_data_path: Path = Path("app/seeds/clinical_reference_data.json")
 
     model_config = SettingsConfigDict(

@@ -17,7 +17,6 @@ from app.api.v1.routers import (
     inference,
     owners,
     patients,
-    results,
     risk_levels,
     rules,
     symptoms,
@@ -81,7 +80,6 @@ app.include_router(clinical_probabilities.router, prefix=settings.api_v1_prefix)
 app.include_router(risk_levels.router, prefix=settings.api_v1_prefix)
 app.include_router(rules.router, prefix=settings.api_v1_prefix)
 app.include_router(inference.router, prefix=settings.api_v1_prefix)
-app.include_router(results.router, prefix=settings.api_v1_prefix)
 app.include_router(history.router, prefix=settings.api_v1_prefix)
 
 

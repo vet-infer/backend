@@ -30,11 +30,7 @@ class SpeciesService:
         if "name" in data and data["name"] != species.name:
             if self.repository.get_by_name(data["name"]):
                 raise ConflictError("Ya existe una especie con ese nombre")
-        for field, value in data.items():
-            setattr(species, field, value)
-        self.repository.db.commit()
-        self.repository.db.refresh(species)
-        return species
+        return self.repository.update(species, data)
 
     def delete_species(self, species_id: int) -> None:
         species = self.get_species(species_id)

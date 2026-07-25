@@ -83,8 +83,7 @@ class AuthService:
             raise UnauthorizedError("El enlace de recuperacion es invalido o ha vencido")
 
         user.password_hash = get_password_hash(new_password)
-        reset_token.used_at = datetime.now(timezone.utc)
-        self.user_repository.db.commit()
+        self.reset_token_repository.mark_used(reset_token, datetime.now(timezone.utc))
 
     @staticmethod
     def _hash_reset_token(token: str) -> str:

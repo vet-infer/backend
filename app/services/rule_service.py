@@ -1,14 +1,15 @@
 from app.core.exceptions import ConflictError, NotFoundError
 from app.models.disease import Disease
 from app.models.knowledge import FactDefinition
+from app.repositories.risk_level_repository import RiskLevelRepository
 from app.repositories.rule_repository import RuleRepository
 from app.schemas.rule import RuleCreate, RuleStatusUpdate, RuleUpdate
-from app.services.bootstrap_service import get_or_create_risk_level, normalize_risk_level
 
 
 class RuleService:
-    def __init__(self, repository: RuleRepository):
+    def __init__(self, repository: RuleRepository, risk_level_repository: RiskLevelRepository | None = None):
         self.repository = repository
+        self.risk_level_repository = risk_level_repository or RiskLevelRepository(repository.db)
 
     def list_rules(self):
         return self.repository.list_with_conditions()
@@ -58,24 +59,18 @@ class RuleService:
         else:
             conditions = None
 
-        for field, value in data.items():
-            setattr(rule, field, value)
-
         if conditions is not None:
+            for field, value in data.items():
+                setattr(rule, field, value)
             return self.repository.replace_conditions(rule, conditions)
 
-        self.repository.db.commit()
-        self.repository.db.refresh(rule)
-        return rule
+        return self.repository.update(rule, data)
 
     def update_status(self, rule_id: int, payload: RuleStatusUpdate):
         rule = self.repository.get_with_conditions(rule_id)
         if rule is None:
             raise NotFoundError("Regla no encontrada")
-        rule.is_active = payload.is_active
-        self.repository.db.commit()
-        self.repository.db.refresh(rule)
-        return rule
+        return self.repository.update(rule, {"is_active": payload.is_active})
 
     def _get_disease_or_raise(self, disease_id: int) -> Disease:
         disease = self.repository.db.get(Disease, disease_id)
@@ -93,7 +88,7 @@ class RuleService:
 
         risk_level_name = data.pop("risk_level", None)
         if risk_level_name is not None:
-            risk_level = get_or_create_risk_level(self.repository.db, normalize_risk_level(risk_level_name))
+            risk_level = self.risk_level_repository.get_or_create(risk_level_name)
             data["risk_level_id"] = risk_level.id
 
     def _validate_conditions(self, disease_id: int, conditions: list[dict]) -> None:

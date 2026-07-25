@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta, timezone
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from passlib.exc import PasswordTruncateError
+from pydantic import AfterValidator, Field
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
@@ -25,6 +26,24 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.api_v1_prefix}/auth/lo
 def validate_bcrypt_password_length(password: str) -> None:
     if len(password.encode("utf-8")) > BCRYPT_MAX_PASSWORD_BYTES:
         raise ValueError("La contrasena no puede superar 72 bytes")
+
+
+def _validate_password_bytes(password: str) -> str:
+    validate_bcrypt_password_length(password)
+    return password
+
+
+def _validate_optional_password_bytes(password: str | None) -> str | None:
+    if password is None:
+        return password
+    validate_bcrypt_password_length(password)
+    return password
+
+
+RequiredPassword = Annotated[str, Field(min_length=8, max_length=72), AfterValidator(_validate_password_bytes)]
+OptionalPassword = Annotated[
+    str | None, Field(default=None, min_length=8, max_length=72), AfterValidator(_validate_optional_password_bytes)
+]
 
 
 def verify_password(plain_password: str, password_hash: str) -> bool:

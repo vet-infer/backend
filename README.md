@@ -158,7 +158,7 @@ Para produccion deben configurarse `FRONTEND_BASE_URL`, `SMTP_HOST`, `SMTP_PORT`
 - `GET /api/v1/patients/{patient_id}/evaluations`
 - `POST /api/v1/evaluaciones/{evaluation_id}/procesar`
 - `GET /api/v1/evaluations/{evaluation_id}/results`
-- `GET /api/v1/results/{result_id}/activated-rules`
+- `GET /api/v1/inference/results/{result_id}/activated-rules`
 
 ## Flujo Clinico OE3
 

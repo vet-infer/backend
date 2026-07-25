@@ -51,11 +51,7 @@ class BreedService:
             if existing and existing.id != breed_id:
                 raise ConflictError("Ya existe esta raza para la especie seleccionada")
 
-        for field, value in data.items():
-            setattr(breed, field, value)
-        self.repository.db.commit()
-        self.repository.db.refresh(breed)
-        return breed
+        return self.repository.update(breed, data)
 
     def delete_breed(self, breed_id: int) -> None:
         breed = self.get_breed(breed_id)

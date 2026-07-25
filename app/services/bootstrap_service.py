@@ -5,7 +5,6 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.core.constants import DEFAULT_RISK_LEVEL
 from app.core.security import get_password_hash
 from app.models.breed import Breed
 from app.models.clinical_probability import ClinicalProbability
@@ -18,6 +17,24 @@ from app.models.species import Species
 from app.models.symptom import Symptom
 from app.models.user import User
 from app.models.knowledge import FactDefinition, KnowledgeSource, RuleReference
+from app.repositories.risk_level_repository import RiskLevelRepository
+
+DEFAULT_ALLOWED_VALUES = {
+    "placa": ["ausente", "leve", "moderada", "severa"],
+    "glucosuria": ["negativa", "positiva"],
+    "felv_p27": ["negativo", "positivo"],
+    "snap_felv": ["negativo", "positivo"],
+}
+
+KNOWLEDGE_SOURCE_SPECS = {
+    "ERC": ("Kim y Yun (2026)", "Kim y Yun (2026)"),
+    "DM": ("Winiarczyk et al. (2022)", "Winiarczyk et al. (2022)"),
+    "CARD": ("Park, Choi y Hyun (2026)", "Park, Choi y Hyun (2026)"),
+    "FELV": ("Beall et al. (2025)", "Beall et al. (2025)"),
+    "PER": ("Wallis, Colyer y Holcombe (2025)", "Wallis, Colyer y Holcombe (2025)"),
+}
+
+LEGACY_RULE_CODES = ["MMVD-R01", "MMVD-R02", "PERIO-R01"]
 
 
 def load_seed_data() -> dict[str, Any]:
@@ -26,40 +43,6 @@ def load_seed_data() -> dict[str, Any]:
         path = Path.cwd() / path
     with path.open(encoding="utf-8-sig") as seed_file:
         return json.load(seed_file)
-
-
-def normalize_risk_level(value: str | None) -> str:
-    normalized = (value or DEFAULT_RISK_LEVEL).strip().lower()
-    aliases = {
-        "low": "bajo",
-        "medium": "moderado",
-        "moderate": "moderado",
-        "high": "alto",
-    }
-    return aliases.get(normalized, normalized)
-
-
-def get_or_create_risk_level(db: Session, code: str) -> RiskLevel:
-    normalized_code = normalize_risk_level(code)
-    risk_level = db.query(RiskLevel).filter(RiskLevel.code == normalized_code).first()
-    if risk_level is not None:
-        return risk_level
-
-    seed = next((item for item in load_seed_data()["risk_levels"] if item["code"] == normalized_code), None)
-    if seed is None:
-        seed = {
-            "code": normalized_code,
-            "name": normalized_code.capitalize(),
-            "description": "Nivel de riesgo clinico definido por el sistema.",
-            "min_probability": None,
-            "max_probability": None,
-            "sort_order": 99,
-        }
-    risk_level = RiskLevel(**seed, is_active=True)
-    db.add(risk_level)
-    db.commit()
-    db.refresh(risk_level)
-    return risk_level
 
 
 def _species_id(db: Session, name: str) -> int:
@@ -92,24 +75,28 @@ def _variable_id(db: Session, key: str, species_name: str) -> int | None:
     return variable.id if variable else None
 
 
-def bootstrap_reference_data(db: Session) -> None:
-    seed_data = load_seed_data()
-
+def _seed_roles(db: Session, seed_data: dict) -> None:
     for role in seed_data["roles"]:
         if db.query(Role).filter(Role.name == role["name"]).first() is None:
             db.add(Role(name=role["name"], description=role["description"]))
     db.commit()
 
+
+def _seed_risk_levels(db: Session, seed_data: dict) -> None:
     for risk_level in seed_data["risk_levels"]:
         if db.query(RiskLevel).filter(RiskLevel.code == risk_level["code"]).first() is None:
             db.add(RiskLevel(**risk_level, is_active=True))
     db.commit()
 
+
+def _seed_species(db: Session, seed_data: dict) -> None:
     for species_name in seed_data["species"]:
         if db.query(Species).filter(Species.name == species_name).first() is None:
             db.add(Species(name=species_name))
     db.commit()
 
+
+def _seed_breeds(db: Session, seed_data: dict) -> None:
     for species_name, breed_names in seed_data["breeds"].items():
         species_id = _species_id(db, species_name)
         for breed_name in breed_names:
@@ -121,22 +108,28 @@ def bootstrap_reference_data(db: Session) -> None:
                 db.add(Breed(species_id=species_id, name=breed_name))
     db.commit()
 
-    admin_role = db.query(Role).filter(Role.name == "admin").first()
-    if settings.bootstrap_admin_email and settings.bootstrap_admin_password and admin_role:
-        existing_admin = db.query(User).filter(User.email == settings.bootstrap_admin_email).first()
-        # Solo se crea el admin la primera vez; nunca se sobrescribe una cuenta ya existente
-        # (evita resetear silenciosamente la contrasena/rol del admin en cada reinicio).
-        if existing_admin is None:
-            db.add(
-                User(
-                    full_name="Administrador",
-                    email=settings.bootstrap_admin_email,
-                    password_hash=get_password_hash(settings.bootstrap_admin_password),
-                    role_id=admin_role.id,
-                )
-            )
-            db.commit()
 
+def _seed_admin_user(db: Session) -> None:
+    admin_role = db.query(Role).filter(Role.name == "admin").first()
+    if not (settings.bootstrap_admin_email and settings.bootstrap_admin_password and admin_role):
+        return
+
+    existing_admin = db.query(User).filter(User.email == settings.bootstrap_admin_email).first()
+    # Solo se crea el admin la primera vez; nunca se sobrescribe una cuenta ya existente
+    # (evita resetear silenciosamente la contrasena/rol del admin en cada reinicio).
+    if existing_admin is None:
+        db.add(
+            User(
+                full_name="Administrador",
+                email=settings.bootstrap_admin_email,
+                password_hash=get_password_hash(settings.bootstrap_admin_password),
+                role_id=admin_role.id,
+            )
+        )
+        db.commit()
+
+
+def _seed_symptoms(db: Session, seed_data: dict) -> None:
     for symptom in seed_data["symptoms"]:
         species_id = _species_id(db, symptom["species"])
         existing = db.query(Symptom).filter(
@@ -147,6 +140,8 @@ def bootstrap_reference_data(db: Session) -> None:
             db.add(Symptom(name=symptom["name"], species_id=species_id))
     db.commit()
 
+
+def _seed_clinical_variables(db: Session, seed_data: dict) -> None:
     for variable in seed_data["clinical_variables"]:
         species_id = _species_id(db, variable["species"])
         existing = db.query(ClinicalVariable).filter(
@@ -167,32 +162,56 @@ def bootstrap_reference_data(db: Session) -> None:
             )
     db.commit()
 
-    default_allowed_values = {
-        "placa": ["ausente", "leve", "moderada", "severa"],
-        "glucosuria": ["negativa", "positiva"],
-        "felv_p27": ["negativo", "positivo"],
-        "snap_felv": ["negativo", "positivo"],
-    }
+
+def _seed_fact_definitions(db: Session, seed_data: dict) -> None:
     variable_allowed_values = {
-        (variable["key"], _species_id(db, variable["species"])): variable.get("allowed_values", default_allowed_values.get(variable["key"]))
+        (variable["key"], _species_id(db, variable["species"])): variable.get(
+            "allowed_values", DEFAULT_ALLOWED_VALUES.get(variable["key"])
+        )
         for variable in seed_data["clinical_variables"]
     }
 
     # The dictionary is derived from existing active catalogues; it never creates clinical facts not available in OE3.
     for symptom in db.query(Symptom).filter(Symptom.is_active.is_(True)).all():
-        exists = db.query(FactDefinition).filter(FactDefinition.fact_key == symptom.name, FactDefinition.species_id == symptom.species_id).first()
+        exists = db.query(FactDefinition).filter(
+            FactDefinition.fact_key == symptom.name, FactDefinition.species_id == symptom.species_id
+        ).first()
         if exists is None:
-            db.add(FactDefinition(fact_key=symptom.name, display_name=symptom.name, source_type="symptom", data_type="boolean", species_id=symptom.species_id, symptom_id=symptom.id, is_active=True))
+            db.add(
+                FactDefinition(
+                    fact_key=symptom.name,
+                    display_name=symptom.name,
+                    source_type="symptom",
+                    data_type="boolean",
+                    species_id=symptom.species_id,
+                    symptom_id=symptom.id,
+                    is_active=True,
+                )
+            )
+
     for variable in db.query(ClinicalVariable).filter(ClinicalVariable.is_active.is_(True)).all():
-        exists = db.query(FactDefinition).filter(FactDefinition.fact_key == variable.key, FactDefinition.species_id == variable.species_id).first()
+        exists = db.query(FactDefinition).filter(
+            FactDefinition.fact_key == variable.key, FactDefinition.species_id == variable.species_id
+        ).first()
         if exists is None:
-            exists = FactDefinition(fact_key=variable.key, display_name=variable.name, source_type="clinical_variable", data_type=variable.data_type, unit=variable.unit, species_id=variable.species_id, clinical_variable_id=variable.id, is_active=True)
+            exists = FactDefinition(
+                fact_key=variable.key,
+                display_name=variable.name,
+                source_type="clinical_variable",
+                data_type=variable.data_type,
+                unit=variable.unit,
+                species_id=variable.species_id,
+                clinical_variable_id=variable.id,
+                is_active=True,
+            )
             db.add(exists)
         allowed_values = variable_allowed_values.get((variable.key, variable.species_id))
         if allowed_values is not None:
             exists.allowed_values = allowed_values
     db.commit()
 
+
+def _seed_diseases(db: Session, seed_data: dict) -> None:
     for disease in seed_data["diseases"]:
         species_id = _species_id(db, disease["species"])
         existing = db.query(Disease).filter(
@@ -210,9 +229,12 @@ def bootstrap_reference_data(db: Session) -> None:
             )
     db.commit()
 
+
+def _seed_rules(db: Session, seed_data: dict) -> None:
+    risk_level_repository = RiskLevelRepository(db)
     for rule in seed_data["rules"]:
         disease = _disease(db, rule["disease"], rule["species"])
-        risk_level = get_or_create_risk_level(db, rule["risk_level"])
+        risk_level = risk_level_repository.get_or_create(rule["risk_level"])
         db_rule = db.query(InferenceRule).filter(InferenceRule.code == rule["code"]).first()
         if db_rule is None:
             db_rule = InferenceRule(code=rule["code"], disease_id=disease.id, risk_level_id=risk_level.id)
@@ -238,13 +260,17 @@ def bootstrap_reference_data(db: Session) -> None:
             )
         db.commit()
 
-    # Reglas del catálogo inicial sustituidas por los códigos de la tabla 12.
-    db.query(InferenceRule).filter(
-        InferenceRule.code.in_(["MMVD-R01", "MMVD-R02", "PERIO-R01"])
-    ).update({"is_active": False}, synchronize_session=False)
+
+def _deactivate_legacy_rules(db: Session) -> None:
+    # Reglas del catalogo inicial sustituidas por los codigos de la tabla 12.
+    db.query(InferenceRule).filter(InferenceRule.code.in_(LEGACY_RULE_CODES)).update(
+        {"is_active": False}, synchronize_session=False
+    )
     db.commit()
 
-    # Los valores categóricos publicados al frontend se derivan de condiciones
+
+def _backfill_categorical_allowed_values(db: Session) -> None:
+    # Los valores categoricos publicados al frontend se derivan de condiciones
     # seed existentes; no se agregan facts ni reglas fuera del alcance OE3.
     for definition in db.query(FactDefinition).filter(
         FactDefinition.data_type.in_(["string", "categorical", "select"])
@@ -268,24 +294,30 @@ def bootstrap_reference_data(db: Session) -> None:
             definition.allowed_values = list(dict.fromkeys(values))
     db.commit()
 
+
+def _seed_knowledge_references(db: Session) -> None:
     # References are limited to citations already present in the academic Markdown.
-    source_specs = {
-        "ERC": ("Kim y Yun (2026)", "Kim y Yun (2026)"),
-        "DM": ("Winiarczyk et al. (2022)", "Winiarczyk et al. (2022)"),
-        "CARD": ("Park, Choi y Hyun (2026)", "Park, Choi y Hyun (2026)"),
-        "FELV": ("Beall et al. (2025)", "Beall et al. (2025)"),
-        "PER": ("Wallis, Colyer y Holcombe (2025)", "Wallis, Colyer y Holcombe (2025)"),
-    }
-    for prefix, (title, citation) in source_specs.items():
+    for prefix, (title, citation) in KNOWLEDGE_SOURCE_SPECS.items():
         source = db.query(KnowledgeSource).filter(KnowledgeSource.citation == citation).first()
         if source is None:
             source = KnowledgeSource(title=title, citation=citation, is_active=True)
-            db.add(source); db.flush()
+            db.add(source)
+            db.flush()
         for rule in db.query(InferenceRule).filter(InferenceRule.code.like(f"{prefix}%")).all():
-            if db.query(RuleReference).filter(RuleReference.rule_id == rule.id, RuleReference.source_id == source.id).first() is None:
-                db.add(RuleReference(rule_id=rule.id, source_id=source.id, rationale="Fuente cl?nica citada en Base de Conocimiento.md."))
+            if db.query(RuleReference).filter(
+                RuleReference.rule_id == rule.id, RuleReference.source_id == source.id
+            ).first() is None:
+                db.add(
+                    RuleReference(
+                        rule_id=rule.id,
+                        source_id=source.id,
+                        rationale="Fuente clinica citada en Base de Conocimiento.md.",
+                    )
+                )
     db.commit()
 
+
+def _seed_clinical_probabilities(db: Session, seed_data: dict) -> None:
     for probability in seed_data["clinical_probabilities"]:
         disease = _disease(db, probability["disease"], probability["species"])
         symptom_id = (
@@ -318,3 +350,22 @@ def bootstrap_reference_data(db: Session) -> None:
                 )
             )
     db.commit()
+
+
+def bootstrap_reference_data(db: Session) -> None:
+    seed_data = load_seed_data()
+
+    _seed_roles(db, seed_data)
+    _seed_risk_levels(db, seed_data)
+    _seed_species(db, seed_data)
+    _seed_breeds(db, seed_data)
+    _seed_admin_user(db)
+    _seed_symptoms(db, seed_data)
+    _seed_clinical_variables(db, seed_data)
+    _seed_fact_definitions(db, seed_data)
+    _seed_diseases(db, seed_data)
+    _seed_rules(db, seed_data)
+    _deactivate_legacy_rules(db)
+    _backfill_categorical_allowed_values(db)
+    _seed_knowledge_references(db)
+    _seed_clinical_probabilities(db, seed_data)

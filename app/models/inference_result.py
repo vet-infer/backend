@@ -1,16 +1,15 @@
-from datetime import datetime
 from typing import Any
 
-from sqlalchemy import DateTime, Float, ForeignKey, JSON, String, Text, func
+from sqlalchemy import Float, ForeignKey, JSON, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
+from app.models.mixins import IDMixin, TimestampMixin
 
 
-class InferenceResult(Base):
+class InferenceResult(IDMixin, TimestampMixin, Base):
     __tablename__ = "inference_results"
 
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
     evaluation_id: Mapped[int] = mapped_column(ForeignKey("evaluations.id"), index=True)
     disease_id: Mapped[int] = mapped_column(ForeignKey("diseases.id"), index=True)
     risk_level_id: Mapped[int] = mapped_column(ForeignKey("risk_levels.id"), index=True)
@@ -19,7 +18,6 @@ class InferenceResult(Base):
     probability: Mapped[float | None] = mapped_column(Float, nullable=True)
     inference_method: Mapped[str | None] = mapped_column(String(50), nullable=True)
     explanation: Mapped[str | None] = mapped_column(Text, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     evaluation = relationship("EvaluationClinical", back_populates="results")
     disease = relationship("Disease", back_populates="results")
@@ -39,10 +37,9 @@ class InferenceResult(Base):
         return self.risk_level_ref.name
 
 
-class ActivatedRule(Base):
+class ActivatedRule(IDMixin, TimestampMixin, Base):
     __tablename__ = "activated_rules"
 
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
     result_id: Mapped[int] = mapped_column(ForeignKey("inference_results.id"), index=True)
     rule_id: Mapped[int] = mapped_column(ForeignKey("inference_rules.id"), index=True)
     fulfilled_conditions: Mapped[Any] = mapped_column(JSON)

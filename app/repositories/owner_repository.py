@@ -14,15 +14,11 @@ class OwnerRepository(BaseRepository[Owner]):
     def create(self, data: dict) -> Owner:
         return self.add(Owner(**data))
 
-    def update(self, owner_id: int, data: dict) -> Owner | None:
+    def update_by_id(self, owner_id: int, data: dict) -> Owner | None:
         owner = self.get(owner_id)
         if owner is None:
             return None
-        for field, value in data.items():
-            setattr(owner, field, value)
-        self.db.commit()
-        self.db.refresh(owner)
-        return owner
+        return self.update(owner, data)
 
     def delete(self, owner_id: int) -> None:
         owner = self.get(owner_id)

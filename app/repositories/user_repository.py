@@ -36,13 +36,3 @@ class UserRepository(BaseRepository[User]):
         self.db.refresh(user)
         return user
 
-    def ensure_default_roles(self) -> None:
-        for name, description in [
-            ("admin", "Administrador del sistema"),
-            ("veterinario", "Medico veterinario"),
-            ("evaluador", "Asesor o evaluador academico"),
-        ]:
-            if self.db.query(Role).filter(Role.name == name).first() is None:
-                self.db.add(Role(name=name, description=description))
-        self.db.commit()
-
