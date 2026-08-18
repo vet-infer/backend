@@ -2,12 +2,15 @@ from sqlalchemy.orm import joinedload
 
 from app.models.clinical_history import ClinicalHistory
 from app.models.inference_result import ActivatedRule, InferenceResult
+from app.repositories.base import BaseRepository
 from app.repositories.risk_level_repository import RiskLevelRepository
 
 
-class ResultRepository:
+class ResultRepository(BaseRepository[InferenceResult]):
+    model = InferenceResult
+
     def __init__(self, db):
-        self.db = db
+        super().__init__(db)
         self.risk_level_repository = RiskLevelRepository(db)
 
     def create_results(
