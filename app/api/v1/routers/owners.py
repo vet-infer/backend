@@ -5,6 +5,7 @@ from app.core.config import settings
 from app.core.database import get_db
 from app.core.permissions import PermissionPolicy, require_policy
 from app.models.user import User
+from app.repositories.owner_repository import OwnerRepository
 from app.schemas.owner import OwnerCreate, OwnerOut, OwnerUpdate
 from app.services.owner_service import OwnerService
 
@@ -17,7 +18,7 @@ def create_owner(
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
-    return OwnerService(db).create_owner(schema)
+    return OwnerService(OwnerRepository(db)).create_owner(schema)
 
 
 @router.get("/", response_model=list[OwnerOut])
@@ -27,7 +28,7 @@ def get_owners(
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
-    return OwnerService(db).list_owners(skip, limit)
+    return OwnerService(OwnerRepository(db)).list_owners(skip, limit)
 
 
 @router.get("/{owner_id}", response_model=OwnerOut)
@@ -36,7 +37,7 @@ def get_owner(
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
-    return OwnerService(db).get_owner(owner_id)
+    return OwnerService(OwnerRepository(db)).get_owner(owner_id)
 
 
 @router.put("/{owner_id}", response_model=OwnerOut)
@@ -46,7 +47,7 @@ def update_owner(
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
-    return OwnerService(db).update_owner(owner_id, schema)
+    return OwnerService(OwnerRepository(db)).update_owner(owner_id, schema)
 
 
 @router.delete("/{owner_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -55,5 +56,5 @@ def delete_owner(
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
-    OwnerService(db).delete_owner(owner_id)
+    OwnerService(OwnerRepository(db)).delete_owner(owner_id)
 

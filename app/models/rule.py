@@ -1,24 +1,22 @@
 from typing import Any
 
-from sqlalchemy import Boolean, Float, ForeignKey, Integer, JSON, String
+from sqlalchemy import Float, ForeignKey, Integer, JSON, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
+from app.models.mixins import IDMixin, SoftDeleteMixin, TimestampMixin
 
 
-class InferenceRule(Base):
+class InferenceRule(IDMixin, TimestampMixin, SoftDeleteMixin, Base):
     __tablename__ = "inference_rules"
 
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
     code: Mapped[str] = mapped_column(String(50), unique=True, index=True)
     name: Mapped[str] = mapped_column(String(150))
-    disease_id: Mapped[int] = mapped_column(ForeignKey("diseases.id"))
-    risk_level_id: Mapped[int] = mapped_column(ForeignKey("risk_levels.id"))
-    risk_level: Mapped[str] = mapped_column(String(20), default="moderado")
+    disease_id: Mapped[int] = mapped_column(ForeignKey("diseases.id"), index=True)
+    risk_level_id: Mapped[int] = mapped_column(ForeignKey("risk_levels.id"), index=True)
     weight: Mapped[float] = mapped_column(Float, default=1.0)
     priority: Mapped[int] = mapped_column(Integer, default=1)
     version: Mapped[int] = mapped_column(Integer, default=1)
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
     disease = relationship("Disease", back_populates="rules")
     risk_level_ref = relationship("RiskLevel", back_populates="rules")
@@ -30,12 +28,15 @@ class InferenceRule(Base):
     activated_records = relationship("ActivatedRule", back_populates="rule")
     references = relationship("RuleReference", back_populates="rule", cascade="all, delete-orphan")
 
+    @property
+    def risk_level(self) -> str:
+        return self.risk_level_ref.code
 
-class RuleCondition(Base):
+
+class RuleCondition(IDMixin, TimestampMixin, Base):
     __tablename__ = "rule_conditions"
 
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    rule_id: Mapped[int] = mapped_column(ForeignKey("inference_rules.id"))
+    rule_id: Mapped[int] = mapped_column(ForeignKey("inference_rules.id"), index=True)
     variable_key: Mapped[str] = mapped_column(String(100), index=True)
     operator: Mapped[str] = mapped_column(String(30))
     expected_value: Mapped[Any] = mapped_column(JSON)

@@ -15,7 +15,25 @@ class ClinicalProbabilityRepository(BaseRepository[ClinicalProbability]):
         return self.get(entity_id)
 
     def listar_probabilidades(self, skip: int = 0, limit: int = settings.default_page_size) -> list[ClinicalProbability]:
-        return self.db.query(ClinicalProbability).offset(skip).limit(limit).all()
+        return (
+            self.db.query(ClinicalProbability)
+            .filter(ClinicalProbability.is_active == True)
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
+
+    def listar_por_enfermedades(self, disease_ids: list[int]) -> list[ClinicalProbability]:
+        if not disease_ids:
+            return []
+        return (
+            self.db.query(ClinicalProbability)
+            .filter(
+                ClinicalProbability.is_active == True,
+                ClinicalProbability.disease_id.in_(disease_ids),
+            )
+            .all()
+        )
 
     def listar_probabilidades_por_enfermedad(self, disease_id: int) -> list[ClinicalProbability]:
         return (
@@ -24,37 +42,16 @@ class ClinicalProbabilityRepository(BaseRepository[ClinicalProbability]):
             .all()
         )
 
-    def buscar_probabilidad_por_evidencia(
-        self, disease_id: int, symptom_id: int | None = None, variable_id: int | None = None
-    ) -> ClinicalProbability | None:
-        query = self.db.query(ClinicalProbability).filter(
-            ClinicalProbability.disease_id == disease_id,
-            ClinicalProbability.is_active == True
-        )
-        if symptom_id is not None:
-            query = query.filter(ClinicalProbability.symptom_id == symptom_id)
-        elif variable_id is not None:
-            query = query.filter(ClinicalProbability.variable_id == variable_id)
-        else:
-            return None
-        return query.first()
-
     def actualizar_probabilidad(self, entity_id: int, updates: dict) -> ClinicalProbability | None:
         prob = self.get(entity_id)
         if not prob:
             return None
-        for key, val in updates.items():
-            setattr(prob, key, val)
-        self.db.commit()
-        self.db.refresh(prob)
-        return prob
+        return self.update(prob, updates)
 
     def desactivar_probabilidad(self, entity_id: int) -> ClinicalProbability | None:
         prob = self.get(entity_id)
         if not prob:
             return None
-        prob.is_active = False
-        self.db.commit()
-        self.db.refresh(prob)
+        self.delete(prob)
         return prob
 

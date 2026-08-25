@@ -134,9 +134,9 @@ class BayesService:
 
     def _risk_from_probability(self, probabilidad: float) -> str:
         probability = max(0.0, min(1.0, probabilidad))
-        if probability >= 0.70:
+        if probability >= settings.bayes_high_probability_threshold:
             return RISK_HIGH.capitalize()
-        if probability >= 0.40:
+        if probability >= settings.bayes_moderate_probability_threshold:
             return RISK_MODERATE.capitalize()
         return RISK_LOW.capitalize()
 

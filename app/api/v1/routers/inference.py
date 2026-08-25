@@ -12,7 +12,6 @@ from app.schemas.inference import (
     InferenceRequest,
     InferenceResultOut,
     PersistedActivatedRuleOut,
-    PersistedInferenceResultOut,
 )
 from app.services.inference_service import InferenceService
 
@@ -34,20 +33,8 @@ def run_inference(
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
 ):
-    facts = {fact.key: fact.value for fact in payload.facts}
+    facts = {fact.fact_key: fact.value for fact in payload.facts}
     return _service(db).run_from_payload(payload.patient_id, facts)
-
-
-@router.post(
-    "/evaluations/{evaluation_id}/run",
-    response_model=list[PersistedInferenceResultOut],
-)
-def run_inference_for_evaluation(
-    evaluation_id: int,
-    db: Session = Depends(get_db),
-    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
-):
-    return _service(db).run_and_persist(evaluation_id)
 
 
 @router.get("/results/{result_id}/activated-rules", response_model=list[PersistedActivatedRuleOut])

@@ -14,7 +14,6 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60
     password_reset_token_expire_minutes: int = 15
-    password_reset_delivery: str = "smtp"
     frontend_base_url: str = "http://localhost:5173"
     smtp_host: str | None = None
     smtp_port: int = 587
@@ -34,6 +33,8 @@ class Settings(BaseSettings):
     probability_precision: int = 4
     inference_high_score_threshold: float = 7.0
     inference_moderate_score_threshold: float = 4.0
+    bayes_high_probability_threshold: float = 0.70
+    bayes_moderate_probability_threshold: float = 0.40
     seed_data_path: Path = Path("app/seeds/clinical_reference_data.json")
 
     model_config = SettingsConfigDict(
@@ -48,8 +49,9 @@ class Settings(BaseSettings):
         if self.database_url.startswith("postgresql://"):
             self.database_url = self.database_url.replace("postgresql://", "postgresql+psycopg://", 1)
 
-        if self.password_reset_delivery not in {"smtp", "emailjs"}:
-            raise ValueError("PASSWORD_RESET_DELIVERY debe ser smtp o emailjs.")
+        for field_name in ("smtp_host", "smtp_username", "smtp_password", "smtp_from_email"):
+            if getattr(self, field_name) == "":
+                setattr(self, field_name, None)
 
         if self.environment.lower() in {"production", "prod"}:
             if self._is_local_frontend_url(self.frontend_base_url):

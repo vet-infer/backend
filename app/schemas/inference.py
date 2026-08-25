@@ -3,16 +3,13 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-
-class ClinicalFact(BaseModel):
-    key: str
-    value: Any
+from app.schemas.evaluation import ClinicalFactIn, ClinicalFactOut
 
 
 class InferenceRequest(BaseModel):
     patient_id: int
     evaluation_id: int | None = None
-    facts: list[ClinicalFact] = Field(min_length=1)
+    facts: list[ClinicalFactIn] = Field(min_length=1)
 
 
 class ActivatedRuleOut(BaseModel):
@@ -78,17 +75,6 @@ class SpanishInferenceResponse(BaseModel):
     resultados: list[SpanishInferenceResult]
 
 
-class ClinicalHistoryFactOut(BaseModel):
-    id: int
-    patient_id: int
-    evaluation_id: int
-    fact_key: str
-    value: Any
-    source_type: str
-
-    model_config = {"from_attributes": True}
-
-
 class ClinicalHistoryOut(BaseModel):
     id: int
     patient_id: int
@@ -96,6 +82,6 @@ class ClinicalHistoryOut(BaseModel):
     event_type: str
     summary: str
     created_at: datetime | None = None
-    clinical_facts: list[ClinicalHistoryFactOut] = []
+    clinical_facts: list[ClinicalFactOut] = []
 
     model_config = {"from_attributes": True}

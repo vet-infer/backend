@@ -30,6 +30,13 @@ class BaseRepository(Generic[ModelT]):
         self.db.refresh(entity)
         return entity
 
+    def update(self, entity: ModelT, data: dict) -> ModelT:
+        for field, value in data.items():
+            setattr(entity, field, value)
+        self.db.commit()
+        self.db.refresh(entity)
+        return entity
+
     def delete(self, entity: ModelT) -> None:
         if hasattr(entity, "is_active"):
             entity.is_active = False

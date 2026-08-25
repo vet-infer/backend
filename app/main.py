@@ -2,7 +2,11 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 
+from app.core.rate_limit import limiter
 from app.api.v1.routers import (
     auth,
     clinical_variables,
@@ -13,7 +17,6 @@ from app.api.v1.routers import (
     inference,
     owners,
     patients,
-    results,
     risk_levels,
     rules,
     symptoms,
@@ -30,7 +33,10 @@ from app.services.bootstrap_service import bootstrap_reference_data
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    Base.metadata.create_all(bind=engine)
+    if engine.dialect.name != "postgresql":
+        # Alembic is the source of truth for Postgres (dev/prod). SQLite is only
+        # used as an ephemeral test database with no migration history to run.
+        Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
         bootstrap_reference_data(db)
@@ -57,6 +63,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+
 register_exception_handlers(app)
 
 app.include_router(auth.router, prefix=settings.api_v1_prefix)
@@ -73,7 +83,6 @@ app.include_router(clinical_probabilities.router, prefix=settings.api_v1_prefix)
 app.include_router(risk_levels.router, prefix=settings.api_v1_prefix)
 app.include_router(rules.router, prefix=settings.api_v1_prefix)
 app.include_router(inference.router, prefix=settings.api_v1_prefix)
-app.include_router(results.router, prefix=settings.api_v1_prefix)
 app.include_router(history.router, prefix=settings.api_v1_prefix)
 
 

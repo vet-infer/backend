@@ -1,13 +1,11 @@
 from datetime import datetime, timezone
 
-from sqlalchemy.orm import Session
-
 from app.models.password_reset_token import PasswordResetToken
+from app.repositories.base import BaseRepository
 
 
-class PasswordResetTokenRepository:
-    def __init__(self, db: Session):
-        self.db = db
+class PasswordResetTokenRepository(BaseRepository[PasswordResetToken]):
+    model = PasswordResetToken
 
     def invalidate_active_for_user(self, user_id: int, used_at: datetime) -> None:
         self.db.query(PasswordResetToken).filter(
@@ -16,10 +14,7 @@ class PasswordResetTokenRepository:
         ).update({PasswordResetToken.used_at: used_at}, synchronize_session=False)
 
     def create(self, token: PasswordResetToken) -> PasswordResetToken:
-        self.db.add(token)
-        self.db.commit()
-        self.db.refresh(token)
-        return token
+        return self.add(token)
 
     def get_valid_by_hash(self, token_hash: str) -> PasswordResetToken | None:
         now = datetime.now(timezone.utc)

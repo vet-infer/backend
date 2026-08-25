@@ -78,21 +78,28 @@ class EvaluationService:
 
     def _validate_and_normalize_facts(self, facts, species_id: int) -> list[dict]:
         seen: set[str] = set()
-        normalized: list[dict] = []
         for submitted in facts:
             if submitted.fact_key in seen:
                 raise AppException(f"El fact '{submitted.fact_key}' fue enviado mas de una vez")
             seen.add(submitted.fact_key)
 
-            definition = (
-                self.evaluation_repository.db.query(FactDefinition)
-                .filter(
-                    FactDefinition.fact_key == submitted.fact_key,
-                    FactDefinition.is_active.is_(True),
-                    (FactDefinition.species_id == species_id) | (FactDefinition.species_id.is_(None)),
-                )
-                .first()
+        definitions: dict[str, FactDefinition] = {}
+        rows = (
+            self.evaluation_repository.db.query(FactDefinition)
+            .filter(
+                FactDefinition.fact_key.in_(seen),
+                FactDefinition.is_active.is_(True),
+                (FactDefinition.species_id == species_id) | (FactDefinition.species_id.is_(None)),
             )
+            .order_by(FactDefinition.species_id.is_(None))
+            .all()
+        )
+        for row in rows:
+            definitions.setdefault(row.fact_key, row)
+
+        normalized: list[dict] = []
+        for submitted in facts:
+            definition = definitions.get(submitted.fact_key)
             if definition is None:
                 raise AppException(
                     f"Fact inexistente, inactivo o incompatible con la especie del paciente: {submitted.fact_key}"

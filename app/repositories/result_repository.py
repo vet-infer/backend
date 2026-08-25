@@ -2,13 +2,16 @@ from sqlalchemy.orm import joinedload
 
 from app.models.clinical_history import ClinicalHistory
 from app.models.inference_result import ActivatedRule, InferenceResult
-from app.models.risk_level import RiskLevel
-from app.services.bootstrap_service import get_or_create_risk_level, normalize_risk_level
+from app.repositories.base import BaseRepository
+from app.repositories.risk_level_repository import RiskLevelRepository
 
 
-class ResultRepository:
+class ResultRepository(BaseRepository[InferenceResult]):
+    model = InferenceResult
+
     def __init__(self, db):
-        self.db = db
+        super().__init__(db)
+        self.risk_level_repository = RiskLevelRepository(db)
 
     def create_results(
         self,
@@ -19,15 +22,9 @@ class ResultRepository:
         persisted: list[InferenceResult] = []
         for result_data in results:
             activated_payload = result_data.pop("activated_rules")
-            risk_code = normalize_risk_level(result_data.get("risk_level"))
-            risk_level = (
-                self.db.query(RiskLevel)
-                .filter(RiskLevel.code == risk_code)
-                .first()
-            ) or get_or_create_risk_level(self.db, risk_code)
+            risk_level = self.risk_level_repository.get_or_create(result_data.pop("risk_level"))
             result_data["risk_level_id"] = risk_level.id
-            result_data["risk_level"] = risk_level.name
-            result = InferenceResult(evaluation_id=evaluation_id, **result_data)
+            result = InferenceResult(evaluation_id=evaluation_id, risk_level_ref=risk_level, **result_data)
             result.activated_rules = [
                 ActivatedRule(
                     rule_id=rule["rule_id"],
@@ -58,7 +55,11 @@ class ResultRepository:
     def list_by_evaluation(self, evaluation_id: int) -> list[InferenceResult]:
         return (
             self.db.query(InferenceResult)
-            .options(joinedload(InferenceResult.activated_rules), joinedload(InferenceResult.evaluation))
+            .options(
+                joinedload(InferenceResult.activated_rules),
+                joinedload(InferenceResult.evaluation),
+                joinedload(InferenceResult.risk_level_ref),
+            )
             .filter(InferenceResult.evaluation_id == evaluation_id)
             .order_by(InferenceResult.probability.desc(), InferenceResult.score.desc())
             .all()

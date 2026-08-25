@@ -399,3 +399,21 @@ def test_clinical_probabilities_crud(client, db):
     response = client.delete(f"/api/v1/probabilidades-clinicas/{prob_id}")
     assert response.status_code == 200
     assert response.json()["is_active"] is False
+
+    # Deactivated probability must not appear in the unfiltered list (soft-delete filter)
+    response = client.get("/api/v1/probabilidades-clinicas")
+    assert response.status_code == 200
+    assert not any(p["id"] == prob_id for p in response.json())
+
+
+def test_risk_levels_endpoint_returns_seeded_active_levels(client):
+    """
+    Tests GET /risk-levels, which previously ran a raw query directly in the
+    router with no service/repository layer and no test coverage at all.
+    """
+    response = client.get("/api/v1/risk-levels")
+    assert response.status_code == 200
+
+    codes = [level["code"] for level in response.json()]
+    assert codes == ["bajo", "moderado", "alto"]
+    assert all(level["is_active"] for level in response.json())
