@@ -49,6 +49,10 @@ class Settings(BaseSettings):
         if self.database_url.startswith("postgresql://"):
             self.database_url = self.database_url.replace("postgresql://", "postgresql+psycopg://", 1)
 
+        for field_name in ("smtp_host", "smtp_username", "smtp_password", "smtp_from_email"):
+            if getattr(self, field_name) == "":
+                setattr(self, field_name, None)
+
         if self.environment.lower() in {"production", "prod"}:
             if self._is_local_frontend_url(self.frontend_base_url):
                 public_origin = self._first_public_cors_origin()
