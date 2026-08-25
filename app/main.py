@@ -33,7 +33,10 @@ from app.services.bootstrap_service import bootstrap_reference_data
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    Base.metadata.create_all(bind=engine)
+    if engine.dialect.name != "postgresql":
+        # Alembic is the source of truth for Postgres (dev/prod). SQLite is only
+        # used as an ephemeral test database with no migration history to run.
+        Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
         bootstrap_reference_data(db)
