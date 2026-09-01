@@ -37,6 +37,25 @@ def run_inference(
     return _service(db).run_from_payload(payload.patient_id, facts)
 
 
+@router.post(
+    "/evaluations/{evaluation_id}/run",
+    response_model=list[PersistedInferenceResultOut],
+    deprecated=True,
+    summary="[Obsoleto] Ejecutar y persistir inferencia para una evaluacion",
+    description=(
+        "Obsoleto: usar POST /evaluaciones/{evaluation_id}/procesar, el endpoint "
+        "canonico (contrato en espanol). Este endpoint se mantiene sin cambios "
+        "funcionales por compatibilidad; ambos delegan en InferenceService.run_and_persist."
+    ),
+)
+def run_inference_for_evaluation(
+    evaluation_id: int,
+    db: Session = Depends(get_db),
+    _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
+):
+    return _service(db).run_and_persist(evaluation_id)
+
+
 @router.get("/results/{result_id}/activated-rules", response_model=list[PersistedActivatedRuleOut])
 def list_activated_rules(
     result_id: int,

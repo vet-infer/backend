@@ -90,6 +90,7 @@ def list_patient_evaluations(
 @router.get("/evaluations/{evaluation_id}/results", response_model=list[PersistedInferenceResultOut])
 def list_evaluation_results(
     evaluation_id: int,
+    include_history: bool = Query(default=False),
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
@@ -99,7 +100,7 @@ def list_evaluation_results(
         EvaluationRepository(db),
         ResultRepository(db),
     )
-    return service.list_results(evaluation_id)
+    return service.list_results(evaluation_id, include_history=include_history)
 
 
 @router.post("/evaluaciones/{evaluation_id}/procesar", response_model=SpanishInferenceResponse)

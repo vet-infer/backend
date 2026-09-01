@@ -1,6 +1,6 @@
 from typing import Any
 
-from sqlalchemy import Float, ForeignKey, JSON, String, Text
+from sqlalchemy import Boolean, DateTime, Float, ForeignKey, JSON, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -18,6 +18,9 @@ class InferenceResult(IDMixin, TimestampMixin, Base):
     probability: Mapped[float | None] = mapped_column(Float, nullable=True)
     inference_method: Mapped[str | None] = mapped_column(String(50), nullable=True)
     explanation: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    is_current: Mapped[bool] = mapped_column(Boolean, default=True, server_default="true")
+    superseded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     evaluation = relationship("EvaluationClinical", back_populates="results")
     disease = relationship("Disease", back_populates="results")
