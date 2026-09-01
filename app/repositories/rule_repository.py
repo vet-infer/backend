@@ -1,6 +1,8 @@
 from sqlalchemy.orm import joinedload
 
+from app.core.cache import cache
 from app.core.config import settings
+from app.inference.rule_view import RuleView
 from app.models.disease import Disease
 from app.models.risk_level import RiskLevel
 from app.models.rule import InferenceRule, RuleCondition
@@ -36,17 +38,21 @@ class RuleRepository(BaseRepository[InferenceRule]):
             .all()
         )
 
-    def get_active_rules_by_species(self, species_id: int) -> list[InferenceRule]:
-        return (
-            self.db.query(InferenceRule)
-            .join(InferenceRule.disease)
-            .options(joinedload(InferenceRule.conditions), joinedload(InferenceRule.disease))
-            .filter(InferenceRule.is_active.is_(True))
-            .filter(Disease.is_active.is_(True))
-            .filter(Disease.species_id == species_id)
-            .order_by(InferenceRule.priority.desc())
-            .all()
-        )
+    def get_active_rules_by_species(self, species_id: int) -> list[RuleView]:
+        def _load() -> list[RuleView]:
+            rules = (
+                self.db.query(InferenceRule)
+                .join(InferenceRule.disease)
+                .options(joinedload(InferenceRule.conditions), joinedload(InferenceRule.disease))
+                .filter(InferenceRule.is_active.is_(True))
+                .filter(Disease.is_active.is_(True))
+                .filter(Disease.species_id == species_id)
+                .order_by(InferenceRule.priority.desc())
+                .all()
+            )
+            return [RuleView.from_orm_rule(rule) for rule in rules]
+
+        return cache.get_or_set(f"rules:{species_id}", _load)
 
     def get_by_code(self, code: str) -> InferenceRule | None:
         return self.db.query(InferenceRule).filter(InferenceRule.code == code).first()

@@ -1,9 +1,13 @@
+from app.core.cache import cache
 from app.core.exceptions import ConflictError, NotFoundError
+from app.inference.engine import InferenceEngine
+from app.inference.rule_view import ConditionView, DiseaseView, RuleView
 from app.models.disease import Disease
 from app.models.knowledge import FactDefinition
 from app.repositories.risk_level_repository import RiskLevelRepository
 from app.repositories.rule_repository import RuleRepository
-from app.schemas.rule import RuleCreate, RuleStatusUpdate, RuleUpdate
+from app.schemas.rule import RuleCreate, RuleSimulationRequest, RuleStatusUpdate, RuleUpdate
+from app.services.bootstrap_service import get_or_create_risk_level, normalize_risk_level
 
 
 class RuleService:
@@ -29,7 +33,9 @@ class RuleService:
         self._resolve_risk_level(data)
         conditions = [condition.model_dump() for condition in payload.conditions]
         self._validate_conditions(payload.disease_id, conditions)
-        return self.repository.create_rule(data, conditions)
+        rule = self.repository.create_rule(data, conditions)
+        cache.invalidate_all()
+        return rule
 
     def update_rule(self, rule_id: int, payload: RuleUpdate):
         rule = self.repository.get_with_conditions(rule_id)
@@ -60,17 +66,44 @@ class RuleService:
             conditions = None
 
         if conditions is not None:
-            for field, value in data.items():
-                setattr(rule, field, value)
-            return self.repository.replace_conditions(rule, conditions)
+            updated = self.repository.replace_conditions(rule, conditions)
+            cache.invalidate_all()
+            return updated
 
-        return self.repository.update(rule, data)
+        self.repository.db.commit()
+        self.repository.db.refresh(rule)
+        cache.invalidate_all()
+        return rule
 
     def update_status(self, rule_id: int, payload: RuleStatusUpdate):
         rule = self.repository.get_with_conditions(rule_id)
         if rule is None:
             raise NotFoundError("Regla no encontrada")
-        return self.repository.update(rule, {"is_active": payload.is_active})
+        rule.is_active = payload.is_active
+        self.repository.db.commit()
+        self.repository.db.refresh(rule)
+        cache.invalidate_all()
+        return rule
+
+    def simulate(self, payload: RuleSimulationRequest) -> dict:
+        disease = self._get_disease_or_raise(payload.disease_id)
+        conditions = [condition.model_dump() for condition in payload.conditions]
+        self._validate_conditions(payload.disease_id, conditions)
+
+        fake_rule = RuleView(
+            id=0,
+            code="SIMULACION",
+            name="Simulacion de reglas",
+            disease=DiseaseView(id=disease.id, name=disease.name),
+            conditions=[ConditionView(**condition) for condition in conditions],
+        )
+
+        results = InferenceEngine().evaluate(facts=payload.facts, rules=[fake_rule])
+        if not results:
+            return {"activated": False, "fulfilled_conditions": []}
+
+        fulfilled_conditions = results[0]["activated_rules"][0]["fulfilled_conditions"]
+        return {"activated": True, "fulfilled_conditions": fulfilled_conditions}
 
     def _get_disease_or_raise(self, disease_id: int) -> Disease:
         disease = self.repository.db.get(Disease, disease_id)

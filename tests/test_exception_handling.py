@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from app.core.cache import cache
 from app.core.database import Base, get_db
 from app.core.exceptions import NotFoundError, register_exception_handlers
 from app.core.security import get_current_user, get_password_hash
@@ -94,6 +95,9 @@ def test_unhandled_exception_returns_sanitized_500(client, db):
     ]
     db.add(broken_rule)
     db.commit()
+    # Este insert es directo a la DB (bypass del service layer), a diferencia de una
+    # escritura real via RuleService, que invalidaria el cache de reglas activas por si misma.
+    cache.invalidate_all()
 
     owner = Owner(first_name="Ana", last_name="Ruiz", email="ana@example.com")
     db.add(owner)
