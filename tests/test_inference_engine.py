@@ -1,6 +1,8 @@
+import logging
 from dataclasses import dataclass
 
 from app.inference.engine import InferenceEngine
+from app.inference.evaluator import ConditionEvaluator
 
 
 @dataclass
@@ -51,7 +53,9 @@ def test_engine_activates_rule_and_returns_trace():
 
     assert len(result) == 1
     assert result[0]["disease"] == "Osteoartritis"
-    assert result[0]["risk_level"] == "moderado"
+    # El motor de reglas ya no calcula risk_level: esa decision final la toma
+    # exclusivamente BayesService.determinar_nivel_riesgo sobre la probabilidad.
+    assert "risk_level" not in result[0]
     assert result[0]["activated_rules"][0]["rule_code"] == "OA-001"
     assert "edad_anios" in result[0]["activated_rules"][0]["fulfilled_conditions"][0]
 
@@ -92,3 +96,75 @@ def test_engine_supports_or_between_logical_groups():
 
     assert len(result) == 1
     assert "b" in result[0]["activated_rules"][0]["fulfilled_conditions"][0]
+
+
+def test_engine_logs_activated_and_rejected_rules(caplog):
+    disease = FakeDisease(id=4, name="Prueba logging")
+    activated_rule = FakeRule(
+        id=40,
+        code="LOG-ACT-01",
+        name="Se activa",
+        disease=disease,
+        weight=1.0,
+        priority=1,
+        conditions=[FakeCondition("x", "eq", True)],
+    )
+    rejected_rule = FakeRule(
+        id=41,
+        code="LOG-REJ-01",
+        name="No se activa",
+        disease=disease,
+        weight=1.0,
+        priority=1,
+        conditions=[FakeCondition("x", "eq", False)],
+    )
+
+    with caplog.at_level(logging.DEBUG, logger="app.inference.engine"):
+        InferenceEngine().evaluate(
+            facts={"x": True}, rules=[activated_rule, rejected_rule], evaluation_id=99, patient_id=7
+        )
+
+    messages = "\n".join(record.getMessage() for record in caplog.records)
+    assert "LOG-ACT-01" in messages and "activada" in messages
+    assert "LOG-REJ-01" in messages and "no activada" in messages
+    assert "99" in messages and "7" in messages
+
+
+def test_evaluator_warns_and_returns_false_on_non_numeric_observed_value(caplog):
+    evaluator = ConditionEvaluator()
+
+    with caplog.at_level(logging.WARNING, logger="app.inference.evaluator"):
+        result = evaluator.matches("no-numerico", "gt", 5)
+
+    assert result is False
+    assert any("no es numerico" in record.getMessage() for record in caplog.records)
+
+
+def test_engine_continues_evaluating_other_rules_after_non_numeric_observed_value():
+    disease = FakeDisease(id=5, name="Prueba continuidad")
+    broken_rule = FakeRule(
+        id=50,
+        code="BROKEN-01",
+        name="Valor no numerico",
+        disease=disease,
+        weight=1.0,
+        priority=1,
+        conditions=[FakeCondition("temperatura", "gt", 39)],
+    )
+    healthy_rule = FakeRule(
+        id=51,
+        code="HEALTHY-01",
+        name="Regla sana",
+        disease=disease,
+        weight=1.0,
+        priority=1,
+        conditions=[FakeCondition("sintomas", "contains", "letargo")],
+    )
+
+    result = InferenceEngine().evaluate(
+        facts={"temperatura": "no-numerico", "sintomas": ["letargo"]},
+        rules=[broken_rule, healthy_rule],
+    )
+
+    assert len(result) == 1
+    assert result[0]["activated_rules"][0]["rule_code"] == "HEALTHY-01"

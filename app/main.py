@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -26,6 +27,12 @@ from app.core.database import Base, SessionLocal, engine
 from app.core.exceptions import register_exception_handlers
 from app.models import *  # noqa: F403
 from app.services.bootstrap_service import bootstrap_reference_data
+
+if not logging.getLogger().handlers:
+    logging.basicConfig(
+        level=logging.DEBUG if settings.environment.lower() in {"development", "testing"} else logging.INFO,
+        format="%(asctime)s %(levelname)s %(name)s %(message)s",
+    )
 
 
 @asynccontextmanager

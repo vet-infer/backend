@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -113,7 +115,7 @@ def fixture_client(db):
     app.router.lifespan_context = original_lifespan
 
 
-def test_bayes_service_calculations(db):
+def test_bayes_service_calculations(db, caplog):
     """
     Directly tests Naive Bayes logic, smoothing, and normalization inside BayesService.
     """
@@ -144,16 +146,41 @@ def test_bayes_service_calculations(db):
     probs = db.query(ClinicalProbability).filter(ClinicalProbability.is_active == True).all()
 
     # Calculate posterior probabilities
-    likelihood_dm = bayes_svc.calcular_probabilidad_bayes(dm, evidences, probs)
-    likelihood_erc = bayes_svc.calcular_probabilidad_bayes(erc, evidences, probs)
+    with caplog.at_level(logging.DEBUG, logger="app.services.bayes_service"):
+        likelihood_dm = bayes_svc.calcular_probabilidad_bayes(dm, evidences, probs)
+        likelihood_erc = bayes_svc.calcular_probabilidad_bayes(erc, evidences, probs)
 
-    # Expected DM = prior (0.18) * poliuria (0.80) * polidipsia (0.85) * glucosa > 200 (0.90)
-    expected_likelihood_dm = 0.18 * 0.80 * 0.85 * 0.90
+    messages = "\n".join(record.getMessage() for record in caplog.records)
+    assert f"disease_id={dm.id}" in messages
+    # ERC no tiene ClinicalProbability para "glucosa" -> debe registrar warning de smoothing
+    assert "Sin ClinicalProbability" in messages and "glucosa" in messages
+
+    def _ratio(disease_id, symptom_name):
+        prob = next(
+            p for p in probs
+            if p.disease_id == disease_id and p.symptom is not None and p.symptom.name == symptom_name
+        )
+        return prob.probability_given_disease / prob.general_probability
+
+    # Expected DM = prior (0.18) * razon_verosimilitud(poliuria) * razon_verosimilitud(polidipsia)
+    #             * razon_verosimilitud(glucosa > 200); "glucosa" es variable, no symptom.
+    glucosa_dm = next(p for p in probs if p.disease_id == dm.id and p.variable is not None and p.variable.key == "glucosa")
+    expected_likelihood_dm = (
+        dm.base_probability
+        * _ratio(dm.id, "poliuria")
+        * _ratio(dm.id, "polidipsia")
+        * (glucosa_dm.probability_given_disease / glucosa_dm.general_probability)
+    )
     assert abs(likelihood_dm - expected_likelihood_dm) < 1e-6
 
-    # Expected ERC = prior (0.20) * poliuria (0.70) * polidipsia (0.75) * glucosa (smoothing 0.5)
-    expected_likelihood_erc = 0.20 * 0.70 * 0.75 * 0.50
+    # Expected ERC = prior (0.20) * razon_verosimilitud(poliuria) * razon_verosimilitud(polidipsia)
+    #              * glucosa (sin ClinicalProbability para ERC -> smoothing 0.5, sin cambios)
+    expected_likelihood_erc = erc.base_probability * _ratio(erc.id, "poliuria") * _ratio(erc.id, "polidipsia") * 0.50
     assert abs(likelihood_erc - expected_likelihood_erc) < 1e-6
+
+    # La razon de verosimilitud debe discriminar: Diabetes (evidencia especifica glucosa)
+    # supera ampliamente a ERC (solo comparte sintomas generales) tras esta correccion.
+    assert likelihood_dm > likelihood_erc * 3
 
     # Test normalization
     results = [
@@ -197,7 +224,7 @@ def test_hybrid_inference_flow_and_risk_assignment(db):
         {"fact_key": "poliuria", "value": True, "source_type": "clinical_input"},
         {"fact_key": "polidipsia", "value": True, "source_type": "clinical_input"},
         {"fact_key": "glucosa", "value": 260.0, "source_type": "clinical_input"},
-        {"fact_key": "glucosuria", "value": "presente", "source_type": "clinical_input"},
+        {"fact_key": "glucosuria", "value": "positiva", "source_type": "clinical_input"},
     ]
     evaluation = eval_repo.create_with_facts(
         patient_id=patient.id,
@@ -261,6 +288,7 @@ def test_spanish_inference_endpoint(client, db):
         {"fact_key": "poliuria", "value": True},
         {"fact_key": "polidipsia", "value": True},
         {"fact_key": "glucosa", "value": 240.0},
+        {"fact_key": "glucosuria", "value": "positiva"},
     ]
     evaluation = eval_repo.create_with_facts(
         patient_id=patient.id,

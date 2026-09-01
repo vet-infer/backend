@@ -1,3 +1,4 @@
+import logging
 import re
 import unicodedata
 from typing import Any
@@ -6,6 +7,10 @@ from app.core.config import settings
 from app.core.constants import RISK_HIGH, RISK_LOW, RISK_MODERATE
 from app.models.clinical_probability import ClinicalProbability
 from app.models.disease import Disease
+
+logger = logging.getLogger(__name__)
+
+_MIN_GENERAL_PROBABILITY = 1e-6
 
 
 class BayesService:
@@ -103,12 +108,24 @@ class BayesService:
                             matched_prob = prob
                             break
 
-            likelihood *= (
-                matched_prob.probability_given_disease
-                if matched_prob is not None
-                else settings.bayes_smoothing_factor
-            )
+            if matched_prob is not None:
+                general_probability = matched_prob.general_probability
+                if not general_probability or general_probability <= 0:
+                    logger.warning(
+                        "general_probability invalido (%r) para ClinicalProbability id=%s; usando piso %s",
+                        general_probability, matched_prob.id, _MIN_GENERAL_PROBABILITY,
+                    )
+                    general_probability = _MIN_GENERAL_PROBABILITY
+                likelihood_ratio = matched_prob.probability_given_disease / general_probability
+                likelihood *= likelihood_ratio
+            else:
+                logger.warning(
+                    "Sin ClinicalProbability para evidencia %s=%r en disease_id=%s; aplicando smoothing=%s",
+                    evidence["key"], evidence["value"], disease.id, settings.bayes_smoothing_factor,
+                )
+                likelihood *= settings.bayes_smoothing_factor
 
+        logger.debug("Likelihood calculada para disease_id=%s (%s): %s", disease.id, disease.name, likelihood)
         return likelihood
 
     def normalizar_probabilidades(self, resultados: list[dict]) -> list[dict]:
