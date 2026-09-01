@@ -5,7 +5,14 @@ from app.core.database import get_db
 from app.core.permissions import PermissionPolicy, require_policy
 from app.models.user import User
 from app.repositories.rule_repository import RuleRepository
-from app.schemas.rule import RuleCreate, RuleOut, RuleStatusUpdate, RuleUpdate
+from app.schemas.rule import (
+    RuleCreate,
+    RuleOut,
+    RuleSimulationRequest,
+    RuleSimulationResponse,
+    RuleStatusUpdate,
+    RuleUpdate,
+)
 from app.services.rule_service import RuleService
 
 router = APIRouter(prefix="/rules", tags=["Reglas de inferencia"])
@@ -55,3 +62,12 @@ def update_rule_status(
     _: User = Depends(require_policy(PermissionPolicy.ADMIN_ONLY)),
 ):
     return RuleService(RuleRepository(db)).update_status(rule_id, payload)
+
+
+@router.post("/simulate", response_model=RuleSimulationResponse)
+def simulate_rule(
+    payload: RuleSimulationRequest,
+    db: Session = Depends(get_db),
+    _: User = Depends(require_policy(PermissionPolicy.ADMIN_ONLY)),
+):
+    return RuleService(RuleRepository(db)).simulate(payload)

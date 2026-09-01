@@ -2,6 +2,25 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Este proyecto no sigue un esquema de versionado formal todavía (API en `1.0.0`); las entradas se agrupan por fecha y, cuando aplica, por el change de OpenSpec que las originó (`openspec/changes/archive/`).
 
+## [2026-09-01] — Endurecimiento del motor de inferencia (Fase 3)
+
+Change de OpenSpec: [`archive/2026-09-01-harden-inference-engine-phase3`](../openspec/changes/archive/2026-09-01-harden-inference-engine-phase3/). Spec modificada: [`inference-engine`](../openspec/specs/inference-engine/spec.md).
+
+### Added
+
+- Endpoint de simulación de reglas: `POST /api/v1/rules/simulate` evalúa un conjunto de condiciones contra facts de ejemplo sin requerir que exista una regla real y sin persistir nada. Reutiliza `InferenceEngine.evaluate` (mismo motor que una inferencia real) con un objeto de regla efímero, no una lógica de matching paralela. Requiere `ADMIN_ONLY`, igual que el resto de `/rules`.
+- Cache en memoria de reglas activas por especie, catálogo de enfermedades activas y probabilidades clínicas activas (`app/core/cache.py`), invalidado explícitamente (`invalidate_all()`) en cada escritura de reglas o probabilidades clínicas — sin TTL, para no arriesgar servir datos desactivados/desactualizados. El cache guarda snapshots inmutables (`RuleView`/`ConditionView`/`DiseaseView` en `app/inference/rule_view.py`; `DiseaseSnapshot`/`ClinicalProbabilitySnapshot` en `app/repositories/snapshots.py`), no objetos ORM de SQLAlchemy — cachear objetos ORM directamente produce `DetachedInstanceError` en cuanto una request con una sesión distinta accede a sus atributos tras el primer `commit()` en cualquier sesión; se confirmó reproduciéndolo en la suite de tests real antes de corregirlo.
+- Cobertura de tests nueva: `tests/test_condition_evaluator.py` (33 tests unitarios de los 9 operadores de `ConditionEvaluator`, incluyendo límites exactos), `tests/test_bayes.py` (normalización con `likelihood` total 0 o negativo), `tests/test_authorization_negative.py` (8 tests de 403 para `/rules` y `/inference` con roles sin permiso — antes no existía un solo test de autorización negativa en todo el repositorio), `tests/test_rule_simulation.py`, `tests/test_inference_cache.py`.
+- Fixture `autouse` en `tests/conftest.py` que resetea el cache de inferencia antes y después de cada test — el cache es un singleton de proceso (correcto para producción), pero sin resetearlo se filtraba entre tests con bases de datos SQLite aisladas distintas; se detectó y corrigió durante la implementación de esta fase, no era hipotético.
+
+### Changed
+
+- `CatalogRepository.list_diseases`, `RuleRepository.get_active_rules_by_species` y `ClinicalProbabilityRepository.list_active_by_disease_ids` (nuevo método, reemplaza una consulta inline en `InferenceService` que bypaseaba el repositorio) ahora pasan por el cache antes de consultar la base de datos.
+
+---
+
+**Tests:** 115/115 pasan (`pytest`, backend; 69 previos + 46 nuevos). **Archivos nuevos:** `app/core/cache.py`, `app/inference/rule_view.py`, `app/repositories/snapshots.py`, `tests/test_condition_evaluator.py`, `tests/test_authorization_negative.py`, `tests/test_rule_simulation.py`, `tests/test_inference_cache.py`. **Archivos modificados:** `app/schemas/rule.py`, `app/services/rule_service.py`, `app/api/v1/routers/rules.py`, `app/repositories/rule_repository.py`, `app/repositories/catalog_repository.py`, `app/repositories/clinical_probability_repository.py`, `app/services/inference_service.py`, `tests/conftest.py`, `tests/test_bayes.py`, `tests/test_exception_handling.py`.
+
 ## [2026-09-01] — Endurecimiento del motor de inferencia (Fase 2)
 
 Change de OpenSpec: [`archive/2026-09-01-harden-inference-engine-phase2`](../openspec/changes/archive/2026-09-01-harden-inference-engine-phase2/). Spec modificada: [`inference-engine`](../openspec/specs/inference-engine/spec.md).
