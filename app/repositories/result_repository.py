@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from sqlalchemy.orm import joinedload
 
 from app.models.clinical_history import ClinicalHistory
@@ -16,6 +18,12 @@ class ResultRepository:
         patient_id: int,
         results: list[dict],
     ) -> list[InferenceResult]:
+        superseded_at = datetime.now(timezone.utc)
+        self.db.query(InferenceResult).filter(
+            InferenceResult.evaluation_id == evaluation_id,
+            InferenceResult.is_current.is_(True),
+        ).update({"is_current": False, "superseded_at": superseded_at}, synchronize_session=False)
+
         persisted: list[InferenceResult] = []
         for result_data in results:
             activated_payload = result_data.pop("activated_rules")
@@ -55,14 +63,15 @@ class ResultRepository:
             self.db.refresh(result)
         return persisted
 
-    def list_by_evaluation(self, evaluation_id: int) -> list[InferenceResult]:
-        return (
+    def list_by_evaluation(self, evaluation_id: int, include_history: bool = False) -> list[InferenceResult]:
+        query = (
             self.db.query(InferenceResult)
             .options(joinedload(InferenceResult.activated_rules), joinedload(InferenceResult.evaluation))
             .filter(InferenceResult.evaluation_id == evaluation_id)
-            .order_by(InferenceResult.probability.desc(), InferenceResult.score.desc())
-            .all()
         )
+        if not include_history:
+            query = query.filter(InferenceResult.is_current.is_(True))
+        return query.order_by(InferenceResult.probability.desc(), InferenceResult.score.desc()).all()
 
     def list_activated_rules(self, result_id: int) -> list[ActivatedRule]:
         return (

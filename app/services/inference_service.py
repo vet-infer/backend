@@ -75,15 +75,20 @@ class InferenceService:
         # 2. Extract clinical evidences from facts
         evidences = bayes_svc.obtener_evidencias_evaluacion(facts)
 
-        # 3. Fetch all diseases for this species
-        diseases = catalog_repo.list_diseases()
-        species_diseases = [d for d in diseases if d.species_id == species_id]
+        # 3. Fetch diseases for this species (filtered in SQL)
+        species_diseases = catalog_repo.list_diseases(species_id=species_id)
 
         if not species_diseases:
             return []
 
-        # 4. Fetch all clinical probabilities
-        probs = db.query(prob_repo.model).filter(prob_repo.model.is_active == True).all()
+        # 4. Fetch clinical probabilities for this species' diseases (filtered in SQL)
+        disease_ids = [d.id for d in species_diseases]
+        probs = (
+            db.query(prob_repo.model)
+            .filter(prob_repo.model.is_active == True)
+            .filter(prob_repo.model.disease_id.in_(disease_ids))
+            .all()
+        )
 
         # 5. Compute Naive Bayes likelihoods
         likelihoods = []
@@ -134,8 +139,8 @@ class InferenceService:
         # Sort by probability descending
         return sorted(output, key=lambda r: r["probability"], reverse=True)
 
-    def list_results(self, evaluation_id: int):
-        return self.result_repository.list_by_evaluation(evaluation_id)
+    def list_results(self, evaluation_id: int, include_history: bool = False):
+        return self.result_repository.list_by_evaluation(evaluation_id, include_history=include_history)
 
     def list_activated_rules(self, result_id: int):
         return self.result_repository.list_activated_rules(result_id)
