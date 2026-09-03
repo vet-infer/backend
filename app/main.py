@@ -28,6 +28,7 @@ from app.api.v1.routers import (
 from app.core.config import settings
 from app.core.database import Base, SessionLocal, engine, get_db
 from app.core.exceptions import register_exception_handlers
+from app.core.rate_limit import limiter
 from app.models import *  # noqa: F403
 from app.services.bootstrap_service import bootstrap_reference_data
 
@@ -73,8 +74,6 @@ app.add_middleware(
 )
 
 app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-app.add_middleware(SlowAPIMiddleware)
 
 register_exception_handlers(app)
 

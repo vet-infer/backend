@@ -36,6 +36,9 @@ class Settings(BaseSettings):
     bayes_high_probability_threshold: float = 0.70
     bayes_moderate_probability_threshold: float = 0.40
     seed_data_path: Path = Path("app/seeds/clinical_reference_data.json")
+    rate_limit_enabled: bool = True
+    rate_limit_login: str = "10/minute"
+    rate_limit_inference: str = "30/minute"
 
     model_config = SettingsConfigDict(
         env_file=".env",

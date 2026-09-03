@@ -2,6 +2,29 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Este proyecto no sigue un esquema de versionado formal todavía (API en `1.0.0`); las entradas se agrupan por fecha y, cuando aplica, por el change de OpenSpec que las originó (`openspec/changes/archive/`).
 
+## [2026-09-03] — Endurecimiento del motor de inferencia (Fase 4)
+
+Change de OpenSpec: [`archive/2026-09-03-harden-inference-engine-phase4`](../openspec/changes/archive/2026-09-03-harden-inference-engine-phase4/). Specs modificadas: [`inference-engine`](../openspec/specs/inference-engine/spec.md), [`auth`](../openspec/specs/auth/spec.md) (nueva).
+
+### Added
+
+- Rate limiting por IP en `POST /api/v1/auth/login` (por defecto `10/minute`), para mitigar fuerza bruta de credenciales: un intento que excede el límite responde `429` sin llegar a verificar la contraseña contra la base de datos.
+- Rate limiting por IP en los endpoints que ejecutan el motor de inferencia o el simulador de reglas (por defecto `30/minute`): `POST /inference/run`, `POST /inference/evaluations/{evaluation_id}/run`, `POST /evaluaciones/{evaluation_id}/procesar`, `POST /rules/simulate`.
+- `app/core/rate_limit.py`: instancia única de `slowapi.Limiter` (`get_remote_address` como identificador de cliente, backend de conteo en memoria del proceso), registrada en `app.state.limiter`.
+- Exception handler de `RateLimitExceeded` en `app/core/exceptions.py`, devolviendo `429 {"detail": "..."}` con el mismo shape que el resto de errores manejados de la API.
+- Settings nuevos en `app/core/config.py`: `rate_limit_enabled` (default `True`), `rate_limit_login`, `rate_limit_inference`. `tests/conftest.py` fuerza `RATE_LIMIT_ENABLED=false` por defecto para toda la suite (el limiter es un singleton de proceso compartido entre tests, igual que el cache de Fase 3); los tests dedicados de esta fase (`tests/test_rate_limiting.py`) lo habilitan explícitamente y resetean su storage antes/después de cada uno.
+- Nueva dependencia: `slowapi==0.1.10`.
+- Nuevos tests: `tests/test_rate_limiting.py` (7 tests: shape del 429, login bloquea sin verificar contraseña tras el límite, login dentro del límite no se bloquea, cada uno de los 4 endpoints de inferencia/simulación bloquea tras su límite, rutas no cubiertas por esta fase no se ven afectadas), más 2 tests de configuración en `tests/test_config.py`.
+
+### Known issues (no resueltos en este cambio)
+
+- El rate limiting es en memoria del proceso, no compartido entre réplicas; si el despliegue pasa a múltiples instancias del backend, requiere migrar el storage de `slowapi` a un backend compartido (Redis). Documentado como Non-Goal explícito en el diseño de esta fase.
+- La identificación del cliente es por IP directa (`get_remote_address`); si se despliega detrás de un proxy/load balancer, debe revisarse el manejo de `X-Forwarded-For`.
+
+---
+
+**Tests:** 122/122 pasan (`pytest`, backend; 115 previos + 7 nuevos; 2 fallos preexistentes y no relacionados a este cambio, por configuración local de `.env`, quedan fuera de este conteo). **Archivos nuevos:** `app/core/rate_limit.py`, `tests/test_rate_limiting.py`. **Archivos modificados:** `requirements.txt`, `.env.example`, `app/core/config.py`, `app/core/exceptions.py`, `app/main.py`, `app/api/v1/routers/auth.py`, `app/api/v1/routers/inference.py`, `app/api/v1/routers/evaluations.py`, `app/api/v1/routers/rules.py`, `tests/conftest.py`, `tests/test_config.py`.
+
 ## [2026-09-01] — Endurecimiento del motor de inferencia (Fase 3)
 
 Change de OpenSpec: [`archive/2026-09-01-harden-inference-engine-phase3`](../openspec/changes/archive/2026-09-01-harden-inference-engine-phase3/). Spec modificada: [`inference-engine`](../openspec/specs/inference-engine/spec.md).

@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.database import get_db
 from app.core.permissions import PermissionPolicy, require_policy
+from app.core.rate_limit import limiter
 from app.models.user import User
 from app.repositories.rule_repository import RuleRepository
 from app.schemas.rule import (
@@ -65,7 +67,9 @@ def update_rule_status(
 
 
 @router.post("/simulate", response_model=RuleSimulationResponse)
+@limiter.limit(settings.rate_limit_inference)
 def simulate_rule(
+    request: Request,
     payload: RuleSimulationRequest,
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.ADMIN_ONLY)),
