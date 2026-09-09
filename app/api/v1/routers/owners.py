@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, Query, Response, status
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
@@ -23,12 +23,14 @@ def create_owner(
 
 @router.get("/", response_model=list[OwnerOut])
 def get_owners(
+    response: Response,
     skip: int = Query(default=0, ge=0),
     limit: int = Query(default=settings.default_page_size, ge=1, le=settings.max_page_size),
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
-    return OwnerService(OwnerRepository(db)).list_owners(skip, limit)
+    response.headers["X-Total-Count"] = str(OwnerRepository(db).count())
+    return OwnerService(db).list_owners(skip, limit)
 
 
 @router.get("/{owner_id}", response_model=OwnerOut)

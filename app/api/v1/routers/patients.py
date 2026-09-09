@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, Query, Response, status
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
@@ -14,12 +14,15 @@ router = APIRouter(prefix="/patients", tags=["Pacientes"])
 
 @router.get("", response_model=list[PatientOut])
 def list_patients(
+    response: Response,
     skip: int = Query(default=0, ge=0),
     limit: int = Query(default=settings.default_page_size, ge=1, le=settings.max_page_size),
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
-    return PatientService(PatientRepository(db)).list_patients(skip, limit)
+    repository = PatientRepository(db)
+    response.headers["X-Total-Count"] = str(repository.count())
+    return PatientService(repository).list_patients(skip, limit)
 
 
 @router.post("", response_model=PatientOut, status_code=201)
