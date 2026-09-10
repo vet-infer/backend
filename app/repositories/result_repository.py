@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from sqlalchemy.orm import joinedload
 
 from app.models.clinical_history import ClinicalHistory
+from app.models.disease import Disease
 from app.models.inference_result import ActivatedRule, InferenceResult
 from app.repositories.base import BaseRepository
 from app.repositories.risk_level_repository import RiskLevelRepository
@@ -66,7 +67,7 @@ class ResultRepository(BaseRepository[InferenceResult]):
             .options(
                 joinedload(InferenceResult.activated_rules),
                 joinedload(InferenceResult.evaluation),
-                joinedload(InferenceResult.risk_level_ref),
+                joinedload(InferenceResult.disease).joinedload(Disease.regions),
             )
             .filter(InferenceResult.evaluation_id == evaluation_id)
         )

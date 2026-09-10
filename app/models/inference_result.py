@@ -36,8 +36,9 @@ class InferenceResult(IDMixin, TimestampMixin, Base):
         return self.evaluation.patient_id
 
     @property
-    def risk_level(self) -> str:
-        return self.risk_level_ref.name
+    def regions(self):
+        return self.disease.regions
+
 
 
 class ActivatedRule(IDMixin, TimestampMixin, Base):
