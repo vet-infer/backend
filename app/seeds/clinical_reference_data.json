@@ -74,15 +74,22 @@
     { "key": "felv_p27", "name": "Antígeno p27 FeLV", "data_type": "string", "unit": "", "normal_min": null, "normal_max": null, "species": "Gato" },
     { "key": "snap_felv", "name": "Resultado SNAP FeLV", "data_type": "string", "unit": "", "normal_min": null, "normal_max": null, "species": "Gato" }
   ],
+  "anatomical_regions": [
+    { "code": "kidneys", "name": "Riñones / abdomen", "mesh_name_dog": "abdomen", "mesh_name_cat": "abdomen", "description": "Región abdominal donde se ubican los riñones." },
+    { "code": "metabolic_abdomen", "name": "Sistema metabólico (páncreas / abdomen)", "mesh_name_dog": "abdomen", "mesh_name_cat": "abdomen", "description": "Región abdominal asociada al metabolismo de la glucosa." },
+    { "code": "heart", "name": "Corazón / tórax", "mesh_name_dog": "chest", "mesh_name_cat": "chest", "description": "Región torácica donde se ubica el corazón." },
+    { "code": "mouth", "name": "Boca / dentadura", "mesh_name_dog": "head_mouth", "mesh_name_cat": "head_mouth", "description": "Región de la cabeza correspondiente a boca y dentadura." },
+    { "code": "immune_system", "name": "Sistema inmunológico (general)", "mesh_name_dog": "body", "mesh_name_cat": "body", "description": "Enfermedad sistémica sin una región anatómica localizada única." }
+  ],
   "diseases": [
-    { "name": "Enfermedad renal crónica", "species": "Perro", "base_probability": 0.2, "description": "Insuficiencia renal progresiva y degenerativa en caninos." },
-    { "name": "Diabetes mellitus", "species": "Perro", "base_probability": 0.18, "description": "Trastorno metabolico de la glucosa en caninos." },
-    { "name": "Enfermedad cardiaca degenerativa / MMVD", "species": "Perro", "base_probability": 0.15, "description": "Degeneracion mixomatosa de la valvula mitral." },
-    { "name": "Enfermedad periodontal", "species": "Perro", "base_probability": 0.25, "description": "Enfermedad oral inflamatoria cronica canina." },
-    { "name": "Leucemia viral felina", "species": "Gato", "base_probability": 0.12, "description": "Infeccion viral retrovirica felina." },
-    { "name": "Enfermedad renal crónica", "species": "Gato", "base_probability": 0.2, "description": "Insuficiencia renal progresiva y degenerativa en felinos." },
-    { "name": "Diabetes mellitus", "species": "Gato", "base_probability": 0.18, "description": "Trastorno metabolico de la glucosa en felinos." },
-    { "name": "Enfermedad periodontal", "species": "Gato", "base_probability": 0.25, "description": "Enfermedad oral inflamatoria cronica felina." }
+    { "name": "Enfermedad renal crónica", "species": "Perro", "base_probability": 0.2, "description": "Insuficiencia renal progresiva y degenerativa en caninos.", "regions": ["kidneys"] },
+    { "name": "Diabetes mellitus", "species": "Perro", "base_probability": 0.18, "description": "Trastorno metabolico de la glucosa en caninos.", "regions": ["metabolic_abdomen"] },
+    { "name": "Enfermedad cardiaca degenerativa / MMVD", "species": "Perro", "base_probability": 0.15, "description": "Degeneracion mixomatosa de la valvula mitral.", "regions": ["heart"] },
+    { "name": "Enfermedad periodontal", "species": "Perro", "base_probability": 0.25, "description": "Enfermedad oral inflamatoria cronica canina.", "regions": ["mouth"] },
+    { "name": "Leucemia viral felina", "species": "Gato", "base_probability": 0.12, "description": "Infeccion viral retrovirica felina.", "regions": ["immune_system"] },
+    { "name": "Enfermedad renal crónica", "species": "Gato", "base_probability": 0.2, "description": "Insuficiencia renal progresiva y degenerativa en felinos.", "regions": ["kidneys"] },
+    { "name": "Diabetes mellitus", "species": "Gato", "base_probability": 0.18, "description": "Trastorno metabolico de la glucosa en felinos.", "regions": ["metabolic_abdomen"] },
+    { "name": "Enfermedad periodontal", "species": "Gato", "base_probability": 0.25, "description": "Enfermedad oral inflamatoria cronica felina.", "regions": ["mouth"] }
   ],
   "rules": [
     { "code": "ERC-R01", "name": "Edad avanzada con poliuria y polidipsia", "disease": "Enfermedad renal crónica", "species": "Perro", "risk_level": "moderado", "weight": 2, "priority": 1, "conditions": [{ "variable_key": "edad avanzada", "operator": "eq", "expected_value": true }, { "variable_key": "poliuria", "operator": "eq", "expected_value": true }, { "variable_key": "polidipsia", "operator": "eq", "expected_value": true }] },

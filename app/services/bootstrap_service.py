@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.core.constants import DEFAULT_RISK_LEVEL
 from app.core.security import get_password_hash
+from app.models.anatomical_region import AnatomicalRegion
 from app.models.breed import Breed
 from app.models.clinical_probability import ClinicalProbability
 from app.models.clinical_variable import ClinicalVariable
@@ -211,6 +212,31 @@ def bootstrap_reference_data(db: Session) -> None:
                     description=disease["description"],
                 )
             )
+    db.commit()
+
+    for region in seed_data.get("anatomical_regions", []):
+        existing = db.query(AnatomicalRegion).filter(AnatomicalRegion.code == region["code"]).first()
+        if existing is None:
+            db.add(
+                AnatomicalRegion(
+                    code=region["code"],
+                    name=region["name"],
+                    mesh_name_dog=region.get("mesh_name_dog"),
+                    mesh_name_cat=region.get("mesh_name_cat"),
+                    description=region.get("description"),
+                )
+            )
+    db.commit()
+
+    for disease_seed in seed_data["diseases"]:
+        region_codes = disease_seed.get("regions", [])
+        if not region_codes:
+            continue
+        disease = _disease(db, disease_seed["name"], disease_seed["species"])
+        for region_code in region_codes:
+            region = db.query(AnatomicalRegion).filter(AnatomicalRegion.code == region_code).first()
+            if region is not None and region not in disease.regions:
+                disease.regions.append(region)
     db.commit()
 
     for rule in seed_data["rules"]:

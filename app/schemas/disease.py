@@ -9,6 +9,17 @@ class DiseaseCreate(BaseModel):
     is_active: bool = True
 
 
+class AnatomicalRegionOut(BaseModel):
+    id: int
+    code: str
+    name: str
+    mesh_name_dog: str | None = None
+    mesh_name_cat: str | None = None
+    description: str | None = None
+
+    model_config = {"from_attributes": True}
+
+
 class DiseaseOut(BaseModel):
     id: int
     name: str
@@ -16,6 +27,7 @@ class DiseaseOut(BaseModel):
     description: str | None = None
     is_degenerative: bool
     is_active: bool
+    regions: list[AnatomicalRegionOut] = []
 
     model_config = {"from_attributes": True}
 

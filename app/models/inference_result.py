@@ -37,6 +37,10 @@ class InferenceResult(Base):
     def patient_id(self) -> int:
         return self.evaluation.patient_id
 
+    @property
+    def regions(self):
+        return self.disease.regions
+
 
 class ActivatedRule(Base):
     __tablename__ = "activated_rules"
