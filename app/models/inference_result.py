@@ -38,8 +38,12 @@ class InferenceResult(Base):
         return self.evaluation.patient_id
 
     @property
-    def regions(self):
-        return self.disease.regions
+    def primary_regions(self):
+        return [link.region for link in self.disease.region_links if link.is_primary]
+
+    @property
+    def secondary_regions(self):
+        return [link.region for link in self.disease.region_links if not link.is_primary]
 
 
 class ActivatedRule(Base):

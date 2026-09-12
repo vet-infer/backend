@@ -23,3 +23,4 @@ class Disease(Base):
         secondary="disease_anatomical_regions",
         back_populates="diseases",
     )
+    region_links = relationship("DiseaseAnatomicalRegionLink", viewonly=True)
