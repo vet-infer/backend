@@ -61,9 +61,10 @@ class PersistedInferenceResultOut(BaseModel):
     inference_method: str | None = None
     explanation: str | None = None
     activated_rules: list[PersistedActivatedRuleOut] = []
-    regions: list[AnatomicalRegionOut] = []
+    regions: list[AnatomicalRegionOut] = Field(default=[], validation_alias="primary_regions")
+    secondary_regions: list[AnatomicalRegionOut] = []
 
-    model_config = {"from_attributes": True}
+    model_config = {"from_attributes": True, "populate_by_name": True}
 
 
 class SpanishInferenceResult(BaseModel):

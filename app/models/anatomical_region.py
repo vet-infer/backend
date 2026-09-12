@@ -28,3 +28,11 @@ class AnatomicalRegion(Base):
         secondary=disease_anatomical_regions,
         back_populates="regions",
     )
+
+
+class DiseaseAnatomicalRegionLink(Base):
+    """Read-only view of the disease<->region association row, exposing is_primary."""
+
+    __table__ = disease_anatomical_regions
+
+    region = relationship("AnatomicalRegion", viewonly=True)
