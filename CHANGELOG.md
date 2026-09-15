@@ -2,6 +2,30 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Este proyecto no sigue un esquema de versionado formal todavía (API en `1.0.0`); las entradas se agrupan por fecha y, cuando aplica, por el change de OpenSpec que las originó (`openspec/changes/archive/`).
 
+## [2026-09-01] — Endurecimiento del motor de inferencia (Fase 2)
+
+Change de OpenSpec: [`archive/2026-09-01-harden-inference-engine-phase2`](../openspec/changes/archive/2026-09-01-harden-inference-engine-phase2/). Spec modificada: [`inference-engine`](../openspec/specs/inference-engine/spec.md).
+
+### Added
+
+- Versionado no destructivo de resultados de inferencia: `InferenceResult` gana `is_current` (default `True`) y `superseded_at`. Al volver a ejecutar la inferencia sobre una evaluación clínica que ya tiene resultados, los anteriores se marcan `is_current=False, superseded_at=<ahora>` en la misma transacción, en vez de mezclarse con los nuevos o perderse. Migración de Alembic: `c1a9e5f0b736_add_is_current_to_inference_results.py`.
+- `ResultRepository.list_by_evaluation` / `InferenceService.list_results` / `GET /api/v1/evaluations/{evaluation_id}/results` aceptan `include_history` (default `False`): por defecto devuelven solo los resultados vigentes; con `include_history=true` devuelven también las ejecuciones anteriores marcadas como superadas.
+- `GET /health` ahora ejecuta `SELECT 1` contra la base de datos configurada; responde `503 {"status": "error", ...}` si la base de datos no está disponible, en vez de reportar siempre `{"status": "ok"}` sin verificar nada.
+- Nuevos tests: `tests/test_result_versioning.py`, `tests/test_deprecated_inference_endpoint.py`, `tests/test_health_check.py`.
+
+### Changed
+
+- `CatalogRepository.list_diseases` acepta `species_id` opcional y filtra en SQL (antes se traían todas las enfermedades activas de todas las especies y se filtraba en Python dentro de `InferenceService._run_hybrid_inference`). La consulta de `ClinicalProbability` en el mismo método ahora filtra por `disease_id.in_(...)` en vez de traer todas las activas. Sin cambio de comportamiento observable — mismo resultado, menos filas leídas.
+- `POST /inference/evaluations/{evaluation_id}/run` queda marcado `deprecated=True` en OpenAPI, con la documentación señalando `POST /evaluaciones/{id}/procesar` como endpoint canónico (confirmado que es el único que usa el frontend). No cambia su comportamiento funcional; `POST /inference/run` (previsualización sin persistir) no se toca — no es un duplicado.
+
+### Known issues (no resueltos en este cambio)
+
+- La migración `c1a9e5f0b736` no se pudo verificar contra PostgreSQL real en este entorno (Docker Desktop no estaba disponible). Se verificó por coincidencia exacta de patrón con una migración equivalente ya probada en producción (`a6dc8e396b9c`) y por integridad de la cadena de Alembic (`alembic heads` resuelve a un único head). Pendiente: correr `alembic upgrade head` contra Postgres real la próxima vez que Docker esté disponible.
+
+---
+
+**Tests:** 65/65 pasan (`pytest`, backend; 59 de Fase 1 + 6 nuevos). **Archivos modificados:** `app/models/inference_result.py`, `app/repositories/result_repository.py`, `app/repositories/catalog_repository.py`, `app/services/inference_service.py`, `app/api/v1/routers/inference.py`, `app/api/v1/routers/evaluations.py`, `app/main.py`. **Archivos nuevos:** `alembic/versions/c1a9e5f0b736_add_is_current_to_inference_results.py`, `tests/test_result_versioning.py`, `tests/test_deprecated_inference_endpoint.py`, `tests/test_health_check.py`.
+
 ## [2026-09-01] — Endurecimiento del motor de inferencia (Fase 1)
 
 Change de OpenSpec: [`archive/2026-09-01-harden-inference-engine-phase1`](../openspec/changes/archive/2026-09-01-harden-inference-engine-phase1/). Spec resultante: [`inference-engine`](../openspec/specs/inference-engine/spec.md).

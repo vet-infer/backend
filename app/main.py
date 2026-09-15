@@ -1,8 +1,11 @@
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 
 from app.api.v1.routers import (
     auth,
@@ -23,7 +26,7 @@ from app.api.v1.routers import (
     breeds,
 )
 from app.core.config import settings
-from app.core.database import Base, SessionLocal, engine
+from app.core.database import Base, SessionLocal, engine, get_db
 from app.core.exceptions import register_exception_handlers
 from app.models import *  # noqa: F403
 from app.services.bootstrap_service import bootstrap_reference_data
@@ -33,6 +36,8 @@ if not logging.getLogger().handlers:
         level=logging.DEBUG if settings.environment.lower() in {"development", "testing"} else logging.INFO,
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -86,5 +91,13 @@ app.include_router(history.router, prefix=settings.api_v1_prefix)
 
 
 @app.get("/health", tags=["Sistema"])
-def health_check():
+def health_check(db: Session = Depends(get_db)):
+    try:
+        db.execute(text("SELECT 1"))
+    except Exception:
+        logger.exception("Health check fallo: base de datos no responde")
+        return JSONResponse(
+            status_code=503,
+            content={"status": "error", "detail": "Base de datos no disponible"},
+        )
     return {"status": "ok"}

@@ -7,8 +7,11 @@ class CatalogRepository:
     def __init__(self, db):
         self.db = db
 
-    def list_diseases(self) -> list[Disease]:
-        return self.db.query(Disease).filter(Disease.is_active.is_(True)).order_by(Disease.species_id, Disease.name).all()
+    def list_diseases(self, species_id: int | None = None) -> list[Disease]:
+        query = self.db.query(Disease).filter(Disease.is_active.is_(True))
+        if species_id is not None:
+            query = query.filter(Disease.species_id == species_id)
+        return query.order_by(Disease.species_id, Disease.name).all()
 
     def create_disease(self, disease: Disease) -> Disease:
         self.db.add(disease)
