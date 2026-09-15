@@ -1,13 +1,53 @@
-from typing import Any
+from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
+
+SUPPORTED_OPERATORS = ("eq", "neq", "gt", "gte", "lt", "lte", "between", "contains", "in")
+
+
+def _is_number(value: Any) -> bool:
+    if isinstance(value, bool):
+        return False
+    try:
+        float(value)
+    except (TypeError, ValueError):
+        return False
+    return True
 
 
 class RuleConditionCreate(BaseModel):
     variable_key: str = Field(min_length=1, max_length=100)
-    operator: str = Field(min_length=1, max_length=30)
+    operator: Literal["eq", "neq", "gt", "gte", "lt", "lte", "between", "contains", "in"]
     expected_value: Any
     logical_group: int = Field(default=1, ge=1)
+
+    @model_validator(mode="after")
+    def _validate_expected_value_shape(self) -> "RuleConditionCreate":
+        operator = self.operator
+        value = self.expected_value
+
+        if operator in ("gt", "gte", "lt", "lte"):
+            if not _is_number(value):
+                raise ValueError(
+                    f"El operador '{operator}' requiere un expected_value numerico"
+                )
+        elif operator == "between":
+            low = high = None
+            if isinstance(value, dict):
+                low, high = value.get("min"), value.get("max")
+            elif isinstance(value, (list, tuple)) and len(value) == 2:
+                low, high = value[0], value[1]
+            if low is None or high is None or not _is_number(low) or not _is_number(high):
+                raise ValueError(
+                    "El operador 'between' requiere [min, max] o {'min': x, 'max': y} numericos"
+                )
+            if float(low) > float(high):
+                raise ValueError("El operador 'between' requiere min <= max")
+        elif operator == "in":
+            if not isinstance(value, (list, tuple, str)):
+                raise ValueError("El operador 'in' requiere una lista o un string")
+
+        return self
 
 
 class RuleConditionOut(BaseModel):

@@ -1,21 +1,40 @@
+import logging
+
 from app.inference.evaluator import ConditionEvaluator
 from app.inference.facts import normalize_facts
-from app.inference.risk import risk_from_score
 from app.inference.trace import ConditionTrace
+
+logger = logging.getLogger(__name__)
 
 
 class InferenceEngine:
     def __init__(self, evaluator: ConditionEvaluator | None = None):
         self.evaluator = evaluator or ConditionEvaluator()
 
-    def evaluate(self, facts: dict, rules: list) -> list[dict]:
+    def evaluate(
+        self,
+        facts: dict,
+        rules: list,
+        evaluation_id: int | None = None,
+        patient_id: int | None = None,
+    ) -> list[dict]:
         normalized_facts = normalize_facts(facts)
         grouped: dict[int, dict] = {}
+        context = {"evaluation_id": evaluation_id, "patient_id": patient_id}
 
         for rule in rules:
             traces: list[ConditionTrace] = []
             if not self._rule_matches(rule, normalized_facts, traces):
+                logger.debug(
+                    "Regla %s (id=%s) no activada para evaluation_id=%s patient_id=%s",
+                    rule.code, rule.id, context["evaluation_id"], context["patient_id"],
+                )
                 continue
+
+            logger.debug(
+                "Regla %s (id=%s) activada para evaluation_id=%s patient_id=%s",
+                rule.code, rule.id, context["evaluation_id"], context["patient_id"],
+            )
 
             disease = rule.disease
             grouped.setdefault(
@@ -46,7 +65,9 @@ class InferenceEngine:
 
         output = []
         for item in grouped.values():
-            item["risk_level"] = risk_from_score(item["score"])
+            # El risk_level final del resultado hibrido lo determina exclusivamente
+            # BayesService.determinar_nivel_riesgo (probabilidad bayesiana); el motor
+            # de reglas no calcula ni expone un risk_level alternativo aqui.
             item["explanation"] = (
                 "Resultado sugerido generado por reglas clinicas de soporte; "
                 "no constituye diagnostico definitivo."
