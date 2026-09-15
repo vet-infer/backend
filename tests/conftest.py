@@ -6,6 +6,7 @@ os.environ.setdefault("JWT_SECRET", "test-only-secret")
 os.environ.setdefault("CORS_ORIGINS", '["http://localhost:5173"]')
 os.environ.setdefault("BOOTSTRAP_ADMIN_EMAIL", "")
 os.environ.setdefault("BOOTSTRAP_ADMIN_PASSWORD", "")
+os.environ.setdefault("RATE_LIMIT_ENABLED", "false")
 
 import pytest
 

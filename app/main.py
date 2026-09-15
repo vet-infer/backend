@@ -28,6 +28,7 @@ from app.api.v1.routers import (
 from app.core.config import settings
 from app.core.database import Base, SessionLocal, engine, get_db
 from app.core.exceptions import register_exception_handlers
+from app.core.rate_limit import limiter
 from app.models import *  # noqa: F403
 from app.services.bootstrap_service import bootstrap_reference_data
 
@@ -68,6 +69,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.state.limiter = limiter
 
 register_exception_handlers(app)
 

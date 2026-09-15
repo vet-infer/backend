@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.database import get_db
 from app.core.permissions import PermissionPolicy, require_policy
+from app.core.rate_limit import limiter
 from app.models.user import User
 from app.repositories.evaluation_repository import EvaluationRepository
 from app.repositories.patient_repository import PatientRepository
@@ -104,7 +106,9 @@ def list_evaluation_results(
 
 
 @router.post("/evaluaciones/{evaluation_id}/procesar", response_model=SpanishInferenceResponse)
+@limiter.limit(settings.rate_limit_inference)
 def procesar_evaluacion_bayes(
+    request: Request,
     evaluation_id: int,
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_WRITE)),
