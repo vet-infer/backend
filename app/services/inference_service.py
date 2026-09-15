@@ -81,14 +81,9 @@ class InferenceService:
         if not species_diseases:
             return []
 
-        # 4. Fetch clinical probabilities for this species' diseases (filtered in SQL)
+        # 4. Fetch clinical probabilities for this species' diseases (filtered in SQL, cached)
         disease_ids = [d.id for d in species_diseases]
-        probs = (
-            db.query(prob_repo.model)
-            .filter(prob_repo.model.is_active == True)
-            .filter(prob_repo.model.disease_id.in_(disease_ids))
-            .all()
-        )
+        probs = prob_repo.list_active_by_disease_ids(disease_ids)
 
         # 5. Compute Naive Bayes likelihoods
         likelihoods = []

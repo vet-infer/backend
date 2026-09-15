@@ -44,6 +44,31 @@ engine = create_engine(
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
+def test_normalizar_probabilidades_uniform_split_when_total_likelihood_is_zero():
+    service = BayesService(db=None)
+    resultados = [
+        {"disease_id": 1, "likelihood": 0.0},
+        {"disease_id": 2, "likelihood": 0.0},
+        {"disease_id": 3, "likelihood": 0.0},
+    ]
+
+    normalized = service.normalizar_probabilidades(resultados)
+
+    assert all(r["probability"] == round(1.0 / 3, 4) for r in normalized)
+
+
+def test_normalizar_probabilidades_uniform_split_when_total_likelihood_is_negative():
+    service = BayesService(db=None)
+    resultados = [
+        {"disease_id": 1, "likelihood": -0.5},
+        {"disease_id": 2, "likelihood": -0.5},
+    ]
+
+    normalized = service.normalizar_probabilidades(resultados)
+
+    assert all(r["probability"] == 0.5 for r in normalized)
+
+
 @pytest.mark.parametrize(
     ("probability", "expected_risk"),
     [(0.0, "Bajo"), (0.3999, "Bajo"), (0.40, "Moderado"), (0.6999, "Moderado"), (0.70, "Alto"), (1.0, "Alto")],

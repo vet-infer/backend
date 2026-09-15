@@ -89,6 +89,17 @@ class RuleStatusUpdate(BaseModel):
     is_active: bool
 
 
+class RuleSimulationRequest(BaseModel):
+    disease_id: int
+    conditions: list[RuleConditionCreate] = Field(min_length=1)
+    facts: dict[str, Any] = Field(default_factory=dict)
+
+
+class RuleSimulationResponse(BaseModel):
+    activated: bool
+    fulfilled_conditions: list[str] = []
+
+
 class RuleOut(BaseModel):
     id: int
     code: str
