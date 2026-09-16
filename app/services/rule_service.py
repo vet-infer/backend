@@ -7,7 +7,6 @@ from app.models.knowledge import FactDefinition
 from app.repositories.risk_level_repository import RiskLevelRepository
 from app.repositories.rule_repository import RuleRepository
 from app.schemas.rule import RuleCreate, RuleSimulationRequest, RuleStatusUpdate, RuleUpdate
-from app.services.bootstrap_service import get_or_create_risk_level, normalize_risk_level
 
 
 class RuleService:

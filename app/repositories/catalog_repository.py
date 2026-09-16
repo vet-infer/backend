@@ -2,6 +2,7 @@ from app.core.cache import cache
 from app.models.clinical_variable import ClinicalVariable
 from app.models.disease import Disease
 from app.models.symptom import Symptom
+from app.repositories.base import BaseRepository
 from app.repositories.snapshots import DiseaseSnapshot
 
 
