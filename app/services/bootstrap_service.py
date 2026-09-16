@@ -212,6 +212,7 @@ def _seed_fact_definitions(db: Session, seed_data: dict) -> None:
 
 
 def _seed_diseases(db: Session, seed_data: dict) -> None:
+    risk_level_repository = RiskLevelRepository(db)
     for disease in seed_data["diseases"]:
         species_id = _species_id(db, disease["species"])
         existing = db.query(Disease).filter(
@@ -361,7 +362,6 @@ def bootstrap_reference_data(db: Session) -> None:
     _seed_clinical_variables(db, seed_data)
     _seed_fact_definitions(db, seed_data)
     _seed_diseases(db, seed_data)
-    _seed_rules(db, seed_data)
     _deactivate_legacy_rules(db)
     _backfill_categorical_allowed_values(db)
     _seed_knowledge_references(db)
