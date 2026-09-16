@@ -229,9 +229,6 @@ def _seed_diseases(db: Session, seed_data: dict) -> None:
             )
     db.commit()
 
-
-def _seed_rules(db: Session, seed_data: dict) -> None:
-    risk_level_repository = RiskLevelRepository(db)
     for rule in seed_data["rules"]:
         disease = _disease(db, rule["disease"], rule["species"])
         risk_level = risk_level_repository.get_or_create(rule["risk_level"])

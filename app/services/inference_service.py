@@ -68,13 +68,18 @@ class InferenceService:
         rules_results = self._evaluate_rules(species_id, facts)
         activated_by_disease = {r["disease_id"]: r["activated_rules"] for r in rules_results}
 
-        evidences = self.bayes_service.obtener_evidencias_evaluacion(facts)
-        species_diseases = self._diseases_for_species(species_id)
+        # 2. Extract clinical evidences from facts
+        evidences = bayes_svc.obtener_evidencias_evaluacion(facts)
+
+        # 3. Fetch diseases for this species (filtered in SQL)
+        species_diseases = catalog_repo.list_diseases(species_id=species_id)
+
         if not species_diseases:
             return []
 
-        likelihoods = self._compute_bayes_likelihoods(species_diseases, evidences)
-        normalized = self.bayes_service.normalizar_probabilidades(likelihoods)
+        # 4. Fetch clinical probabilities for this species' diseases (filtered in SQL, cached)
+        disease_ids = [d.id for d in species_diseases]
+        probs = prob_repo.list_active_by_disease_ids(disease_ids)
 
         results = self._build_hybrid_results(normalized, rules_results, activated_by_disease, evidences)
         return sorted(results, key=lambda r: r["probability"], reverse=True)
@@ -131,8 +136,8 @@ class InferenceService:
             )
         return results
 
-    def list_results(self, evaluation_id: int):
-        return self.result_repository.list_by_evaluation(evaluation_id)
+    def list_results(self, evaluation_id: int, include_history: bool = False):
+        return self.result_repository.list_by_evaluation(evaluation_id, include_history=include_history)
 
     def list_activated_rules(self, result_id: int):
         return self.result_repository.list_activated_rules(result_id)

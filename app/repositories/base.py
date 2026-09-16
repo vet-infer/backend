@@ -24,6 +24,12 @@ class BaseRepository(Generic[ModelT]):
             query = query.filter(self.model.is_active == True)
         return query.offset(skip).limit(limit).all()
 
+    def count(self) -> int:
+        query = self.db.query(self.model)
+        if hasattr(self.model, "is_active"):
+            query = query.filter(self.model.is_active == True)
+        return query.count()
+
     def add(self, entity: ModelT) -> ModelT:
         self.db.add(entity)
         self.db.commit()

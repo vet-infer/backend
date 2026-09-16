@@ -1,3 +1,4 @@
+from app.core.config import settings
 from app.core.exceptions import NotFoundError, AppException
 from app.models.patient import Patient
 from app.repositories.patient_repository import PatientRepository
@@ -8,7 +9,7 @@ class PatientService:
     def __init__(self, repository: PatientRepository):
         self.repository = repository
 
-    def list_patients(self, skip: int = 0, limit: int = 50) -> list[Patient]:
+    def list_patients(self, skip: int = 0, limit: int = settings.default_page_size) -> list[Patient]:
         return self.repository.list_with_species(skip, limit)
 
     def get_patient(self, patient_id: int) -> Patient:
