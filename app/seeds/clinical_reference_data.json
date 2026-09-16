@@ -82,13 +82,6 @@
     { "key": "t4_total", "name": "T4 total", "data_type": "numeric", "unit": "ug/dL", "normal_min": 0.8, "normal_max": 4.0, "species": "Gato" },
     { "key": "hallazgos_radiograficos_toracicos", "name": "Hallazgos radiograficos toracicos", "data_type": "string", "unit": "", "normal_min": null, "normal_max": null, "allowed_values": ["sin hallazgos", "patron bronquial"], "species": "Gato" }
   ],
-  "anatomical_regions": [
-    { "code": "kidneys", "name": "Riñones / abdomen", "mesh_name_dog": "abdomen", "mesh_name_cat": "abdomen", "description": "Región abdominal donde se ubican los riñones." },
-    { "code": "metabolic_abdomen", "name": "Sistema metabólico (páncreas / abdomen)", "mesh_name_dog": "abdomen", "mesh_name_cat": "abdomen", "description": "Región abdominal asociada al metabolismo de la glucosa." },
-    { "code": "heart", "name": "Corazón / tórax", "mesh_name_dog": "chest", "mesh_name_cat": "chest", "description": "Región torácica donde se ubica el corazón." },
-    { "code": "mouth", "name": "Boca / dentadura", "mesh_name_dog": "head_mouth", "mesh_name_cat": "head_mouth", "description": "Región de la cabeza correspondiente a boca y dentadura." },
-    { "code": "immune_system", "name": "Sistema inmunológico (general)", "mesh_name_dog": "body", "mesh_name_cat": "body", "description": "Enfermedad sistémica sin una región anatómica localizada única." }
-  ],
   "diseases": [
     { "name": "Enfermedad renal crónica", "species": "Perro", "base_probability": 0.2, "description": "Insuficiencia renal progresiva y degenerativa en caninos." },
     { "name": "Diabetes mellitus", "species": "Perro", "base_probability": 0.18, "description": "Trastorno metabolico de la glucosa en caninos." },

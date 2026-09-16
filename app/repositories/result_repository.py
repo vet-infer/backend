@@ -2,9 +2,7 @@ from datetime import datetime, timezone
 
 from sqlalchemy.orm import joinedload
 
-from app.models.anatomical_region import DiseaseAnatomicalRegionLink
 from app.models.clinical_history import ClinicalHistory
-from app.models.disease import Disease
 from app.models.inference_result import ActivatedRule, InferenceResult
 from app.repositories.base import BaseRepository
 from app.repositories.risk_level_repository import RiskLevelRepository
@@ -65,13 +63,7 @@ class ResultRepository(BaseRepository[InferenceResult]):
     def list_by_evaluation(self, evaluation_id: int, include_history: bool = False) -> list[InferenceResult]:
         query = (
             self.db.query(InferenceResult)
-            .options(
-                joinedload(InferenceResult.activated_rules),
-                joinedload(InferenceResult.evaluation),
-                joinedload(InferenceResult.disease)
-                .joinedload(Disease.region_links)
-                .joinedload(DiseaseAnatomicalRegionLink.region),
-            )
+            .options(joinedload(InferenceResult.activated_rules), joinedload(InferenceResult.evaluation))
             .filter(InferenceResult.evaluation_id == evaluation_id)
         )
         if not include_history:

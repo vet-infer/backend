@@ -3,8 +3,6 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from app.schemas.disease import AnatomicalRegionOut
-
 
 class ClinicalFact(BaseModel):
     key: str
@@ -61,10 +59,8 @@ class PersistedInferenceResultOut(BaseModel):
     inference_method: str | None = None
     explanation: str | None = None
     activated_rules: list[PersistedActivatedRuleOut] = []
-    regions: list[AnatomicalRegionOut] = Field(default=[], validation_alias="primary_regions")
-    secondary_regions: list[AnatomicalRegionOut] = []
 
-    model_config = {"from_attributes": True, "populate_by_name": True}
+    model_config = {"from_attributes": True}
 
 
 class SpanishInferenceResult(BaseModel):

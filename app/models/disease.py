@@ -18,9 +18,3 @@ class Disease(IDMixin, TimestampMixin, SoftDeleteMixin, Base):
     species = relationship("Species", back_populates="diseases")
     rules = relationship("InferenceRule", back_populates="disease")
     results = relationship("InferenceResult", back_populates="disease")
-    regions = relationship(
-        "AnatomicalRegion",
-        secondary="disease_anatomical_regions",
-        back_populates="diseases",
-    )
-    region_links = relationship("DiseaseAnatomicalRegionLink", viewonly=True)
