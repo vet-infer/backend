@@ -37,14 +37,6 @@ class InferenceResult(Base):
     def patient_id(self) -> int:
         return self.evaluation.patient_id
 
-    @property
-    def primary_regions(self):
-        return [link.region for link in self.disease.region_links if link.is_primary]
-
-    @property
-    def secondary_regions(self):
-        return [link.region for link in self.disease.region_links if not link.is_primary]
-
 
 class ActivatedRule(Base):
     __tablename__ = "activated_rules"

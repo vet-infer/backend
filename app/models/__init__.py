@@ -1,4 +1,3 @@
-from app.models.anatomical_region import AnatomicalRegion, DiseaseAnatomicalRegionLink
 from app.models.clinical_history import ClinicalHistory
 from app.models.clinical_variable import ClinicalVariable
 from app.models.clinical_probability import ClinicalProbability
@@ -19,9 +18,7 @@ from app.models.user import User
 
 __all__ = [
     "ActivatedRule",
-    "AnatomicalRegion",
     "Breed",
-    "DiseaseAnatomicalRegionLink",
     "ClinicalHistory",
     "ClinicalVariable",
     "ClinicalProbability",
