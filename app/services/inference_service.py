@@ -69,17 +69,28 @@ class InferenceService:
         activated_by_disease = {r["disease_id"]: r["activated_rules"] for r in rules_results}
 
         # 2. Extract clinical evidences from facts
-        evidences = bayes_svc.obtener_evidencias_evaluacion(facts)
+        evidences = self.bayes_service.obtener_evidencias_evaluacion(facts)
 
         # 3. Fetch diseases for this species (filtered in SQL)
-        species_diseases = catalog_repo.list_diseases(species_id=species_id)
+        species_diseases = self.catalog_repository.list_diseases(species_id=species_id)
 
         if not species_diseases:
             return []
 
         # 4. Fetch clinical probabilities for this species' diseases (filtered in SQL, cached)
         disease_ids = [d.id for d in species_diseases]
-        probs = prob_repo.list_active_by_disease_ids(disease_ids)
+        probs = self.probability_repository.list_active_by_disease_ids(disease_ids)
+
+        # 5. Compute Bayesian likelihood per disease and normalize into probabilities
+        bayes_results = [
+            {
+                "disease_id": disease.id,
+                "disease_obj": disease,
+                "likelihood": self.bayes_service.calcular_probabilidad_bayes(disease, evidences, probs),
+            }
+            for disease in species_diseases
+        ]
+        normalized = self.bayes_service.normalizar_probabilidades(bayes_results)
 
         results = self._build_hybrid_results(normalized, rules_results, activated_by_disease, evidences)
         return sorted(results, key=lambda r: r["probability"], reverse=True)
