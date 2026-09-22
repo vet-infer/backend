@@ -15,9 +15,16 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.create_unique_constraint('uix_species_clinical_variable_key', 'clinical_variables', ['species_id', 'key'])
-    op.create_unique_constraint('uix_species_disease_name', 'diseases', ['species_id', 'name'])
-    op.create_unique_constraint('uix_species_symptom_name', 'symptoms', ['species_id', 'name'])
+    inspector = sa.inspect(op.get_bind())
+
+    def _create_unique(name, table, columns):
+        existing = {uc["name"] for uc in inspector.get_unique_constraints(table)}
+        if name not in existing:
+            op.create_unique_constraint(name, table, columns)
+
+    _create_unique('uix_species_clinical_variable_key', 'clinical_variables', ['species_id', 'key'])
+    _create_unique('uix_species_disease_name', 'diseases', ['species_id', 'name'])
+    _create_unique('uix_species_symptom_name', 'symptoms', ['species_id', 'name'])
 
 
 def downgrade() -> None:

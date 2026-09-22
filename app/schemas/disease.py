@@ -30,6 +30,10 @@ class CatalogItemOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class CatalogStatusUpdate(BaseModel):
+    is_active: bool
+
+
 class ClinicalVariableOut(BaseModel):
     id: int
     key: str
