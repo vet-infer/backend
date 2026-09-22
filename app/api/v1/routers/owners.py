@@ -30,7 +30,7 @@ def get_owners(
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
     response.headers["X-Total-Count"] = str(OwnerRepository(db).count())
-    return OwnerService(db).list_owners(skip, limit)
+    return OwnerService(OwnerRepository(db)).list_owners(skip, limit)
 
 
 @router.get("/{owner_id}", response_model=OwnerOut)

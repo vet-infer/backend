@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any
 
 from sqlalchemy import Boolean, DateTime, Float, ForeignKey, JSON, String, Text, func
@@ -34,6 +35,10 @@ class InferenceResult(IDMixin, TimestampMixin, Base):
     @property
     def patient_id(self) -> int:
         return self.evaluation.patient_id
+
+    @property
+    def risk_level(self) -> str:
+        return self.risk_level_ref.name
 
 
 

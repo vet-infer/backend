@@ -14,6 +14,7 @@ from app.schemas.inference import (
     InferenceRequest,
     InferenceResultOut,
     PersistedActivatedRuleOut,
+    PersistedInferenceResultOut,
 )
 from app.services.inference_service import InferenceService
 
