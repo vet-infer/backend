@@ -11,6 +11,13 @@ class OwnerRepository(BaseRepository[Owner]):
     def get_by_email(self, email: str) -> Owner | None:
         return self.db.query(Owner).filter(Owner.email == email).first()
 
+    def get_by_document(self, document_type: str, document_number: str) -> Owner | None:
+        return (
+            self.db.query(Owner)
+            .filter(Owner.document_type == document_type, Owner.document_number == document_number)
+            .first()
+        )
+
     def get_by_id(self, owner_id: int) -> Owner | None:
         return self.get(owner_id)
 
@@ -19,7 +26,7 @@ class OwnerRepository(BaseRepository[Owner]):
             return self.add(Owner(**data))
         except IntegrityError as exc:
             self.db.rollback()
-            raise ConflictError("El correo ya esta registrado") from exc
+            raise ConflictError("El documento ya esta registrado") from exc
 
     def update_by_id(self, owner_id: int, data: dict) -> Owner | None:
         owner = self.get(owner_id)
@@ -29,7 +36,7 @@ class OwnerRepository(BaseRepository[Owner]):
             return self.update(owner, data)
         except IntegrityError as exc:
             self.db.rollback()
-            raise ConflictError("El correo ya esta registrado") from exc
+            raise ConflictError("El documento ya esta registrado") from exc
 
     def delete(self, owner_id: int) -> None:
         owner = self.get(owner_id)
