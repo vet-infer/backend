@@ -4,6 +4,13 @@ from pathlib import Path
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+EMAILJS_REQUIRED_FIELDS = (
+    "emailjs_service_id",
+    "emailjs_template_id",
+    "emailjs_public_key",
+    "emailjs_private_key",
+)
+
 
 class Settings(BaseSettings):
     app_name: str = "Motor de Inferencia Veterinario"
@@ -15,12 +22,11 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 60
     password_reset_token_expire_minutes: int = 15
     frontend_base_url: str = "http://localhost:5173"
-    smtp_host: str | None = None
-    smtp_port: int = 587
-    smtp_username: str | None = None
-    smtp_password: str | None = None
-    smtp_from_email: str | None = None
-    smtp_use_tls: bool = True
+    emailjs_api_url: str = "https://api.emailjs.com/api/v1.0/email/send"
+    emailjs_service_id: str | None = None
+    emailjs_template_id: str | None = None
+    emailjs_public_key: str | None = None
+    emailjs_private_key: str | None = None
     cors_origins: list[str] = []
     bootstrap_admin_email: str | None = None
     bootstrap_admin_password: str | None = None
@@ -52,7 +58,7 @@ class Settings(BaseSettings):
         if self.database_url.startswith("postgresql://"):
             self.database_url = self.database_url.replace("postgresql://", "postgresql+psycopg://", 1)
 
-        for field_name in ("smtp_host", "smtp_username", "smtp_password", "smtp_from_email"):
+        for field_name in EMAILJS_REQUIRED_FIELDS:
             if getattr(self, field_name) == "":
                 setattr(self, field_name, None)
 
@@ -69,18 +75,13 @@ class Settings(BaseSettings):
                 raise ValueError("CORS_ORIGINS debe configurarse explicitamente en produccion.")
             if self.database_url.startswith("sqlite"):
                 raise ValueError("DATABASE_URL debe apuntar a PostgreSQL en produccion.")
-            smtp_settings = {
-                "SMTP_HOST": self.smtp_host,
-                "SMTP_USERNAME": self.smtp_username,
-                "SMTP_PASSWORD": self.smtp_password,
-                "SMTP_FROM_EMAIL": self.smtp_from_email,
-            }
-            configured_smtp_settings = [name for name, value in smtp_settings.items() if value]
-            if configured_smtp_settings and len(configured_smtp_settings) != len(smtp_settings):
-                missing_smtp_settings = [name for name, value in smtp_settings.items() if not value]
+            emailjs_settings = {name.upper(): getattr(self, name) for name in EMAILJS_REQUIRED_FIELDS}
+            configured_emailjs_settings = [name for name, value in emailjs_settings.items() if value]
+            if configured_emailjs_settings and len(configured_emailjs_settings) != len(emailjs_settings):
+                missing_emailjs_settings = [name for name, value in emailjs_settings.items() if not value]
                 raise ValueError(
-                    "SMTP debe configurarse completamente o dejarse deshabilitado. Faltan: "
-                    + ", ".join(missing_smtp_settings)
+                    "EmailJS debe configurarse completamente o dejarse deshabilitado. Faltan: "
+                    + ", ".join(missing_emailjs_settings)
                 )
             if self._is_local_frontend_url(self.frontend_base_url):
                 raise ValueError("FRONTEND_BASE_URL debe usar el dominio publico en produccion.")
