@@ -2,6 +2,15 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Este proyecto no sigue un esquema de versionado formal todavía (API en `1.0.0`); las entradas se agrupan por fecha y, cuando aplica, por el change de OpenSpec que las originó (`openspec/changes/archive/`).
 
+## [2026-09-22] — Datos historicos de demostracion
+
+### Added
+
+- Migracion de datos `c3e8a5d1f7b2_seed_demo_clinical_history.py`: inserta 8 propietarios, 13 pacientes (perros y gatos) y 22 evaluaciones fechadas entre octubre 2025 y septiembre 2026, con sus hechos clinicos, resultados de inferencia, reglas activadas e historial clinico. Cubre las 12 enfermedades de la base de conocimiento, incluyendo seguimientos (ERC, MMVD, FeLV, asma) y controles de bajo riesgo.
+- `alembic/data/demo_clinical_history.json`: datos fuente de la migracion. Los resultados se precalcularon con el motor hibrido real, asi la migracion no importa servicios de la app.
+- `scripts/generate_demo_history.py`: regenera el JSON (valida los hechos contra `fact_definitions` y ejecuta la inferencia). Uso: `docker compose exec api python scripts/generate_demo_history.py`.
+- Comportamiento: se omite con `ENVIRONMENT=production` salvo `SEED_DEMO_DATA=true`; es idempotente; resuelve especies, razas, enfermedades, reglas y niveles de riesgo por nombre/codigo; `alembic downgrade` elimina los propietarios `*.demo@example.com` y todo lo asociado.
+
 ## [2026-09-22] — Recuperacion de contrasena: correcciones y envio por EmailJS REST
 
 Sin change de OpenSpec asociado (correccion de bug detectada en pruebas manuales y cambio de proveedor de correo).

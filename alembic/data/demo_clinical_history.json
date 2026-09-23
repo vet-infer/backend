@@ -1,0 +1,3247 @@
+{
+  "owners": [
+    {
+      "key": "quispe",
+      "first_name": "María Fernanda",
+      "last_name": "Quispe Huamán",
+      "phone": "987654321",
+      "email": "maria.quispe.demo@example.com",
+      "document_type": "DNI",
+      "document_number": "45872136",
+      "address": "Av. Arequipa 1450, Dpto. 302",
+      "district": "Lince",
+      "ubigeo": "150116",
+      "created_at": "2025-09-18T10:12:00-05:00"
+    },
+    {
+      "key": "rojas",
+      "first_name": "Carlos Alberto",
+      "last_name": "Rojas Paredes",
+      "phone": "956321478",
+      "email": "carlos.rojas.demo@example.com",
+      "document_type": "DNI",
+      "document_number": "40125589",
+      "address": "Jr. Las Begonias 230",
+      "district": "San Isidro",
+      "ubigeo": "150131",
+      "created_at": "2025-09-25T16:40:00-05:00"
+    },
+    {
+      "key": "mendoza",
+      "first_name": "Lucía",
+      "last_name": "Mendoza Castillo",
+      "phone": "912458736",
+      "email": "lucia.mendoza.demo@example.com",
+      "document_type": "DNI",
+      "document_number": "47789012",
+      "address": "Calle Los Pinos 118",
+      "district": "Miraflores",
+      "ubigeo": "150122",
+      "created_at": "2025-10-07T09:05:00-05:00"
+    },
+    {
+      "key": "chavez",
+      "first_name": "Jorge Luis",
+      "last_name": "Chávez Ramírez",
+      "phone": "998127456",
+      "email": "jorge.chavez.demo@example.com",
+      "document_type": "DNI",
+      "document_number": "41236674",
+      "address": "Av. La Marina 2200",
+      "district": "San Miguel",
+      "ubigeo": "150136",
+      "created_at": "2025-11-12T11:30:00-05:00"
+    },
+    {
+      "key": "torres",
+      "first_name": "Ana Sofía",
+      "last_name": "Torres Vega",
+      "phone": "945782163",
+      "email": "ana.torres.demo@example.com",
+      "document_type": "DNI",
+      "document_number": "72345618",
+      "address": "Av. Alfredo Benavides 3050",
+      "district": "Santiago de Surco",
+      "ubigeo": "150140",
+      "created_at": "2025-12-03T15:20:00-05:00"
+    },
+    {
+      "key": "salazar",
+      "first_name": "Ricardo",
+      "last_name": "Salazar Núñez",
+      "phone": "934567812",
+      "email": "ricardo.salazar.demo@example.com",
+      "document_type": "CE",
+      "document_number": "001234567",
+      "address": "Av. Javier Prado Este 4200",
+      "district": "La Molina",
+      "ubigeo": "150114",
+      "created_at": "2026-01-14T10:00:00-05:00"
+    },
+    {
+      "key": "gutierrez",
+      "first_name": "Rosa Elena",
+      "last_name": "Gutiérrez Flores",
+      "phone": "976543218",
+      "email": "rosa.gutierrez.demo@example.com",
+      "document_type": "DNI",
+      "document_number": "09874521",
+      "address": "Jr. Huiracocha 1765",
+      "district": "Jesús María",
+      "ubigeo": "150113",
+      "created_at": "2026-02-09T17:45:00-05:00"
+    },
+    {
+      "key": "vargas",
+      "first_name": "Diego Alonso",
+      "last_name": "Vargas León",
+      "phone": "923456789",
+      "email": "diego.vargas.demo@example.com",
+      "document_type": "DNI",
+      "document_number": "70458823",
+      "address": "Av. Universitaria 1800",
+      "district": "Los Olivos",
+      "ubigeo": "150117",
+      "created_at": "2026-03-02T12:10:00-05:00"
+    }
+  ],
+  "patients": [
+    {
+      "key": "rocky",
+      "owner": "quispe",
+      "name": "Rocky",
+      "species": "Perro",
+      "breed": "Golden Retriever",
+      "sex": "Macho",
+      "birth_date": "2014-03-10",
+      "weight": 32.5,
+      "created_at": "2025-09-18T10:20:00-05:00"
+    },
+    {
+      "key": "mishi",
+      "owner": "quispe",
+      "name": "Mishi",
+      "species": "Gato",
+      "breed": "Siamese",
+      "sex": "Hembra",
+      "birth_date": "2011-02-14",
+      "weight": 3.9,
+      "created_at": "2025-09-18T10:25:00-05:00"
+    },
+    {
+      "key": "luna",
+      "owner": "rojas",
+      "name": "Luna",
+      "species": "Perro",
+      "breed": "Poodle",
+      "sex": "Hembra",
+      "birth_date": "2012-06-02",
+      "weight": 6.8,
+      "created_at": "2025-09-25T16:50:00-05:00"
+    },
+    {
+      "key": "olivia",
+      "owner": "rojas",
+      "name": "Olivia",
+      "species": "Gato",
+      "breed": "Maine Coon",
+      "sex": "Hembra",
+      "birth_date": "2018-03-03",
+      "weight": 6.2,
+      "created_at": "2026-04-06T09:15:00-05:00"
+    },
+    {
+      "key": "toby",
+      "owner": "mendoza",
+      "name": "Toby",
+      "species": "Perro",
+      "breed": "Beagle",
+      "sex": "Macho",
+      "birth_date": "2017-09-20",
+      "weight": 16.4,
+      "created_at": "2025-10-07T09:15:00-05:00"
+    },
+    {
+      "key": "simba",
+      "owner": "mendoza",
+      "name": "Simba",
+      "species": "Gato",
+      "breed": "European Shorthair",
+      "sex": "Macho",
+      "birth_date": "2020-05-01",
+      "weight": 5.1,
+      "created_at": "2025-11-20T18:00:00-05:00"
+    },
+    {
+      "key": "kira",
+      "owner": "chavez",
+      "name": "Kira",
+      "species": "Perro",
+      "breed": "German Shepherd Dog",
+      "sex": "Hembra",
+      "birth_date": "2019-01-15",
+      "weight": 29.0,
+      "created_at": "2025-11-12T11:40:00-05:00"
+    },
+    {
+      "key": "max",
+      "owner": "torres",
+      "name": "Max",
+      "species": "Perro",
+      "breed": "Chihuahua",
+      "sex": "Macho",
+      "birth_date": "2013-11-05",
+      "weight": 3.2,
+      "created_at": "2025-12-03T15:30:00-05:00"
+    },
+    {
+      "key": "garfield",
+      "owner": "torres",
+      "name": "Garfield",
+      "species": "Gato",
+      "breed": "No definido",
+      "sex": "Macho",
+      "birth_date": "2014-07-07",
+      "weight": 7.8,
+      "created_at": "2026-02-18T10:30:00-05:00"
+    },
+    {
+      "key": "nala",
+      "owner": "salazar",
+      "name": "Nala",
+      "species": "Gato",
+      "breed": "Persian",
+      "sex": "Hembra",
+      "birth_date": "2012-10-10",
+      "weight": 3.4,
+      "created_at": "2026-01-14T10:10:00-05:00"
+    },
+    {
+      "key": "canela",
+      "owner": "gutierrez",
+      "name": "Canela",
+      "species": "Perro",
+      "breed": "No definido",
+      "sex": "Hembra",
+      "birth_date": "2016-04-12",
+      "weight": 18.2,
+      "created_at": "2026-02-09T17:55:00-05:00"
+    },
+    {
+      "key": "bruno",
+      "owner": "vargas",
+      "name": "Bruno",
+      "species": "Perro",
+      "breed": "Shih Tzu",
+      "sex": "Macho",
+      "birth_date": "2015-08-08",
+      "weight": 7.5,
+      "created_at": "2026-03-02T12:20:00-05:00"
+    },
+    {
+      "key": "tom",
+      "owner": "vargas",
+      "name": "Tom",
+      "species": "Gato",
+      "breed": "British Shorthair",
+      "sex": "Macho",
+      "birth_date": "2016-12-01",
+      "weight": 5.5,
+      "created_at": "2026-03-02T12:25:00-05:00"
+    }
+  ],
+  "evaluations": [
+    {
+      "patient": "rocky",
+      "created_at": "2025-10-02T10:30:00-05:00",
+      "reason": "Toma mucha agua y orina seguido",
+      "observations": "Paciente geriátrico con pérdida de peso progresiva en los últimos dos meses.",
+      "facts": [
+        {
+          "fact_key": "edad avanzada",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "poliuria",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polidipsia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "perdida de peso",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "disminucion del apetito",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "letargo",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "creatinina",
+          "value": 2.4,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "sdma",
+          "value": 19,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "bun",
+          "value": 48,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "densidad_urinaria",
+          "value": 1.014,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "upc",
+          "value": 0.6,
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Alto",
+          "score": 11.0,
+          "probability": 0.98,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 98.00%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (2.4), sdma (19), bun (48), densidad_urinaria (1.014), upc (0.6). Las reglas IF-THEN activadas (ERC-R03, ERC-R01, ERC-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "ERC-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "densidad_urinaria lt 1.035 (observado: 1.014)",
+                "creatinina gte 1.6 (observado: 2.4)"
+              ],
+              "justification": "La regla ERC-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "ERC-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "polidipsia eq True (observado: True)",
+                "edad avanzada eq True (observado: True)",
+                "poliuria eq True (observado: True)"
+              ],
+              "justification": "La regla ERC-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "ERC-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)",
+                "disminucion del apetito eq True (observado: True)"
+              ],
+              "justification": "La regla ERC-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 2.0,
+          "probability": 0.0171,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 1.71%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (2.4), sdma (19), bun (48), densidad_urinaria (1.014), upc (0.6). Las reglas IF-THEN activadas (DM-R01) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "DM-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "polidipsia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)",
+                "poliuria eq True (observado: True)"
+              ],
+              "justification": "La regla DM-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0015,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 0.15%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (2.4), sdma (19), bun (48), densidad_urinaria (1.014), upc (0.6). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0006,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.06%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (2.4), sdma (19), bun (48), densidad_urinaria (1.014), upc (0.6). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0005,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 0.05%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (2.4), sdma (19), bun (48), densidad_urinaria (1.014), upc (0.6). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0004,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 0.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (2.4), sdma (19), bun (48), densidad_urinaria (1.014), upc (0.6). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "rocky",
+      "created_at": "2026-01-15T11:00:00-05:00",
+      "reason": "Control de función renal",
+      "observations": "En dieta renal desde octubre. Propietaria refiere menor apetito.",
+      "facts": [
+        {
+          "fact_key": "edad avanzada",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "poliuria",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polidipsia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "perdida de peso",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "disminucion del apetito",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "letargo",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "creatinina",
+          "value": 3.1,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "sdma",
+          "value": 26,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "bun",
+          "value": 62,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "densidad_urinaria",
+          "value": 1.011,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "upc",
+          "value": 0.9,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "fosforo_inorganico",
+          "value": 6.4,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "hallazgos_ecograficos_renales",
+          "value": "compatibles con ERC",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Alto",
+          "score": 19.0,
+          "probability": 0.98,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 98.00%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (3.1), sdma (26), bun (62), densidad_urinaria (1.011), upc (0.9), fosforo_inorganico (6.4), hallazgos_ecograficos_renales (compatibles con ERC). Las reglas IF-THEN activadas (ERC-R03, ERC-R04, ERC-R01, ERC-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "ERC-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "densidad_urinaria lt 1.035 (observado: 1.011)",
+                "creatinina gte 1.6 (observado: 3.1)"
+              ],
+              "justification": "La regla ERC-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "ERC-R04",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "creatinina gt 1.6 (observado: 3.1)",
+                "bun gt 27 (observado: 62)",
+                "fosforo_inorganico gt 6 (observado: 6.4)",
+                "densidad_urinaria lt 1.035 (observado: 1.011)"
+              ],
+              "justification": "La regla ERC-R04 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "ERC-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "polidipsia eq True (observado: True)",
+                "edad avanzada eq True (observado: True)",
+                "poliuria eq True (observado: True)"
+              ],
+              "justification": "La regla ERC-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "ERC-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)",
+                "disminucion del apetito eq True (observado: True)"
+              ],
+              "justification": "La regla ERC-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 2.0,
+          "probability": 0.0171,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 1.71%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (3.1), sdma (26), bun (62), densidad_urinaria (1.011), upc (0.9), fosforo_inorganico (6.4), hallazgos_ecograficos_renales (compatibles con ERC). Las reglas IF-THEN activadas (DM-R01) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "DM-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "polidipsia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)",
+                "poliuria eq True (observado: True)"
+              ],
+              "justification": "La regla DM-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0015,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 0.15%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (3.1), sdma (26), bun (62), densidad_urinaria (1.011), upc (0.9), fosforo_inorganico (6.4), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0006,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.06%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (3.1), sdma (26), bun (62), densidad_urinaria (1.011), upc (0.9), fosforo_inorganico (6.4), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0005,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 0.05%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (3.1), sdma (26), bun (62), densidad_urinaria (1.011), upc (0.9), fosforo_inorganico (6.4), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0004,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 0.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, disminucion del apetito, letargo; variables clinicas registradas: creatinina (3.1), sdma (26), bun (62), densidad_urinaria (1.011), upc (0.9), fosforo_inorganico (6.4), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "rocky",
+      "created_at": "2026-06-20T09:40:00-05:00",
+      "reason": "Control trimestral renal",
+      "observations": "Estable con dieta renal y quelante de fósforo.",
+      "facts": [
+        {
+          "fact_key": "edad avanzada",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "poliuria",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polidipsia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "creatinina",
+          "value": 2.9,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "sdma",
+          "value": 23,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "bun",
+          "value": 55,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "fosforo_inorganico",
+          "value": 5.1,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "hallazgos_ecograficos_renales",
+          "value": "compatibles con ERC",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Alto",
+          "score": 2.0,
+          "probability": 0.8975,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 89.75%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.9), sdma (23), bun (55), fosforo_inorganico (5.1), hallazgos_ecograficos_renales (compatibles con ERC). Las reglas IF-THEN activadas (ERC-R01) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "ERC-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "polidipsia eq True (observado: True)",
+                "edad avanzada eq True (observado: True)",
+                "poliuria eq True (observado: True)"
+              ],
+              "justification": "La regla ERC-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0923,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 9.23%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.9), sdma (23), bun (55), fosforo_inorganico (5.1), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0033,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.33%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.9), sdma (23), bun (55), fosforo_inorganico (5.1), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0029,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 0.29%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.9), sdma (23), bun (55), fosforo_inorganico (5.1), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 0.20%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.9), sdma (23), bun (55), fosforo_inorganico (5.1), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 0.20%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.9), sdma (23), bun (55), fosforo_inorganico (5.1), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "mishi",
+      "created_at": "2025-11-05T16:15:00-05:00",
+      "reason": "Vómitos y baja de peso",
+      "observations": "Gata senior, pelaje descuidado.",
+      "facts": [
+        {
+          "fact_key": "edad avanzada",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "poliuria",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polidipsia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "perdida de peso",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "vomito",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "disminucion del apetito",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "creatinina",
+          "value": 3.2,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "sdma",
+          "value": 25,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "densidad_urinaria",
+          "value": 1.018,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "upc",
+          "value": 0.5,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "hallazgos_ecograficos_renales",
+          "value": "compatibles con ERC",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Alto",
+          "score": 11.0,
+          "probability": 0.9794,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 97.94%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, vomito, disminucion del apetito; variables clinicas registradas: creatinina (3.2), sdma (25), densidad_urinaria (1.018), upc (0.5), hallazgos_ecograficos_renales (compatibles con ERC). Las reglas IF-THEN activadas (ERC-CAT-R03, ERC-CAT-R01, ERC-CAT-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "ERC-CAT-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "densidad_urinaria lt 1.035 (observado: 1.018)",
+                "creatinina gte 1.6 (observado: 3.2)"
+              ],
+              "justification": "La regla ERC-CAT-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "ERC-CAT-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "edad avanzada eq True (observado: True)",
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)"
+              ],
+              "justification": "La regla ERC-CAT-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "ERC-CAT-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)",
+                "disminucion del apetito eq True (observado: True)"
+              ],
+              "justification": "La regla ERC-CAT-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 2.0,
+          "probability": 0.017,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 1.70%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, vomito, disminucion del apetito; variables clinicas registradas: creatinina (3.2), sdma (25), densidad_urinaria (1.018), upc (0.5), hallazgos_ecograficos_renales (compatibles con ERC). Las reglas IF-THEN activadas (DM-CAT-R01) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "DM-CAT-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)"
+              ],
+              "justification": "La regla DM-CAT-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Hipertiroidismo felino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipertiroidismo felino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0023,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipertiroidismo felino con una probabilidad calculada de 0.23%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, vomito, disminucion del apetito; variables clinicas registradas: creatinina (3.2), sdma (25), densidad_urinaria (1.018), upc (0.5), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0006,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.06%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, vomito, disminucion del apetito; variables clinicas registradas: creatinina (3.2), sdma (25), densidad_urinaria (1.018), upc (0.5), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Asma felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Asma felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0004,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Asma felina con una probabilidad calculada de 0.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, vomito, disminucion del apetito; variables clinicas registradas: creatinina (3.2), sdma (25), densidad_urinaria (1.018), upc (0.5), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Leucemia viral felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Leucemia viral felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0003,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 0.03%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia, perdida de peso, vomito, disminucion del apetito; variables clinicas registradas: creatinina (3.2), sdma (25), densidad_urinaria (1.018), upc (0.5), hallazgos_ecograficos_renales (compatibles con ERC). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "mishi",
+      "created_at": "2026-05-12T15:30:00-05:00",
+      "reason": "Control renal",
+      "observations": "Mejor apetito con fluidoterapia subcutánea.",
+      "facts": [
+        {
+          "fact_key": "edad avanzada",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "poliuria",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polidipsia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "creatinina",
+          "value": 2.7,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "sdma",
+          "value": 21,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "densidad_urinaria",
+          "value": 1.02,
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Alto",
+          "score": 9.0,
+          "probability": 0.8987,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 89.87%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.7), sdma (21), densidad_urinaria (1.02). Las reglas IF-THEN activadas (ERC-CAT-R03, ERC-CAT-R01) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "ERC-CAT-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "densidad_urinaria lt 1.035 (observado: 1.02)",
+                "creatinina gte 1.6 (observado: 2.7)"
+              ],
+              "justification": "La regla ERC-CAT-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "ERC-CAT-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "edad avanzada eq True (observado: True)",
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)"
+              ],
+              "justification": "La regla ERC-CAT-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0924,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 9.24%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.7), sdma (21), densidad_urinaria (1.02). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0033,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.33%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.7), sdma (21), densidad_urinaria (1.02). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Asma felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Asma felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Asma felina con una probabilidad calculada de 0.20%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.7), sdma (21), densidad_urinaria (1.02). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipertiroidismo felino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipertiroidismo felino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipertiroidismo felino con una probabilidad calculada de 0.20%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.7), sdma (21), densidad_urinaria (1.02). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Leucemia viral felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Leucemia viral felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0016,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 0.16%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, poliuria, polidipsia; variables clinicas registradas: creatinina (2.7), sdma (21), densidad_urinaria (1.02). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "luna",
+      "created_at": "2025-10-20T17:00:00-05:00",
+      "reason": "Tos nocturna",
+      "observations": "Soplo sistólico grado III/VI en foco mitral.",
+      "facts": [
+        {
+          "fact_key": "soplo cardiaco",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "tos",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "raza pequena",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "edad avanzada",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "intolerancia ejercicio",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "la_ao",
+          "value": 1.7,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "vhs",
+          "value": 11.2,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "nt_probnp",
+          "value": 1200,
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Alto",
+          "score": 18.5,
+          "probability": 0.9958,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 99.58%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio; variables clinicas registradas: la_ao (1.7), vhs (11.2), nt_probnp (1200). Las reglas IF-THEN activadas (CARD-R04, CARD-R05, CARD-R01, CARD-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "CARD-R04",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "la_ao gt 1.6 (observado: 1.7)"
+              ],
+              "justification": "La regla CARD-R04 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "CARD-R05",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "soplo cardiaco eq True (observado: True)",
+                "tos eq True (observado: True)",
+                "vhs gt 10.5 (observado: 11.2)"
+              ],
+              "justification": "La regla CARD-R05 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "CARD-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "edad avanzada eq True (observado: True)",
+                "raza pequena eq True (observado: True)",
+                "soplo cardiaco eq True (observado: True)"
+              ],
+              "justification": "La regla CARD-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "CARD-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "tos eq True (observado: True)",
+                "intolerancia ejercicio eq True (observado: True)",
+                "soplo cardiaco eq True (observado: True)"
+              ],
+              "justification": "La regla CARD-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0026,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.26%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio; variables clinicas registradas: la_ao (1.7), vhs (11.2), nt_probnp (1200). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0005,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 0.05%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio; variables clinicas registradas: la_ao (1.7), vhs (11.2), nt_probnp (1200). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0004,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 0.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio; variables clinicas registradas: la_ao (1.7), vhs (11.2), nt_probnp (1200). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0004,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 0.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio; variables clinicas registradas: la_ao (1.7), vhs (11.2), nt_probnp (1200). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0003,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 0.03%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio; variables clinicas registradas: la_ao (1.7), vhs (11.2), nt_probnp (1200). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "luna",
+      "created_at": "2026-03-18T18:20:00-05:00",
+      "reason": "Dificultad respiratoria",
+      "observations": "Progresión del soplo a grado IV/VI. Episodio de síncope referido.",
+      "facts": [
+        {
+          "fact_key": "soplo cardiaco",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "tos",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "raza pequena",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "edad avanzada",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "intolerancia ejercicio",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "disnea",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "sincope",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "la_ao",
+          "value": 2.1,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "vhs",
+          "value": 12.4,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "nt_probnp",
+          "value": 2400,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "lviddn",
+          "value": 2.0,
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Alto",
+          "score": 18.5,
+          "probability": 0.9958,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 99.58%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio, disnea, sincope; variables clinicas registradas: la_ao (2.1), vhs (12.4), nt_probnp (2400), lviddn (2.0). Las reglas IF-THEN activadas (CARD-R04, CARD-R05, CARD-R01, CARD-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "CARD-R04",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "la_ao gt 1.6 (observado: 2.1)"
+              ],
+              "justification": "La regla CARD-R04 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "CARD-R05",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "soplo cardiaco eq True (observado: True)",
+                "tos eq True (observado: True)",
+                "vhs gt 10.5 (observado: 12.4)"
+              ],
+              "justification": "La regla CARD-R05 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "CARD-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "edad avanzada eq True (observado: True)",
+                "raza pequena eq True (observado: True)",
+                "soplo cardiaco eq True (observado: True)"
+              ],
+              "justification": "La regla CARD-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "CARD-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "tos eq True (observado: True)",
+                "intolerancia ejercicio eq True (observado: True)",
+                "soplo cardiaco eq True (observado: True)"
+              ],
+              "justification": "La regla CARD-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0026,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.26%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio, disnea, sincope; variables clinicas registradas: la_ao (2.1), vhs (12.4), nt_probnp (2400), lviddn (2.0). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0005,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 0.05%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio, disnea, sincope; variables clinicas registradas: la_ao (2.1), vhs (12.4), nt_probnp (2400), lviddn (2.0). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0004,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 0.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio, disnea, sincope; variables clinicas registradas: la_ao (2.1), vhs (12.4), nt_probnp (2400), lviddn (2.0). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0004,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 0.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio, disnea, sincope; variables clinicas registradas: la_ao (2.1), vhs (12.4), nt_probnp (2400), lviddn (2.0). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0003,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 0.03%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: soplo cardiaco, tos, raza pequena, edad avanzada, intolerancia ejercicio, disnea, sincope; variables clinicas registradas: la_ao (2.1), vhs (12.4), nt_probnp (2400), lviddn (2.0). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "toby",
+      "created_at": "2025-10-28T09:45:00-05:00",
+      "reason": "Aumento de peso y caída de pelo",
+      "observations": "Alopecia en flancos, busca lugares cálidos.",
+      "facts": [
+        {
+          "fact_key": "aumento de peso",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "letargo",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "alopecia simetrica",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "intolerancia al frio",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "piel seca",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "t4_total",
+          "value": 0.7,
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Alto",
+          "score": 19.5,
+          "probability": 0.9999,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 99.99%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: aumento de peso, letargo, alopecia simetrica, intolerancia al frio, piel seca; variables clinicas registradas: t4_total (0.7). Las reglas IF-THEN activadas (HIPO-R03, HIPO-R04, HIPO-R01, HIPO-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "HIPO-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "t4_total lt 1.0 (observado: 0.7)"
+              ],
+              "justification": "La regla HIPO-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "HIPO-R04",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "t4_total lt 1.0 (observado: 0.7)",
+                "letargo eq True (observado: True)",
+                "aumento de peso eq True (observado: True)"
+              ],
+              "justification": "La regla HIPO-R04 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "HIPO-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "letargo eq True (observado: True)",
+                "aumento de peso eq True (observado: True)",
+                "intolerancia al frio eq True (observado: True)"
+              ],
+              "justification": "La regla HIPO-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "HIPO-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "alopecia simetrica eq True (observado: True)",
+                "piel seca eq True (observado: True)",
+                "aumento de peso eq True (observado: True)"
+              ],
+              "justification": "La regla HIPO-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: aumento de peso, letargo, alopecia simetrica, intolerancia al frio, piel seca; variables clinicas registradas: t4_total (0.7). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: aumento de peso, letargo, alopecia simetrica, intolerancia al frio, piel seca; variables clinicas registradas: t4_total (0.7). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: aumento de peso, letargo, alopecia simetrica, intolerancia al frio, piel seca; variables clinicas registradas: t4_total (0.7). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: aumento de peso, letargo, alopecia simetrica, intolerancia al frio, piel seca; variables clinicas registradas: t4_total (0.7). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: aumento de peso, letargo, alopecia simetrica, intolerancia al frio, piel seca; variables clinicas registradas: t4_total (0.7). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "toby",
+      "created_at": "2026-04-22T10:10:00-05:00",
+      "reason": "Control anual",
+      "observations": "En tratamiento con levotiroxina, recuperó pelaje.",
+      "facts": [
+        {
+          "fact_key": "aumento de peso",
+          "value": false,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "letargo",
+          "value": false,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "t4_total",
+          "value": 2.3,
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.2174,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 21.74%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: t4_total (2.3). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.1913,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 19.13%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: t4_total (2.3). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.1739,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 17.39%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: t4_total (2.3). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.1565,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 15.65%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: t4_total (2.3). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.1304,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 13.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: t4_total (2.3). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.1304,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 13.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: t4_total (2.3). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "kira",
+      "created_at": "2025-12-10T12:00:00-05:00",
+      "reason": "Se rasca las orejas",
+      "observations": "Secreción marrón en oído izquierdo.",
+      "facts": [
+        {
+          "fact_key": "rascado de oidos",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "sacudida de cabeza",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "mal olor otico",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "secrecion otica",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "eritema del pabellon auricular",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "citologia_otica",
+          "value": "positiva",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Alto",
+          "score": 11.5,
+          "probability": 0.9989,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 99.89%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, mal olor otico, secrecion otica, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). Las reglas IF-THEN activadas (OTI-R03, OTI-R02, OTI-R01) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "OTI-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "secrecion otica eq True (observado: True)",
+                "citologia_otica eq positiva (observado: positiva)"
+              ],
+              "justification": "La regla OTI-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "OTI-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "sacudida de cabeza eq True (observado: True)",
+                "rascado de oidos eq True (observado: True)",
+                "eritema del pabellon auricular eq True (observado: True)"
+              ],
+              "justification": "La regla OTI-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "OTI-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "mal olor otico eq True (observado: True)",
+                "secrecion otica eq True (observado: True)"
+              ],
+              "justification": "La regla OTI-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0003,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.03%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, mal olor otico, secrecion otica, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, mal olor otico, secrecion otica, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, mal olor otico, secrecion otica, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, mal olor otico, secrecion otica, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, mal olor otico, secrecion otica, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "max",
+      "created_at": "2025-12-15T16:30:00-05:00",
+      "reason": "Mal aliento",
+      "observations": "Cálculo dental abundante, piezas premolares con movilidad.",
+      "facts": [
+        {
+          "fact_key": "halitosis",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "sangrado gingival",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "recesion gingival",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "dificultad para masticar",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "raza pequena",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "movilidad dental",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "dolor oral",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "edad avanzada",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "grado_gingivitis",
+          "value": "severa",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "placa",
+          "value": "severa",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "porphyromonas",
+          "value": "detectado",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "treponema",
+          "value": "detectado",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "qpcr_placa",
+          "value": "positiva",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Alto",
+          "score": 11.5,
+          "probability": 0.8387,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 83.87%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena, movilidad dental, dolor oral, edad avanzada; variables clinicas registradas: grado_gingivitis (severa), placa (severa), porphyromonas (detectado), treponema (detectado), qpcr_placa (positiva). Las reglas IF-THEN activadas (PER-R04, PER-R01, PER-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "PER-R04",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "movilidad dental eq True (observado: True)"
+              ],
+              "justification": "La regla PER-R04 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "PER-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "halitosis eq True (observado: True)",
+                "placa in ['moderada', 'severa'] (observado: severa)"
+              ],
+              "justification": "La regla PER-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "PER-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "grado_gingivitis in ['moderada', 'severa'] (observado: severa)",
+                "sangrado gingival eq True (observado: True)",
+                "halitosis eq True (observado: True)"
+              ],
+              "justification": "La regla PER-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0839,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 8.39%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena, movilidad dental, dolor oral, edad avanzada; variables clinicas registradas: grado_gingivitis (severa), placa (severa), porphyromonas (detectado), treponema (detectado), qpcr_placa (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0227,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 2.27%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena, movilidad dental, dolor oral, edad avanzada; variables clinicas registradas: grado_gingivitis (severa), placa (severa), porphyromonas (detectado), treponema (detectado), qpcr_placa (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0206,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 2.06%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena, movilidad dental, dolor oral, edad avanzada; variables clinicas registradas: grado_gingivitis (severa), placa (severa), porphyromonas (detectado), treponema (detectado), qpcr_placa (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0186,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 1.86%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena, movilidad dental, dolor oral, edad avanzada; variables clinicas registradas: grado_gingivitis (severa), placa (severa), porphyromonas (detectado), treponema (detectado), qpcr_placa (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0155,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 1.55%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena, movilidad dental, dolor oral, edad avanzada; variables clinicas registradas: grado_gingivitis (severa), placa (severa), porphyromonas (detectado), treponema (detectado), qpcr_placa (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "simba",
+      "created_at": "2025-11-20T18:15:00-05:00",
+      "reason": "Decaído y con fiebre",
+      "observations": "Gato con salida libre al exterior, esquema de vacunación incompleto.",
+      "facts": [
+        {
+          "fact_key": "acceso al exterior",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "baja vacunacion",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "convivencia con gatos positivos",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "fiebre recurrente",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "letargo",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "anemia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "snap_felv",
+          "value": "positivo",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "felv_p27",
+          "value": "positivo",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Leucemia viral felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Leucemia viral felina",
+          "risk_level": "Alto",
+          "score": 10.0,
+          "probability": 0.9983,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 99.83%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, baja vacunacion, convivencia con gatos positivos, fiebre recurrente, letargo, anemia; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo). Las reglas IF-THEN activadas (FELV-R03, FELV-R01) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "FELV-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "felv_p27 eq positivo (observado: positivo)"
+              ],
+              "justification": "La regla FELV-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "FELV-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "acceso al exterior eq True (observado: True)",
+                "baja vacunacion eq True (observado: True)"
+              ],
+              "justification": "La regla FELV-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Asma felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Asma felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0009,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Asma felina con una probabilidad calculada de 0.09%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, baja vacunacion, convivencia con gatos positivos, fiebre recurrente, letargo, anemia; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, baja vacunacion, convivencia con gatos positivos, fiebre recurrente, letargo, anemia; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, baja vacunacion, convivencia con gatos positivos, fiebre recurrente, letargo, anemia; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, baja vacunacion, convivencia con gatos positivos, fiebre recurrente, letargo, anemia; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipertiroidismo felino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipertiroidismo felino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0001,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipertiroidismo felino con una probabilidad calculada de 0.01%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, baja vacunacion, convivencia con gatos positivos, fiebre recurrente, letargo, anemia; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "simba",
+      "created_at": "2026-02-26T17:40:00-05:00",
+      "reason": "Infecciones repetidas",
+      "observations": "Tercer cuadro infeccioso en tres meses.",
+      "facts": [
+        {
+          "fact_key": "acceso al exterior",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "infecciones recurrentes",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "fiebre recurrente",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "anemia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "perdida de peso",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "snap_felv",
+          "value": "positivo",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "felv_p27",
+          "value": "positivo",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "clasificacion_felv",
+          "value": "high positive",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "carga_proviral_qpcr",
+          "value": 1250000,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "coinfeccion_fiv",
+          "value": "negativa",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Leucemia viral felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Leucemia viral felina",
+          "risk_level": "Alto",
+          "score": 29.5,
+          "probability": 0.9996,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 99.96%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, infecciones recurrentes, fiebre recurrente, anemia, perdida de peso; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo), clasificacion_felv (high positive), carga_proviral_qpcr (1250000), coinfeccion_fiv (negativa). Las reglas IF-THEN activadas (FELV-R04, FELV-R03, FELV-R05) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "FELV-R04",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "felv_p27 eq positivo (observado: positivo)",
+                "anemia eq True (observado: True)",
+                "infecciones recurrentes eq True (observado: True)"
+              ],
+              "justification": "La regla FELV-R04 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "FELV-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "felv_p27 eq positivo (observado: positivo)"
+              ],
+              "justification": "La regla FELV-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "FELV-R05",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "carga_proviral_qpcr gt 400000 (observado: 1250000)",
+                "anemia eq True (observado: True)"
+              ],
+              "justification": "La regla FELV-R05 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, infecciones recurrentes, fiebre recurrente, anemia, perdida de peso; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo), clasificacion_felv (high positive), carga_proviral_qpcr (1250000), coinfeccion_fiv (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipertiroidismo felino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipertiroidismo felino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipertiroidismo felino con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, infecciones recurrentes, fiebre recurrente, anemia, perdida de peso; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo), clasificacion_felv (high positive), carga_proviral_qpcr (1250000), coinfeccion_fiv (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Asma felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Asma felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Asma felina con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, infecciones recurrentes, fiebre recurrente, anemia, perdida de peso; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo), clasificacion_felv (high positive), carga_proviral_qpcr (1250000), coinfeccion_fiv (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, infecciones recurrentes, fiebre recurrente, anemia, perdida de peso; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo), clasificacion_felv (high positive), carga_proviral_qpcr (1250000), coinfeccion_fiv (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: acceso al exterior, infecciones recurrentes, fiebre recurrente, anemia, perdida de peso; variables clinicas registradas: snap_felv (positivo), felv_p27 (positivo), clasificacion_felv (high positive), carga_proviral_qpcr (1250000), coinfeccion_fiv (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "nala",
+      "created_at": "2026-01-14T10:30:00-05:00",
+      "reason": "Come mucho pero adelgaza",
+      "observations": "Nódulo tiroideo palpable. Inquieta durante la consulta.",
+      "facts": [
+        {
+          "fact_key": "perdida de peso",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polifagia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "hiperactividad",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "taquicardia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "edad avanzada",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "vomito",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "t4_total",
+          "value": 7.9,
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Hipertiroidismo felino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipertiroidismo felino",
+          "risk_level": "Alto",
+          "score": 19.5,
+          "probability": 0.9997,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipertiroidismo felino con una probabilidad calculada de 99.97%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: perdida de peso, polifagia, hiperactividad, taquicardia, edad avanzada, vomito; variables clinicas registradas: t4_total (7.9). Las reglas IF-THEN activadas (HIPERT-R03, HIPERT-R04, HIPERT-R01, HIPERT-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "HIPERT-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "t4_total gt 4.0 (observado: 7.9)"
+              ],
+              "justification": "La regla HIPERT-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "HIPERT-R04",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "t4_total gt 4.0 (observado: 7.9)",
+                "perdida de peso eq True (observado: True)",
+                "polifagia eq True (observado: True)"
+              ],
+              "justification": "La regla HIPERT-R04 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "HIPERT-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "polifagia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)",
+                "hiperactividad eq True (observado: True)"
+              ],
+              "justification": "La regla HIPERT-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "HIPERT-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "taquicardia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)",
+                "polifagia eq True (observado: True)"
+              ],
+              "justification": "La regla HIPERT-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0001,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 0.01%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: perdida de peso, polifagia, hiperactividad, taquicardia, edad avanzada, vomito; variables clinicas registradas: t4_total (7.9). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0001,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 0.01%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: perdida de peso, polifagia, hiperactividad, taquicardia, edad avanzada, vomito; variables clinicas registradas: t4_total (7.9). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Asma felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Asma felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Asma felina con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: perdida de peso, polifagia, hiperactividad, taquicardia, edad avanzada, vomito; variables clinicas registradas: t4_total (7.9). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: perdida de peso, polifagia, hiperactividad, taquicardia, edad avanzada, vomito; variables clinicas registradas: t4_total (7.9). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Leucemia viral felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Leucemia viral felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: perdida de peso, polifagia, hiperactividad, taquicardia, edad avanzada, vomito; variables clinicas registradas: t4_total (7.9). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "canela",
+      "created_at": "2026-02-09T18:10:00-05:00",
+      "reason": "Bebe y orina en exceso",
+      "observations": "Hembra entera, apetito aumentado.",
+      "facts": [
+        {
+          "fact_key": "poliuria",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polidipsia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polifagia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "perdida de peso",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "glucosa",
+          "value": 320,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "fructosamina",
+          "value": 520,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "glucosuria",
+          "value": "positiva",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "hemoglobina_glucosilada",
+          "value": 7.4,
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Alto",
+          "score": 26.5,
+          "probability": 0.9972,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 99.72%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (320), fructosamina (520), glucosuria (positiva), hemoglobina_glucosilada (7.4). Las reglas IF-THEN activadas (DM-R04, DM-R05, DM-R03, DM-R01, DM-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "DM-R04",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)",
+                "glucosa gt 200 (observado: 320)",
+                "glucosuria eq positiva (observado: positiva)"
+              ],
+              "justification": "La regla DM-R04 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "DM-R05",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "glucosa gt 200 (observado: 320)",
+                "fructosamina gt 365 (observado: 520)"
+              ],
+              "justification": "La regla DM-R05 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "DM-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "glucosa gt 200 (observado: 320)",
+                "glucosuria eq positiva (observado: positiva)"
+              ],
+              "justification": "La regla DM-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "DM-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "polidipsia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)",
+                "poliuria eq True (observado: True)"
+              ],
+              "justification": "La regla DM-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "DM-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)",
+                "polifagia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)"
+              ],
+              "justification": "La regla DM-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0027,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 0.27%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (320), fructosamina (520), glucosuria (positiva), hemoglobina_glucosilada (7.4). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (320), fructosamina (520), glucosuria (positiva), hemoglobina_glucosilada (7.4). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (320), fructosamina (520), glucosuria (positiva), hemoglobina_glucosilada (7.4). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (320), fructosamina (520), glucosuria (positiva), hemoglobina_glucosilada (7.4). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (320), fructosamina (520), glucosuria (positiva), hemoglobina_glucosilada (7.4). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "canela",
+      "created_at": "2026-07-08T11:25:00-05:00",
+      "reason": "Control glucémico",
+      "observations": "Con insulina NPH dos veces al día. Buen control.",
+      "facts": [
+        {
+          "fact_key": "poliuria",
+          "value": false,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polidipsia",
+          "value": false,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "glucosa",
+          "value": 165,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "fructosamina",
+          "value": 390,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "glucosuria",
+          "value": "negativa",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.2174,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 21.74%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: glucosa (165), fructosamina (390), glucosuria (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.1913,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 19.13%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: glucosa (165), fructosamina (390), glucosuria (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.1739,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 17.39%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: glucosa (165), fructosamina (390), glucosuria (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.1565,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 15.65%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: glucosa (165), fructosamina (390), glucosuria (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.1304,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 13.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: glucosa (165), fructosamina (390), glucosuria (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.1304,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 13.04%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: variables clinicas registradas: glucosa (165), fructosamina (390), glucosuria (negativa). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "garfield",
+      "created_at": "2026-02-18T10:45:00-05:00",
+      "reason": "Orina fuera del arenero",
+      "observations": "Gato con sobrepeso previo, ahora en descenso.",
+      "facts": [
+        {
+          "fact_key": "poliuria",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polidipsia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polifagia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "perdida de peso",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "glucosa",
+          "value": 380,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "fructosamina",
+          "value": 560,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "glucosuria",
+          "value": "positiva",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Alto",
+          "score": 26.5,
+          "probability": 0.9967,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 99.67%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (380), fructosamina (560), glucosuria (positiva). Las reglas IF-THEN activadas (DM-CAT-R04, DM-CAT-R05, DM-CAT-R03, DM-CAT-R01, DM-CAT-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "DM-CAT-R04",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "glucosa gt 200 (observado: 380)",
+                "glucosuria eq positiva (observado: positiva)",
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)"
+              ],
+              "justification": "La regla DM-CAT-R04 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "DM-CAT-R05",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "glucosa gt 200 (observado: 380)",
+                "fructosamina gt 365 (observado: 560)"
+              ],
+              "justification": "La regla DM-CAT-R05 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "DM-CAT-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "glucosa gt 200 (observado: 380)",
+                "glucosuria eq positiva (observado: positiva)"
+              ],
+              "justification": "La regla DM-CAT-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "DM-CAT-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)"
+              ],
+              "justification": "La regla DM-CAT-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "DM-CAT-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "poliuria eq True (observado: True)",
+                "polidipsia eq True (observado: True)",
+                "polifagia eq True (observado: True)",
+                "perdida de peso eq True (observado: True)"
+              ],
+              "justification": "La regla DM-CAT-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0027,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 0.27%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (380), fructosamina (560), glucosuria (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipertiroidismo felino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipertiroidismo felino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0006,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipertiroidismo felino con una probabilidad calculada de 0.06%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (380), fructosamina (560), glucosuria (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Asma felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Asma felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Asma felina con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (380), fructosamina (560), glucosuria (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (380), fructosamina (560), glucosuria (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Leucemia viral felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Leucemia viral felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 0.00%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: poliuria, polidipsia, polifagia, perdida de peso; variables clinicas registradas: glucosa (380), fructosamina (560), glucosuria (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "bruno",
+      "created_at": "2026-03-02T12:40:00-05:00",
+      "reason": "Sangrado de encías",
+      "observations": "Gingivitis generalizada.",
+      "facts": [
+        {
+          "fact_key": "halitosis",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "sangrado gingival",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "recesion gingival",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "dificultad para masticar",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "raza pequena",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "grado_gingivitis",
+          "value": "moderada",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "placa",
+          "value": "moderada",
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "porphyromonas",
+          "value": "detectado",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Alto",
+          "score": 11.5,
+          "probability": 0.8387,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 83.87%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena; variables clinicas registradas: grado_gingivitis (moderada), placa (moderada), porphyromonas (detectado). Las reglas IF-THEN activadas (PER-R04, PER-R01, PER-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "PER-R04",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "recesion gingival eq True (observado: True)"
+              ],
+              "justification": "La regla PER-R04 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "PER-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "halitosis eq True (observado: True)",
+                "placa in ['moderada', 'severa'] (observado: moderada)"
+              ],
+              "justification": "La regla PER-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "PER-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "grado_gingivitis in ['moderada', 'severa'] (observado: moderada)",
+                "sangrado gingival eq True (observado: True)",
+                "halitosis eq True (observado: True)"
+              ],
+              "justification": "La regla PER-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0839,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 8.39%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena; variables clinicas registradas: grado_gingivitis (moderada), placa (moderada), porphyromonas (detectado). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0227,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 2.27%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena; variables clinicas registradas: grado_gingivitis (moderada), placa (moderada), porphyromonas (detectado). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0206,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 2.06%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena; variables clinicas registradas: grado_gingivitis (moderada), placa (moderada), porphyromonas (detectado). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0186,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 1.86%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena; variables clinicas registradas: grado_gingivitis (moderada), placa (moderada), porphyromonas (detectado). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0155,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 1.55%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: halitosis, sangrado gingival, recesion gingival, dificultad para masticar, raza pequena; variables clinicas registradas: grado_gingivitis (moderada), placa (moderada), porphyromonas (detectado). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "bruno",
+      "created_at": "2026-08-14T15:00:00-05:00",
+      "reason": "Sacude la cabeza",
+      "observations": "Oído derecho eritematoso tras baño.",
+      "facts": [
+        {
+          "fact_key": "rascado de oidos",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "sacudida de cabeza",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "eritema del pabellon auricular",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "citologia_otica",
+          "value": "positiva",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Otitis externa",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Otitis externa",
+          "risk_level": "Alto",
+          "score": 2.5,
+          "probability": 0.9184,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Otitis externa con una probabilidad calculada de 91.84%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). Las reglas IF-THEN activadas (OTI-R02) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "OTI-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "sacudida de cabeza eq True (observado: True)",
+                "rascado de oidos eq True (observado: True)",
+                "eritema del pabellon auricular eq True (observado: True)"
+              ],
+              "justification": "La regla OTI-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0219,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 2.19%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0175,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 1.75%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0158,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 1.58%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad cardiaca degenerativa / MMVD",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad cardiaca degenerativa / MMVD",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0132,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad cardiaca degenerativa / MMVD con una probabilidad calculada de 1.32%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipotiroidismo canino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipotiroidismo canino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0132,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipotiroidismo canino con una probabilidad calculada de 1.32%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: rascado de oidos, sacudida de cabeza, eritema del pabellon auricular; variables clinicas registradas: citologia_otica (positiva). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "tom",
+      "created_at": "2026-03-10T09:20:00-05:00",
+      "reason": "Chequeo geriátrico",
+      "observations": "Propietario nota que bebe algo más de agua. Sin otros signos.",
+      "facts": [
+        {
+          "fact_key": "edad avanzada",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "polidipsia",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "creatinina",
+          "value": 1.9,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "sdma",
+          "value": 16,
+          "source_type": "clinical_variable"
+        },
+        {
+          "fact_key": "densidad_urinaria",
+          "value": 1.03,
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Alto",
+          "score": 7.0,
+          "probability": 0.8732,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 87.32%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, polidipsia; variables clinicas registradas: creatinina (1.9), sdma (16), densidad_urinaria (1.03). Las reglas IF-THEN activadas (ERC-CAT-R03) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "ERC-CAT-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "densidad_urinaria lt 1.035 (observado: 1.03)",
+                "creatinina gte 1.6 (observado: 1.9)"
+              ],
+              "justification": "La regla ERC-CAT-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0786,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 7.86%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, polidipsia; variables clinicas registradas: creatinina (1.9), sdma (16), densidad_urinaria (1.03). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.018,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 1.80%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, polidipsia; variables clinicas registradas: creatinina (1.9), sdma (16), densidad_urinaria (1.03). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Asma felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Asma felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0108,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Asma felina con una probabilidad calculada de 1.08%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, polidipsia; variables clinicas registradas: creatinina (1.9), sdma (16), densidad_urinaria (1.03). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipertiroidismo felino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipertiroidismo felino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0108,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipertiroidismo felino con una probabilidad calculada de 1.08%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, polidipsia; variables clinicas registradas: creatinina (1.9), sdma (16), densidad_urinaria (1.03). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Leucemia viral felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Leucemia viral felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0086,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 0.86%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: edad avanzada, polidipsia; variables clinicas registradas: creatinina (1.9), sdma (16), densidad_urinaria (1.03). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "olivia",
+      "created_at": "2026-04-06T09:30:00-05:00",
+      "reason": "Tos y respiración ruidosa",
+      "observations": "Episodios de tos con cuello extendido.",
+      "facts": [
+        {
+          "fact_key": "tos",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "sibilancias",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "disnea",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "intolerancia al ejercicio",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "hallazgos_radiograficos_toracicos",
+          "value": "patron bronquial",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Asma felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Asma felina",
+          "risk_level": "Alto",
+          "score": 17.0,
+          "probability": 0.9993,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Asma felina con una probabilidad calculada de 99.93%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: tos, sibilancias, disnea, intolerancia al ejercicio; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). Las reglas IF-THEN activadas (ASMA-R02, ASMA-R03, ASMA-R01) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "ASMA-R02",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "sibilancias eq True (observado: True)",
+                "tos eq True (observado: True)",
+                "disnea eq True (observado: True)"
+              ],
+              "justification": "La regla ASMA-R02 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "ASMA-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "hallazgos_radiograficos_toracicos eq patron bronquial (observado: patron bronquial)",
+                "tos eq True (observado: True)"
+              ],
+              "justification": "La regla ASMA-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            },
+            {
+              "rule_code": "ASMA-R01",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "intolerancia al ejercicio eq True (observado: True)",
+                "tos eq True (observado: True)"
+              ],
+              "justification": "La regla ASMA-R01 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: tos, sibilancias, disnea, intolerancia al ejercicio; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0002,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 0.02%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: tos, sibilancias, disnea, intolerancia al ejercicio; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0001,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 0.01%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: tos, sibilancias, disnea, intolerancia al ejercicio; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipertiroidismo felino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipertiroidismo felino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0001,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipertiroidismo felino con una probabilidad calculada de 0.01%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: tos, sibilancias, disnea, intolerancia al ejercicio; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Leucemia viral felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Leucemia viral felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0001,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 0.01%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: tos, sibilancias, disnea, intolerancia al ejercicio; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    },
+    {
+      "patient": "olivia",
+      "created_at": "2026-09-01T10:00:00-05:00",
+      "reason": "Control respiratorio",
+      "observations": "Con corticoide inhalado, episodios esporádicos.",
+      "facts": [
+        {
+          "fact_key": "tos",
+          "value": true,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "sibilancias",
+          "value": false,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "disnea",
+          "value": false,
+          "source_type": "symptom"
+        },
+        {
+          "fact_key": "hallazgos_radiograficos_toracicos",
+          "value": "patron bronquial",
+          "source_type": "clinical_variable"
+        }
+      ],
+      "results": [
+        {
+          "disease": "Asma felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Asma felina",
+          "risk_level": "Alto",
+          "score": 8.0,
+          "probability": 0.9379,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Asma felina con una probabilidad calculada de 93.79%. El porcentaje se clasifica como riesgo alto (70% a 100%). Evidencias clinicas consideradas: sintomas observados: tos; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). Las reglas IF-THEN activadas (ASMA-R03) sustentan la evidencia clinica registrada para esta inferencia.",
+          "activated_rules": [
+            {
+              "rule_code": "ASMA-R03",
+              "rule_version": 1,
+              "fulfilled_conditions": [
+                "hallazgos_radiograficos_toracicos eq patron bronquial (observado: patron bronquial)",
+                "tos eq True (observado: True)"
+              ],
+              "justification": "La regla ASMA-R03 se activo porque todas sus condiciones coincidieron con los datos de la evaluacion clinica."
+            }
+          ]
+        },
+        {
+          "disease": "Enfermedad periodontal",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad periodontal",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0172,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad periodontal con una probabilidad calculada de 1.72%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: tos; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Enfermedad renal crónica",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Enfermedad renal crónica",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0138,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Enfermedad renal crónica con una probabilidad calculada de 1.38%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: tos; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Diabetes mellitus",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Diabetes mellitus",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0124,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Diabetes mellitus con una probabilidad calculada de 1.24%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: tos; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Hipertiroidismo felino",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Hipertiroidismo felino",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0103,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Hipertiroidismo felino con una probabilidad calculada de 1.03%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: tos; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        },
+        {
+          "disease": "Leucemia viral felina",
+          "suggested_diagnosis": "Diagnostico sugerido: posible riesgo asociado a Leucemia viral felina",
+          "risk_level": "Bajo",
+          "score": 0.0,
+          "probability": 0.0083,
+          "inference_method": "reglas_bayes",
+          "explanation": "Analisis probabilistico bayesiano para Leucemia viral felina con una probabilidad calculada de 0.83%. El porcentaje se clasifica como riesgo bajo (0% a menos de 40%). Evidencias clinicas consideradas: sintomas observados: tos; variables clinicas registradas: hallazgos_radiograficos_toracicos (patron bronquial). No se activaron reglas clinicas de soporte directas; el riesgo es estimado por perfil bayesiano.",
+          "activated_rules": []
+        }
+      ]
+    }
+  ]
+}
