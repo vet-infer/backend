@@ -54,12 +54,10 @@ BOOTSTRAP_ADMIN_EMAIL=<ADMIN_EMAIL_LOCAL_OPCIONAL>
 BOOTSTRAP_ADMIN_PASSWORD=<ADMIN_PASSWORD_LOCAL_OPCIONAL>
 PASSWORD_RESET_TOKEN_EXPIRE_MINUTES=15
 FRONTEND_BASE_URL=http://localhost:5173
-SMTP_HOST=<HOST_SMTP>
-SMTP_PORT=587
-SMTP_USERNAME=<USUARIO_SMTP>
-SMTP_PASSWORD=<CLAVE_SMTP>
-SMTP_FROM_EMAIL=<EMISOR_VERIFICADO>
-SMTP_USE_TLS=true
+EMAILJS_SERVICE_ID=<SERVICE_ID_EMAILJS>
+EMAILJS_TEMPLATE_ID=<TEMPLATE_ID_EMAILJS>
+EMAILJS_PUBLIC_KEY=<PUBLIC_KEY_EMAILJS>
+EMAILJS_PRIVATE_KEY=<PRIVATE_KEY_EMAILJS>
 ```
 
 Para produccion, cambiar obligatoriamente `JWT_SECRET` y las credenciales bootstrap.
@@ -122,9 +120,9 @@ alembic upgrade head
 
 ### Recuperacion de contrasena
 
-`POST /api/v1/auth/forgot-password` genera un token aleatorio de un solo uso, conserva solo su hash en la base de datos y construye el enlace de recuperacion. El token vence en 15 minutos por defecto y se invalida al generar uno nuevo o al ser usado. El backend envia el correo directamente por SMTP; el token nunca se devuelve en la respuesta HTTP. La respuesta es identica exista o no una cuenta con ese correo, para evitar enumeracion de usuarios.
+`POST /api/v1/auth/forgot-password` genera un token aleatorio de un solo uso, conserva solo su hash en la base de datos y construye el enlace de recuperacion. El token vence en 15 minutos por defecto y se invalida al generar uno nuevo o al ser usado. El backend envia el correo mediante la API REST de EmailJS (`POST https://api.emailjs.com/api/v1.0/email/send`) autenticandose con la Private Key; el token nunca se devuelve en la respuesta HTTP. La respuesta es identica exista o no una cuenta con ese correo, para evitar enumeracion de usuarios.
 
-Para produccion deben configurarse `FRONTEND_BASE_URL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM_EMAIL` y `SMTP_USE_TLS` en el servicio backend. En ningun caso se envia la contrasena actual por correo.
+Para produccion deben configurarse `FRONTEND_BASE_URL`, `EMAILJS_SERVICE_ID`, `EMAILJS_TEMPLATE_ID`, `EMAILJS_PUBLIC_KEY` y `EMAILJS_PRIVATE_KEY` en el servicio backend. En el dashboard de EmailJS debe habilitarse el uso de la API desde aplicaciones no-navegador (Account > Security). El template recibe `to_email`, `to_name`, `reset_url`, `verification_code`, `reset_token`, `expires_minutes` y `app_name`. En ningun caso se envia la contrasena actual por correo.
 
 ### Catalogos Clinicos
 

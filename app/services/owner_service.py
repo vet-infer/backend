@@ -9,8 +9,9 @@ class OwnerService:
         self.repository = repository
 
     def create_owner(self, schema: OwnerCreate):
-        if schema.email and self.repository.get_by_email(schema.email):
-            raise ConflictError("El correo ya esta registrado")
+        if schema.document_type and schema.document_number:
+            if self.repository.get_by_document(schema.document_type.value, schema.document_number):
+                raise ConflictError("El documento ya esta registrado")
         return self.repository.create(schema.model_dump())
 
     def get_owner(self, owner_id: int):
@@ -30,7 +31,13 @@ class OwnerService:
 
     def update_owner(self, owner_id: int, schema: OwnerUpdate):
         owner = self.get_owner(owner_id)
-        if schema.email and schema.email != owner.email:
-            if self.repository.get_by_email(schema.email):
-                raise ConflictError("El correo ya esta registrado")
+        if schema.document_type and schema.document_number:
+            changed = (
+                schema.document_type.value != owner.document_type
+                or schema.document_number != owner.document_number
+            )
+            if changed:
+                existing = self.repository.get_by_document(schema.document_type.value, schema.document_number)
+                if existing and existing.id != owner_id:
+                    raise ConflictError("El documento ya esta registrado")
         return self.repository.update_by_id(owner_id, schema.model_dump(exclude_unset=True))

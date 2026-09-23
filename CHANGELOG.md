@@ -2,6 +2,37 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Este proyecto no sigue un esquema de versionado formal todavía (API en `1.0.0`); las entradas se agrupan por fecha y, cuando aplica, por el change de OpenSpec que las originó (`openspec/changes/archive/`).
 
+## [2026-09-22] — Datos historicos de demostracion
+
+### Added
+
+- Migracion de datos `c3e8a5d1f7b2_seed_demo_clinical_history.py`: inserta 8 propietarios, 13 pacientes (perros y gatos) y 22 evaluaciones fechadas entre octubre 2025 y septiembre 2026, con sus hechos clinicos, resultados de inferencia, reglas activadas e historial clinico. Cubre las 12 enfermedades de la base de conocimiento, incluyendo seguimientos (ERC, MMVD, FeLV, asma) y controles de bajo riesgo.
+- `alembic/data/demo_clinical_history.json`: datos fuente de la migracion. Los resultados se precalcularon con el motor hibrido real, asi la migracion no importa servicios de la app.
+- `scripts/generate_demo_history.py`: regenera el JSON (valida los hechos contra `fact_definitions` y ejecuta la inferencia). Uso: `docker compose exec api python scripts/generate_demo_history.py`.
+- Comportamiento: se omite con `ENVIRONMENT=production` salvo `SEED_DEMO_DATA=true`; es idempotente; resuelve especies, razas, enfermedades, reglas y niveles de riesgo por nombre/codigo; `alembic downgrade` elimina los propietarios `*.demo@example.com` y todo lo asociado.
+
+## [2026-09-22] — Recuperacion de contrasena: correcciones y envio por EmailJS REST
+
+Sin change de OpenSpec asociado (correccion de bug detectada en pruebas manuales y cambio de proveedor de correo).
+
+### Fixed
+
+- `POST /api/v1/auth/forgot-password` respondia `500` (visto en el frontend como "Network Error", porque la respuesta no llevaba cabeceras CORS) cuando el correo pertenecia a un usuario existente: `null value in column "created_at" of relation "password_reset_tokens" violates not-null constraint`. La migracion `a6e4c1d2f901` creo `created_at` sin `server_default`, mientras `TimestampMixin` espera que la base de datos lo complete. Nueva migracion `b7d3f1e9a2c4_password_reset_created_at_default.py` agrega `server_default=now()`.
+
+### Changed
+
+- `app/services/email_service.py`: el correo de recuperacion se envia mediante la API REST de EmailJS (`POST https://api.emailjs.com/api/v1.0/email/send`) autenticada con la Private Key, en lugar de SMTP. El token sigue generandose y enviandose solo desde el backend; nunca se devuelve en la respuesta HTTP y la respuesta sigue siendo identica exista o no la cuenta. Parametros del template: `to_email`, `to_name`, `user_name`, `reset_url`, `reset_token`, `verification_code`, `expires_minutes`, `app_name`.
+- `app/core/config.py`: settings `emailjs_api_url`, `emailjs_service_id`, `emailjs_template_id`, `emailjs_public_key`, `emailjs_private_key`. En produccion EmailJS debe configurarse completo o dejarse deshabilitado (misma regla que antes aplicaba a SMTP).
+- `.env.example` y `README.md`: variables `EMAILJS_*` en lugar de `SMTP_*`; se documenta que en el dashboard de EmailJS debe habilitarse el uso de la API desde aplicaciones no-navegador (Account > Security).
+
+### Removed
+
+- Envio por SMTP (`smtplib`) y settings `smtp_host`, `smtp_port`, `smtp_username`, `smtp_password`, `smtp_from_email`, `smtp_use_tls`.
+
+---
+
+**Tests:** nuevos `tests/test_email_service.py` (3 tests: payload enviado a EmailJS con Private Key, error ante rechazo de EmailJS, error sin configuracion); `tests/test_config.py` adaptado a EmailJS y aislado de las variables `EMAILJS_*` reales que el contenedor carga desde `.env`. `test_config.py`, `test_email_service.py` y `test_services.py`: 15/15 pasan. En la suite completa quedan 3 fallos no relacionados con este cambio (`test_exception_handling.py` x2, `test_rate_limiting.py` x1: `risk_level` sin setter en `InferenceRule` y respuestas `422`). Verificado en vivo: EmailJS responde `200 OK` para un usuario existente. **Archivos nuevos:** `alembic/versions/b7d3f1e9a2c4_password_reset_created_at_default.py`, `tests/test_email_service.py`. **Archivos modificados:** `app/core/config.py`, `app/services/email_service.py`, `tests/test_config.py`, `.env.example`, `README.md`.
+
 ## [2026-09-03] — Endurecimiento del motor de inferencia (Fase 4)
 
 Change de OpenSpec: [`archive/2026-09-03-harden-inference-engine-phase4`](../openspec/changes/archive/2026-09-03-harden-inference-engine-phase4/). Specs modificadas: [`inference-engine`](../openspec/specs/inference-engine/spec.md), [`auth`](../openspec/specs/auth/spec.md) (nueva).

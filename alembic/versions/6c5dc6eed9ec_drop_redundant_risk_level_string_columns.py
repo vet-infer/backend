@@ -15,8 +15,11 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.drop_column('inference_results', 'risk_level')
-    op.drop_column('inference_rules', 'risk_level')
+    inspector = sa.inspect(op.get_bind())
+    if 'risk_level' in {c["name"] for c in inspector.get_columns('inference_results')}:
+        op.drop_column('inference_results', 'risk_level')
+    if 'risk_level' in {c["name"] for c in inspector.get_columns('inference_rules')}:
+        op.drop_column('inference_rules', 'risk_level')
 
 
 def downgrade() -> None:
