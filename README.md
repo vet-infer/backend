@@ -58,6 +58,7 @@ EMAILJS_SERVICE_ID=<SERVICE_ID_EMAILJS>
 EMAILJS_TEMPLATE_ID=<TEMPLATE_ID_EMAILJS>
 EMAILJS_PUBLIC_KEY=<PUBLIC_KEY_EMAILJS>
 EMAILJS_PRIVATE_KEY=<PRIVATE_KEY_EMAILJS>
+EMAILJS_WELCOME_TEMPLATE_ID=<TEMPLATE_ID_BIENVENIDA_EMAILJS>
 ```
 
 Para produccion, cambiar obligatoriamente `JWT_SECRET` y las credenciales bootstrap.
@@ -122,7 +123,11 @@ alembic upgrade head
 
 `POST /api/v1/auth/forgot-password` genera un token aleatorio de un solo uso, conserva solo su hash en la base de datos y construye el enlace de recuperacion. El token vence en 15 minutos por defecto y se invalida al generar uno nuevo o al ser usado. El backend envia el correo mediante la API REST de EmailJS (`POST https://api.emailjs.com/api/v1.0/email/send`) autenticandose con la Private Key; el token nunca se devuelve en la respuesta HTTP. La respuesta es identica exista o no una cuenta con ese correo, para evitar enumeracion de usuarios.
 
-Para produccion deben configurarse `FRONTEND_BASE_URL`, `EMAILJS_SERVICE_ID`, `EMAILJS_TEMPLATE_ID`, `EMAILJS_PUBLIC_KEY` y `EMAILJS_PRIVATE_KEY` en el servicio backend. En el dashboard de EmailJS debe habilitarse el uso de la API desde aplicaciones no-navegador (Account > Security). El template recibe `to_email`, `to_name`, `reset_url`, `verification_code`, `reset_token`, `expires_minutes` y `app_name`. En ningun caso se envia la contrasena actual por correo.
+Para produccion deben configurarse `FRONTEND_BASE_URL`, `EMAILJS_SERVICE_ID`, `EMAILJS_TEMPLATE_ID`, `EMAILJS_PUBLIC_KEY` y `EMAILJS_PRIVATE_KEY` en el servicio backend. En el dashboard de EmailJS debe habilitarse el uso de la API desde aplicaciones no-navegador (Account > Security). El template recibe `to_email`, `to_name`, `reset_url`, `verification_code`, `reset_token`, `expires_minutes` y `app_name`. El flujo de recuperacion nunca envia la contrasena actual por correo.
+
+### Notificacion de cuenta creada
+
+Cuando un administrador crea un usuario (`POST /api/v1/users`), el backend envia un correo de notificacion con el correo y la contrasena asignada, usando un template de EmailJS distinto configurado en `EMAILJS_WELCOME_TEMPLATE_ID` (reutiliza `EMAILJS_SERVICE_ID`, `EMAILJS_PUBLIC_KEY` y `EMAILJS_PRIVATE_KEY`). El template recibe `to_email`, `to_name`, `user_name`, `email`, `password`, `login_url` y `app_name`. Si el envio falla o el template no esta configurado, el usuario se crea igual y el error queda en el log. Como la contrasena viaja en texto plano, se recomienda que el template indique cambiarla tras el primer ingreso.
 
 ### Catalogos Clinicos
 

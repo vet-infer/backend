@@ -23,6 +23,8 @@ from app.core.security import get_password_hash, verify_password
 from app.repositories.user_repository import UserRepository
 from app.repositories.password_reset_token_repository import PasswordResetTokenRepository
 from app.services.auth_service import AuthService
+from app.services.user_service import UserService
+from app.schemas.user import UserCreate
 
 TEST_ADMIN_EMAIL = "test-admin@example.test"
 
@@ -220,9 +222,40 @@ def test_change_password_requires_current_password_and_persists_new_hash(db):
 class FakeEmailService:
     def __init__(self):
         self.messages: list[tuple[str, str]] = []
+        self.account_created: list[tuple[str, str]] = []
 
     def send_password_reset(self, recipient: str, reset_url: str, recipient_name: str | None = None) -> None:
         self.messages.append((recipient, reset_url))
+
+    def send_account_created(self, recipient: str, password: str, recipient_name: str | None = None) -> None:
+        self.account_created.append((recipient, password))
+
+
+class FailingEmailService(FakeEmailService):
+    def send_account_created(self, recipient: str, password: str, recipient_name: str | None = None) -> None:
+        raise RuntimeError("EmailJS caido")
+
+
+def test_create_user_sends_account_created_notification(db):
+    email_service = FakeEmailService()
+    user_service = UserService(UserRepository(db), email_service)
+
+    user = user_service.create_user(
+        UserCreate(full_name="Nuevo Vet", email="nuevo@example.test", password="ContrasenaNueva1", role_id=1)
+    )
+
+    assert user.id is not None
+    assert email_service.account_created == [("nuevo@example.test", "ContrasenaNueva1")]
+
+
+def test_create_user_succeeds_when_notification_fails(db):
+    user_service = UserService(UserRepository(db), FailingEmailService())
+
+    user = user_service.create_user(
+        UserCreate(full_name="Nuevo Vet", email="nuevo@example.test", password="ContrasenaNueva1", role_id=1)
+    )
+
+    assert db.query(User).filter(User.id == user.id).one().email == "nuevo@example.test"
 
 
 def test_password_recovery_sends_single_use_token_and_resets_password(db):
