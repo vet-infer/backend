@@ -2,6 +2,17 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Este proyecto no sigue un esquema de versionado formal todavía (API en `1.0.0`); las entradas se agrupan por fecha y, cuando aplica, por el change de OpenSpec que las originó (`openspec/changes/archive/`).
 
+## [2026-09-29] — Notificacion por correo de cuenta creada
+
+### Added
+
+- `EmailService.send_account_created`: envia por EmailJS un correo de notificacion con el correo y la contrasena asignada. Usa el nuevo setting opcional `emailjs_welcome_template_id` (`EMAILJS_WELCOME_TEMPLATE_ID`).
+- `UserService.create_user` envia la notificacion tras crear el usuario; un fallo del correo se registra en el log y no impide la creacion.
+
+### Changed
+
+- `EmailService`: logica comun de envio extraida a `_send(template_id, template_params)`.
+
 ## [2026-09-22] — Datos historicos de demostracion
 
 ### Added

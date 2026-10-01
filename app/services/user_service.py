@@ -1,13 +1,19 @@
+import logging
+
 from app.core.exceptions import ConflictError, NotFoundError, ForbiddenError
 from app.core.security import get_password_hash
 from app.models.user import User
 from app.repositories.user_repository import UserRepository
 from app.schemas.user import UserCreate, UserUpdate
+from app.services.email_service import EmailService
+
+logger = logging.getLogger(__name__)
 
 
 class UserService:
-    def __init__(self, repository: UserRepository):
+    def __init__(self, repository: UserRepository, email_service: EmailService | None = None):
         self.repository = repository
+        self.email_service = email_service or EmailService()
 
     def list_users(self) -> list[User]:
         return self.repository.list_with_roles()
@@ -24,7 +30,13 @@ class UserService:
             password_hash=get_password_hash(payload.password),
             role_id=payload.role_id,
         )
-        return self.repository.add(user)
+        user = self.repository.add(user)
+        try:
+            self.email_service.send_account_created(user.email, payload.password, user.full_name)
+        except Exception:
+            # El fallo del correo no debe impedir la creacion de la cuenta.
+            logger.exception("No se pudo enviar el correo de cuenta creada para el usuario %s", user.id)
+        return user
 
     def update_user(self, user_id: int, payload: UserUpdate, current_user_id: int | None = None) -> User:
         user = self.repository.get_with_role(user_id)
