@@ -48,3 +48,31 @@ def test_send_password_reset_requires_configuration(monkeypatch):
 
     with pytest.raises(RuntimeError, match="no esta configurado"):
         EmailService().send_password_reset("user@example.test", "http://front/reset-password?token=abc123")
+
+
+def test_send_account_created_posts_credentials_with_welcome_template(monkeypatch, emailjs_settings):
+    monkeypatch.setattr(settings, "emailjs_welcome_template_id", "welcome_test")
+    calls = []
+
+    def fake_post(url, json, timeout):
+        calls.append(json)
+        return httpx.Response(200, text="OK")
+
+    monkeypatch.setattr(email_service_module.httpx, "post", fake_post)
+
+    EmailService().send_account_created("user@example.test", "Clave1234", "Ana")
+
+    assert len(calls) == 1
+    payload = calls[0]
+    assert payload["template_id"] == "welcome_test"
+    assert payload["template_params"]["to_email"] == "user@example.test"
+    assert payload["template_params"]["email"] == "user@example.test"
+    assert payload["template_params"]["password"] == "Clave1234"
+    assert payload["template_params"]["login_url"].endswith("/login")
+
+
+def test_send_account_created_requires_welcome_template(monkeypatch, emailjs_settings):
+    monkeypatch.setattr(settings, "emailjs_welcome_template_id", None)
+
+    with pytest.raises(RuntimeError, match="bienvenida no esta configurado"):
+        EmailService().send_account_created("user@example.test", "Clave1234")

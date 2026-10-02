@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     emailjs_template_id: str | None = None
     emailjs_public_key: str | None = None
     emailjs_private_key: str | None = None
+    emailjs_welcome_template_id: str | None = None
     cors_origins: list[str] = []
     bootstrap_admin_email: str | None = None
     bootstrap_admin_password: str | None = None
@@ -58,7 +59,7 @@ class Settings(BaseSettings):
         if self.database_url.startswith("postgresql://"):
             self.database_url = self.database_url.replace("postgresql://", "postgresql+psycopg://", 1)
 
-        for field_name in EMAILJS_REQUIRED_FIELDS:
+        for field_name in (*EMAILJS_REQUIRED_FIELDS, "emailjs_welcome_template_id"):
             if getattr(self, field_name) == "":
                 setattr(self, field_name, None)
 
