@@ -2,6 +2,35 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Este proyecto no sigue un esquema de versionado formal todavía (API en `1.0.0`); las entradas se agrupan por fecha y, cuando aplica, por el change de OpenSpec que las originó (`openspec/changes/archive/`).
 
+## [2026-11-05] — Correcciones de las observaciones de QA (proyecto P20261070)
+
+Sin change de OpenSpec asociado. Origen: observaciones reportadas por el equipo de QA entre el 29/10 y el 01/11/2026.
+
+### Fixed
+
+- `PATCH /auth/change-password`: una contrasena actual incorrecta responde `400` ("La contrasena actual no es valida") en lugar de `401`. El cliente trata todo `401` como sesion vencida y cerraba la sesion sin mostrar mensaje (CP181).
+- `POST /auth/login`: la contrasena acepta cualquier longitud desde 1 caracter. Antes una clave de menos de 8 caracteres devolvia `422` en vez de `401 Credenciales invalidas`.
+- Errores `422` de validacion: nuevo handler de `RequestValidationError` que devuelve `detail` como texto en espanol ("Datos invalidos o incompletos: campo") y conserva la lista original en `errors`. Antes `detail` era una lista y el frontend no podia mostrarlo.
+- `PUT /rules/{id}`: los campos escalares (nombre, peso, prioridad, version, estado, enfermedad, nivel de riesgo) nunca se aplicaban a la regla; solo se persistian las condiciones. La API respondia `200` con los datos sin cambios.
+- Reglas: la validacion de condiciones acepta hechos sin especie (`species_id IS NULL`), igual que el servicio de evaluaciones.
+- Evaluaciones: se rechaza guardar una evaluacion sin hechos y se rechazan valores numericos negativos (`400`).
+- `POST /evaluaciones/{id}/procesar`: se rechaza procesar una evaluacion sin al menos un sintoma verdadero (`400`).
+- Pacientes: se rechaza una fecha de nacimiento futura al crear y al actualizar (`422`).
+- Propietarios: el mensaje de documento duplicado indica tipo y numero ("Ya existe un propietario registrado con DNI 12345678") y avisa cuando el registro existente esta inactivo.
+
+### Added
+
+- `OwnerOut.is_active` y `OwnerRepository.get_any` / `OwnerService.get_owner_detail`: `GET /owners/{id}` devuelve tambien propietarios inactivos para poder mostrar su estado. Las listas siguen mostrando solo activos y editar o eliminar sigue exigiendo un propietario activo.
+- `tests/test_qa_fixes.py`: pruebas de regresion de fecha futura, negativos y formato de errores de validacion.
+
+### Changed
+
+- `tests/test_services.py`: el cambio de contrasena con clave actual incorrecta espera `400` (`AppException`) y no `UnauthorizedError`.
+
+---
+
+**Verificacion:** `pytest` en `backend/` pasa salvo 3 pruebas que ya fallaban antes de este cambio (`test_unhandled_exception_returns_sanitized_500`, `test_not_found_error_from_service_layer_returns_404_not_500`, `test_inference_run_rate_limit_blocks_after_default_threshold`). No requiere migraciones.
+
 ## [2026-09-29] — Notificacion por correo de cuenta creada
 
 ### Added

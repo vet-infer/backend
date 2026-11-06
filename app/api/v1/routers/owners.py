@@ -39,7 +39,7 @@ def get_owner(
     db: Session = Depends(get_db),
     _: User = Depends(require_policy(PermissionPolicy.CLINICAL_READ)),
 ):
-    return OwnerService(OwnerRepository(db)).get_owner(owner_id)
+    return OwnerService(OwnerRepository(db)).get_owner_detail(owner_id)
 
 
 @router.put("/{owner_id}", response_model=OwnerOut)

@@ -65,5 +65,6 @@ class OwnerUpdate(OwnerBase):
 class OwnerOut(OwnerBase):
     id: int
     created_at: datetime | None = None
+    is_active: bool = True
 
     model_config = {"from_attributes": True}
