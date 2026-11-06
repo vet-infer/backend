@@ -6,7 +6,8 @@ from app.core.validation import RequiredEmail
 
 class LoginRequest(BaseModel):
     email: RequiredEmail
-    password: RequiredPassword
+    # Sin minimo de 8: una clave corta debe dar 401 "Credenciales invalidas", no 422.
+    password: str = Field(min_length=1, max_length=72)
 
 
 class TokenResponse(BaseModel):
@@ -15,7 +16,7 @@ class TokenResponse(BaseModel):
 
 
 class ChangePasswordRequest(BaseModel):
-    current_password: RequiredPassword
+    current_password: str = Field(min_length=1, max_length=72)
     new_password: RequiredPassword
 
 

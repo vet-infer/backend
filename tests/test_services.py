@@ -206,8 +206,11 @@ def test_change_password_requires_current_password_and_persists_new_hash(db):
 
     auth_service = AuthService(UserRepository(db))
 
-    with pytest.raises(UnauthorizedError):
+    # Debe ser 400 (AppException), no 401: un 401 haria cerrar la sesion en el cliente.
+    with pytest.raises(AppException, match="no es valida") as wrong_password:
         auth_service.change_password(user, "Incorrecta1", "ContrasenaNueva1")
+    assert not isinstance(wrong_password.value, UnauthorizedError)
+    assert wrong_password.value.status_code == 400
 
     with pytest.raises(AppException, match="diferente"):
         auth_service.change_password(user, "ContrasenaInicial1", "ContrasenaInicial1")
