@@ -1,13 +1,19 @@
 from datetime import date, datetime
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from app.schemas.owner import OwnerOut
 from app.schemas.species import SpeciesOut
 from app.schemas.breed import BreedOut
 
 PatientSex = Literal["Macho", "Hembra"]
+
+
+def _reject_future_birth_date(value: date | None) -> date | None:
+    if value is not None and value > date.today():
+        raise ValueError("La fecha de nacimiento no puede ser futura")
+    return value
 
 
 class PatientCreate(BaseModel):
@@ -19,6 +25,8 @@ class PatientCreate(BaseModel):
     birth_date: date | None = None
     weight: float | None = Field(default=None, gt=0)
 
+    _check_birth_date = field_validator("birth_date")(_reject_future_birth_date)
+
 
 class PatientUpdate(BaseModel):
     owner_id: int | None = None
@@ -28,6 +36,8 @@ class PatientUpdate(BaseModel):
     sex: PatientSex | None = None
     birth_date: date | None = None
     weight: float | None = Field(default=None, gt=0)
+
+    _check_birth_date = field_validator("birth_date")(_reject_future_birth_date)
 
 
 class PatientOut(BaseModel):

@@ -21,6 +21,10 @@ class OwnerRepository(BaseRepository[Owner]):
     def get_by_id(self, owner_id: int) -> Owner | None:
         return self.get(owner_id)
 
+    def get_any(self, owner_id: int) -> Owner | None:
+        """Devuelve el propietario aunque este inactivo (solo para consulta de detalle)."""
+        return self.db.get(Owner, owner_id)
+
     def create(self, data: dict) -> Owner:
         try:
             return self.add(Owner(**data))

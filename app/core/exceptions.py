@@ -1,6 +1,8 @@
 import logging
 
 from fastapi import FastAPI, Request, status
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from slowapi.errors import RateLimitExceeded
 
@@ -41,6 +43,22 @@ def register_exception_handlers(app: FastAPI) -> None:
         return JSONResponse(
             status_code=exc.status_code,
             content={"detail": exc.detail},
+        )
+
+    @app.exception_handler(RequestValidationError)
+    async def request_validation_handler(_: Request, exc: RequestValidationError) -> JSONResponse:
+        errors = jsonable_encoder(exc.errors(), custom_encoder={Exception: str})
+        fields = []
+        for error in errors:
+            loc = [str(part) for part in error.get("loc", ()) if part not in ("body", "query", "path")]
+            fields.append(".".join(loc) if loc else "solicitud")
+        unique_fields = ", ".join(dict.fromkeys(fields))
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content={
+                "detail": f"Datos invalidos o incompletos: {unique_fields}",
+                "errors": errors,
+            },
         )
 
     @app.exception_handler(RateLimitExceeded)

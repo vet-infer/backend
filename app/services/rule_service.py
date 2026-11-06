@@ -1,3 +1,5 @@
+from sqlalchemy import or_
+
 from app.core.cache import cache
 from app.core.exceptions import ConflictError, NotFoundError
 from app.inference.engine import InferenceEngine
@@ -63,6 +65,12 @@ class RuleService:
             conditions = None
         else:
             conditions = None
+
+        # Los campos escalares (nombre, peso, prioridad, riesgo, etc.) se aplican aqui;
+        # antes solo se persistian las condiciones y el resto de cambios se perdia.
+        for field, value in data.items():
+            if value is not None:
+                setattr(rule, field, value)
 
         if conditions is not None:
             updated = self.repository.replace_conditions(rule, conditions)
@@ -130,7 +138,10 @@ class RuleService:
                 self.repository.db.query(FactDefinition)
                 .filter(
                     FactDefinition.fact_key == condition["variable_key"],
-                    FactDefinition.species_id == disease.species_id,
+                    or_(
+                        FactDefinition.species_id == disease.species_id,
+                        FactDefinition.species_id.is_(None),
+                    ),
                     FactDefinition.is_active.is_(True),
                 )
                 .first()

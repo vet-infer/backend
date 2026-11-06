@@ -41,7 +41,8 @@ class AuthService:
 
     def change_password(self, user: User, current_password: str, new_password: str) -> None:
         if not verify_password(current_password, user.password_hash):
-            raise UnauthorizedError("La contrasena actual es incorrecta")
+            # 400 (no 401): el cliente trata todo 401 como sesion vencida y cierra la sesion.
+            raise AppException("La contrasena actual no es valida")
 
         if current_password == new_password:
             raise AppException("La nueva contrasena debe ser diferente de la actual")
