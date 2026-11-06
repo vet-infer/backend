@@ -10,12 +10,21 @@ class OwnerService:
 
     def create_owner(self, schema: OwnerCreate):
         if schema.document_type and schema.document_number:
-            if self.repository.get_by_document(schema.document_type.value, schema.document_number):
-                raise ConflictError("El documento ya esta registrado")
+            existing = self.repository.get_by_document(schema.document_type.value, schema.document_number)
+            if existing:
+                raise self._duplicate_document_error(
+                    schema.document_type.value, schema.document_number, existing.is_active
+                )
         return self.repository.create(schema.model_dump())
 
     def get_owner(self, owner_id: int):
         owner = self.repository.get_by_id(owner_id)
+        if not owner:
+            raise NotFoundError("Dueno no encontrado")
+        return owner
+
+    def get_owner_detail(self, owner_id: int):
+        owner = self.repository.get_any(owner_id)
         if not owner:
             raise NotFoundError("Dueno no encontrado")
         return owner
@@ -39,5 +48,14 @@ class OwnerService:
             if changed:
                 existing = self.repository.get_by_document(schema.document_type.value, schema.document_number)
                 if existing and existing.id != owner_id:
-                    raise ConflictError("El documento ya esta registrado")
+                    raise self._duplicate_document_error(
+                        schema.document_type.value, schema.document_number, existing.is_active
+                    )
         return self.repository.update_by_id(owner_id, schema.model_dump(exclude_unset=True))
+
+    @staticmethod
+    def _duplicate_document_error(document_type: str, document_number: str, is_active: bool) -> ConflictError:
+        message = f"Ya existe un propietario registrado con {document_type} {document_number}"
+        if not is_active:
+            message += " (el registro existente esta inactivo)"
+        return ConflictError(message)
