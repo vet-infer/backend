@@ -23,6 +23,9 @@ class EvaluationService:
         if patient is None:
             raise NotFoundError("Paciente no encontrado")
 
+        if not payload.facts:
+            raise AppException("Registre al menos un sintoma o una variable clinica antes de guardar la evaluacion")
+
         facts = self._validate_and_normalize_facts(payload.facts, patient.species_id)
         evaluation = self.evaluation_repository.create_with_facts(
             patient_id=payload.patient_id,
@@ -126,6 +129,8 @@ class EvaluationService:
         if kind in {"numeric", "number", "float", "integer", "decimal"}:
             if type(value) is bool or not isinstance(value, (int, float)) or not math.isfinite(float(value)):
                 raise AppException(f"El fact '{definition.fact_key}' debe ser numerico y finito")
+            if float(value) < 0:
+                raise AppException(f"El fact '{definition.fact_key}' no puede ser negativo")
         if kind in {"string", "text", "categorical", "select"} and not isinstance(value, str):
             raise AppException(f"El fact '{definition.fact_key}' debe ser categorico o textual")
         if definition.allowed_values is not None and value not in definition.allowed_values:

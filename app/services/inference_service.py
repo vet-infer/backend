@@ -1,6 +1,7 @@
-from app.core.exceptions import NotFoundError
+from app.core.exceptions import AppException, NotFoundError
 from app.inference.engine import InferenceEngine
 from app.models.disease import Disease
+from app.models.knowledge import FactDefinition
 from app.repositories.catalog_repository import CatalogRepository
 from app.repositories.clinical_probability_repository import ClinicalProbabilityRepository
 from app.repositories.evaluation_repository import EvaluationRepository
@@ -41,6 +42,15 @@ class InferenceService:
         evaluation = self.evaluation_repository.get_with_facts(evaluation_id)
         if evaluation is None:
             raise NotFoundError("Evaluacion no encontrada")
+        true_keys = [fact.fact_key for fact in evaluation.facts if fact.value is True]
+        has_symptom = bool(true_keys) and (
+            self.evaluation_repository.db.query(FactDefinition.id)
+            .filter(FactDefinition.fact_key.in_(true_keys), FactDefinition.source_type == "symptom")
+            .first()
+            is not None
+        )
+        if not has_symptom:
+            raise AppException("La evaluacion debe tener al menos un sintoma registrado para procesarse")
         facts = {fact.fact_key: fact.value for fact in evaluation.facts}
         facts.setdefault("species_id", evaluation.patient.species_id)
 
